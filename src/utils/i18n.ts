@@ -69,5 +69,6 @@ export const navItems: NavItem[] = [
   { key: 'nav.news', href: '/news' },
   { key: 'nav.join', href: '/join' },
   { key: 'nav.partners', href: '/partners' },
+  { key: 'nav.about', href: '/about' },
   { key: 'nav.contact', href: '/contact' },
 ];

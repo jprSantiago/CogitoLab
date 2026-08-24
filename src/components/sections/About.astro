@@ -1,0 +1,57 @@
+---
+import { getLocale, useTranslations, localeUrl } from '../../utils/i18n';
+import { pick, bilingual } from '../../data/types';
+import { SITE_CONFIG } from '../../config/site';
+
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+
+const mission = bilingual(
+  'Avançar o conhecimento e formar pesquisadores em Engenharia de Software, IA e Inovação através de investigação rigorosa e colaborativa.',
+  'Advance knowledge and train researchers in Software Engineering, AI and Innovation through rigorous and collaborative inquiry.'
+);
+const vision = bilingual(
+  'Ser referência em pesquisa aplicada e transferência de tecnologia na América Latina.',
+  'To be a reference in applied research and technology transfer in Latin America.'
+);
+const values = [
+  bilingual('Pensamento crítico', 'Critical thinking'),
+  bilingual('Rigor científico', 'Scientific rigor'),
+  bilingual('Colaboração', 'Collaboration'),
+  bilingual('Impacto social', 'Social impact'),
+];
+---
+
+<section class="mx-auto max-w-6xl px-4 py-10">
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold text-cogito-900">{t('about.title')}</h1>
+    <p class="mt-2 text-cogito-500">{t('about.subtitle')}</p>
+  </header>
+
+  <div class="grid gap-6 md:grid-cols-3">
+    <div class="card-3d">
+      <h2 class="text-lg font-semibold text-cogito-800">{t('about.mission')}</h2>
+      <p class="mt-2 text-sm text-cogito-600">{pick(locale, mission)}</p>
+    </div>
+    <div class="card-3d">
+      <h2 class="text-lg font-semibold text-cogito-800">{t('about.vision')}</h2>
+      <p class="mt-2 text-sm text-cogito-600">{pick(locale, vision)}</p>
+    </div>
+    <div class="card-3d">
+      <h2 class="text-lg font-semibold text-cogito-800">{t('about.values')}</h2>
+      <ul class="mt-2 flex flex-wrap gap-1">
+        {values.map((v) => (
+          <li class="rounded-full bg-cogito-50 px-2 py-0.5 text-xs text-cogito-600">{pick(locale, v)}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <div class="card-3d mt-6">
+    <h2 class="text-lg font-semibold text-cogito-800">{t('about.history')}</h2>
+    <p class="mt-2 text-sm text-cogito-600">{SITE_CONFIG.description}</p>
+    <p class="mt-3">
+      <a href={localeUrl(locale, '/members')} class="text-cruzeiro-700 underline hover:text-cruzeiro-900">{t('about.team')}</a>
+    </p>
+  </div>
+</section>

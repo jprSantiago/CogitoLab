@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { useTranslations, getLocale } from '../../../utils/i18n';
+import Contact from '../../../components/sections/Contact.astro';
+
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+---
+<BaseLayout title={t('contact.title')} description={t('contact.subtitle')}>
+  <Contact />
+</BaseLayout>

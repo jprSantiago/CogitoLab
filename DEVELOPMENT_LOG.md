@@ -82,3 +82,50 @@ da Fase 0 mantidos intactos.
 - `npm run lint` (astro check) → 0 erros / 0 warnings.
 - Conteúdo PT-BR/EN e estrutura i18n preservados; contraste mantido (cards claros
   com texto escuro sobre o fundo dinâmico; CTA escuro com texto branco).
+
+---
+
+## 2026-08-24 — Fase 1: Conteúdo Estático
+
+**Objetivo:** Implementar as páginas principais com conteúdo real em PT-BR e EN,
+seguindo as specs `docs/specs/00`–`09` e o fluxo Spec-Driven (SPEC → PLAN → BUILD → TEST).
+
+### Decisões
+- **Camada de dados bilíngue:** em vez de Content Collections do Astro (complexas
+  para i18n multi-arquivo), adotou-se módulos tipados em `src/data/*` com o tipo
+  `Localized<T> = { 'pt-br'; 'en' }` e helper `pick(locale, value)` (`src/data/types.ts`).
+  Espelha o modelo das specs (ex.: `title` + `titlePt` no mesmo registro) e mantém
+  i18n limpo, com fallback para PT-BR.
+- **Filtros (0 JS por padrão, com progressive enhancement):** lista filtrável via
+  `data-filter-*` + script Vanilla mínimo (`src/scripts/list-filter.ts`). Sem JS,
+  todos os itens permanecem visíveis. Botões usam `aria-pressed` e variante
+  `aria-pressed:` do Tailwind. Busca de publicações também via esse script.
+- **Paginação de notícias:** build-time com `paginate()` em
+  `src/pages/{pt-br,en}/news/[...page].astro` (4 itens/página) + controles de
+  navegação. Filtro de categoria por JS coexiste na mesma página.
+- **Detalhes expandíveis (Projetos/Áreas):** elemento nativo `<details>`/`<summary>`
+  (acessível, 0 JS).
+- **Sobre:** página adicional (`/about`) criada (não havia spec dedicada; alinhada
+  ao ADR-003 e ao item "Página Sobre" do roadmap). Adicionada à navegação.
+- **Estrutura de arquivos:** um componente `src/components/sections/<Secao>.astro`
+  por seção + wrappers finos `src/pages/{pt-br,en}/<secao>/index.astro` (padrão
+  já usado na Home da Fase 0).
+
+### Arquivos criados
+- `src/data/types.ts`, `src/data/{areas,members,projects,publications,news,artifacts,partners}.ts`
+- `src/scripts/list-filter.ts` (filtro/busca client-side)
+- `src/components/sections/{Areas,Members,Projects,Publications,News,Artifacts,Partners,Join,Contact,About}.astro`
+- `src/pages/pt-br/{areas,members,projects,publications,artifacts,partners,join,contact,about}/index.astro`
+- `src/pages/en/{areas,members,projects,publications,artifacts,partners,join,contact,about}/index.astro`
+- `src/pages/pt-br/news/[...page].astro`, `src/pages/en/news/[...page].astro`
+- Extensão do dicionário i18n em `src/i18n/ui.ts` (todas as chaves de seção)
+
+### Verificação
+- `npm run build` → 24 páginas (`/`, `/pt-br/*` (12), `/en/*` (12), incl. `/pt-br/news/2/`).
+- `npm run lint` (astro check) → 0 erros, 0 warnings, 0 hints.
+- `lang` alterna corretamente (pt-br/en) e hreflang presente; filtros/paginação
+  gerados no HTML estático.
+
+### Próximos passos
+- Fase 2: testes (Vitest), a11y, performance (ADR-004).
+- Fase 3: SEO/meta, README, deploy final, reflexão.

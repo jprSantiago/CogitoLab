@@ -1,62 +1,52 @@
 # Organização do Projeto — Cogito Lab Website
 
-## 1. Visão Gesta
+## 1. Visão Geral
 
-Este documento define a organização, o roadmap e as práticas de desenvolvimento do site oficial do Cogito Lab, seguindo padrões de **Spec-Driven Development** e utilizing **agentes de IA** como parte do workflow.
+Este documento define a organização, o roadmap e as práticas de desenvolvimento do site oficial do Cogito Lab, seguindo padrões de **Spec-Driven Development** e utilizando **agentes de IA** como parte do workflow.
 
 ---
 
 ## 2. Estrutura do Repositório
 
 ```
-CogitoLab-main/
+Cogito/
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml              # CI/CD para GitHub Pages
 ├── public/
-│   ├── favicon.ico
-│   └── images/
-│       ├── logo.png
-│       └── members/                # Fotos dos membros
+│   └── favicon.svg
 ├── src/
 │   ├── components/
-│   │   ├── common/                 # Botões, Cards, Headers, etc.
-│   │   ├── layout/                 # Navbar, Footer, Sidebar
-│   │   ├── sections/               # Seções das páginas
-│   │   └── i18n/                   # Componentes de tradução
-│   ├── content/
-│   │   ├── config.ts               # Configuração do i18n
-│   │   ├── collections/
-│   │   │   ├── members/            # Membros do lab (PT/EN)
-│   │   │   ├── projects/           # Projetos de pesquisa
-│   │   │   ├── publications/       # Publicações científicas
-│   │   │   ├── news/               # Notícias e atividades
-│   │   │   ├── areas/              # Áreas de pesquisa
-│   │   │   └── artifacts/          # Software, datasets, etc.
-│   │   └── i18n/
-│   │       ├── pt-br/              # Traduções PT-BR
-│   │       └── en/                 # Traduções EN
+│   │   ├── layout/                 # Navbar, Footer
+│   │   └── sections/               # Seções das páginas (Home, About, Areas, ...)
+│   ├── config/
+│   │   └── site.ts                 # Configuração do site (SITE_CONFIG)
+│   ├── data/                       # Dados bilíngues tipados (Localized + pick)
+│   │   ├── types.ts                # Localized<T>, pick(), bilingual()
+│   │   ├── areas.ts
+│   │   ├── members.ts
+│   │   ├── projects.ts
+│   │   ├── publications.ts
+│   │   ├── news.ts
+│   │   ├── artifacts.ts
+│   │   └── partners.ts
+│   ├── i18n/
+│   │   ├── config.ts               # locales, defaultLocale
+│   │   └── ui.ts                   # Dicionário tipado t()
 │   ├── layouts/
 │   │   ├── BaseLayout.astro
 │   │   ├── PageLayout.astro
 │   │   └── ArticleLayout.astro
 │   ├── pages/
-│   │   ├── index.astro             # Home
-│   │   ├── about.astro             # Sobre o lab
-│   │   ├── areas/                  # Áreas de pesquisa
-│   │   ├── members/                # Membros
-│   │   ├── projects/               # Projetos
-│   │   ├── publications/           # Publicações
-│   │   ├── artifacts/              # Software e dados
-│   │   ├── news/                   # Notícias
-│   │   ├── join.astro              # Junte-se ao lab
-│   │   ├── partners.astro          # Parceiros
-│   │   └── contact.astro           # Contato
+│   │   ├── index.astro             # Redirect → /pt-br/
+│   │   ├── pt-br/                  # Home + about, areas, members, projects, publications, artifacts, partners, join, contact, news/[...page]
+│   │   └── en/                     # Mesmo conjunto (EN)
+│   ├── scripts/
+│   │   └── list-filter.ts          # Filtro/busca client-side (progressive enhancement)
 │   ├── styles/
 │   │   └── global.css
 │   └── utils/
-│       ├── i18n.ts                 # Helpers de internacionalização
-│       └── helpers.ts              # Utilitários gerais
+│       └── i18n.ts                 # Helpers: getLocale, useTranslations, localeUrl, stripLocale, t()
 ├── docs/
 │   ├── specs/                      # Especificações (Spec-Driven)
 │   │   ├── 00-home-page.md
@@ -75,8 +65,12 @@ CogitoLab-main/
 │   │   ├── ADR-002-tailwind-css.md
 │   │   ├── ADR-003-i18n-strategy.md
 │   │   └── ADR-004-testing-strategy.md
-│   └── ai-interactions/            # Log de interações com IA
-│       └── prompts-log.md
+│   ├── ai-interactions/            # Log de interações com IA
+│   │   └── prompts-log.md
+│   ├── fase-0/
+│   │   └── README.md
+│   └── fase-1/
+│       └── README.md
 ├── tests/
 │   ├── unit/
 │   ├── integration/
@@ -112,21 +106,23 @@ CogitoLab-main/
 ### Fase 1: Conteúdo Estático (Semanas 2-3)
 **Objetivo:** Implementar as páginas principais com conteúdo real
 
-| Tarefa | Spec | Status |
-|--------|------|--------|
-| Home page (identidade do lab) | `docs/specs/00-home-page.md` | ⬜ |
-| Seção de Áreas de Pesquisa | `docs/specs/04-areas-section.md` | ⬜ |
-| Página Sobre | — | ⬜ |
-| Seção de Membros | `docs/specs/01-members-section.md` | ⬜ |
-| Seção de Projetos | `docs/specs/02-projects-section.md` | ⬜ |
-| Seção de Publicações | `docs/specs/03-publications-section.md` | ⬜ |
-| Seção de Notícias | `docs/specs/05-news-section.md` | ⬜ |
-| Seção de Artefatos | `docs/specs/06-artifacts-section.md` | ⬜ |
-| Página Junte-se ao Lab | `docs/specs/07-join-section.md` | ⬜ |
-| Página de Parceiros | `docs/specs/08-partners-section.md` | ⬜ |
-| Página de Contato | `docs/specs/09-contact-section.md` | ⬜ |
+| Tarefa | Spec | Arquivos | Status |
+|--------|------|----------|--------|
+| Home page (identidade do lab) | `docs/specs/00-home-page.md` | `src/components/sections/Home.astro` (Fase 0) | ✅ |
+| Seção de Áreas de Pesquisa | `docs/specs/04-areas-section.md` | `src/components/sections/Areas.astro`, `src/data/areas.ts` | ✅ |
+| Página Sobre | — (sem spec dedicada; ver DEVELOPMENT_LOG) | `src/components/sections/About.astro` | ✅ |
+| Seção de Membros | `docs/specs/01-members-section.md` | `src/components/sections/Members.astro`, `src/data/members.ts` | ✅ |
+| Seção de Projetos | `docs/specs/02-projects-section.md` | `src/components/sections/Projects.astro`, `src/data/projects.ts` | ✅ |
+| Seção de Publicações | `docs/specs/03-publications-section.md` | `src/components/sections/Publications.astro`, `src/data/publications.ts` | ✅ |
+| Seção de Notícias | `docs/specs/05-news-section.md` | `src/components/sections/News.astro`, `src/data/news.ts`, `src/pages/*/news/[...page].astro` | ✅ |
+| Seção de Artefatos | `docs/specs/06-artifacts-section.md` | `src/components/sections/Artifacts.astro`, `src/data/artifacts.ts` | ✅ |
+| Página Junte-se ao Lab | `docs/specs/07-join-section.md` | `src/components/sections/Join.astro` | ✅ |
+| Página de Parceiros | `docs/specs/08-partners-section.md` | `src/components/sections/Partners.astro`, `src/data/partners.ts` | ✅ |
+| Página de Contato | `docs/specs/09-contact-section.md` | `src/components/sections/Contact.astro` | ✅ |
 
 **Entregável:** Site com todas as seções implementadas e conteúdo em ambos os idiomas.
+
+> **Decisão de dados:** em vez de Content Collections (previsto no planejamento inicial), a Fase 1 usa módulos tipados em `src/data/*` com `Localized<T>` + `pick()` (`src/data/types.ts`), integrados ao i18n da Fase 0. Justificativa detalhada em `DEVELOPMENT_LOG.md` (seção "Fase 1: Conteúdo Estático").
 
 ---
 
@@ -274,8 +270,9 @@ Toda interação relevante com IA deve ser documentada em `docs/ai-interactions/
 - TypeScript quando beneficial
 
 ### 6.2 Conteúdo
-- Markdown para conteúdo estático
-- Collections do Astro para dados estruturados
+- Componentes Astro para páginas e seções
+- Dados estruturados bilíngues em `src/data/*` (tipo `Localized<T>` + helper `pick()`), em vez de Content Collections
+- Strings de UI em dicionário tipado `src/i18n/ui.ts` (helper `t()`)
 - i18n via `@astrojs/i18n` (URL-based: `/pt-br/...`, `/en/...`)
 
 ### 6.3 Testes

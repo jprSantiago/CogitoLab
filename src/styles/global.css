@@ -129,6 +129,17 @@ body {
   box-shadow: 0 8px 20px -6px rgba(0, 61, 165, 0.6);
 }
 
+/* Pílulas de filtro (reutilizáveis entre seções) */
+.filter-pill {
+  @apply rounded-full border border-cogito-200 px-3 py-1.5 text-sm text-cogito-600 transition;
+}
+.filter-pill:hover {
+  @apply border-cruzeiro-500 text-cruzeiro-700;
+}
+.filter-pill[aria-pressed='true'] {
+  @apply border-cruzeiro-600 bg-cruzeiro-600 text-white;
+}
+
 /* Navbar ganha sombra/realce ao rolar */
 [data-scrolled="true"] .navbar {
   box-shadow: 0 10px 30px -15px rgba(0, 61, 165, 0.5);

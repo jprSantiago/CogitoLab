@@ -1,0 +1,83 @@
+---
+import { getLocale, useTranslations, localeUrl } from '../../utils/i18n';
+import { pick } from '../../data/types';
+import { areas } from '../../data/areas';
+import { getProject } from '../../data/projects';
+import { getPublication } from '../../data/publications';
+
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+---
+
+<section class="mx-auto max-w-6xl px-4 py-10">
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold text-cogito-900">{t('areas.title')}</h1>
+    <p class="mt-2 text-cogito-500">{t('areas.subtitle')}</p>
+  </header>
+
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      areas.map((area) => (
+        <details class="card-3d group" id={`area-${area.id}`}>
+          <summary class="flex cursor-pointer items-center gap-4 list-none">
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-cruzeiro-600 text-2xl text-white" aria-hidden="true">
+              {area.icon}
+            </span>
+            <h2 class="text-lg font-semibold text-cogito-800">{pick(locale, area.title)}</h2>
+          </summary>
+
+          <div class="mt-4 border-t border-cogito-100 pt-4">
+            <p class="text-sm text-cogito-600">{pick(locale, area.description)}</p>
+
+            <h3 class="mt-4 text-xs font-semibold uppercase tracking-wide text-cogito-400">
+              {t('areas.topics')}
+            </h3>
+            <ul class="mt-1 flex flex-wrap gap-1">
+              {area.topics.map((topic) => (
+                <li class="rounded-full bg-cogito-50 px-2 py-0.5 text-xs text-cogito-600">
+                  {pick(locale, topic)}
+                </li>
+              ))}
+            </ul>
+
+            {area.projects.length > 0 && (
+              <h3 class="mt-4 text-xs font-semibold uppercase tracking-wide text-cogito-400">
+                {t('common.relatedProjects')}
+              </h3>
+              <ul class="mt-1 space-y-1">
+                {area.projects.map((pid) => {
+                  const p = getProject(pid);
+                  return p ? (
+                    <li>
+                      <a href={localeUrl(locale, '/projects')} class="text-sm text-cruzeiro-700 underline hover:text-cruzeiro-900">
+                        {pick(locale, p.title)}
+                      </a>
+                    </li>
+                  ) : null;
+                })}
+              </ul>
+            )}
+
+            {area.publications.length > 0 && (
+              <h3 class="mt-4 text-xs font-semibold uppercase tracking-wide text-cogito-400">
+                {t('common.relatedPublications')}
+              </h3>
+              <ul class="mt-1 space-y-1">
+                {area.publications.map((pubid) => {
+                  const pub = getPublication(pubid);
+                  return pub ? (
+                    <li>
+                      <a href={localeUrl(locale, '/publications')} class="text-sm text-cruzeiro-700 underline hover:text-cruzeiro-900">
+                        {pub.title}
+                      </a>
+                    </li>
+                  ) : null;
+                })}
+              </ul>
+            )}
+          </div>
+        </details>
+      ))
+    }
+  </div>
+</section>

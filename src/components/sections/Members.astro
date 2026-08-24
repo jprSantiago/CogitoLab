@@ -1,0 +1,157 @@
+---
+import { getLocale, useTranslations } from '../../utils/i18n';
+import { pick } from '../../data/types';
+import { members, memberCategories } from '../../data/members';
+import { areas } from '../../data/areas';
+
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+
+const categoryKey: Record<string, string> = {
+  faculty: 'members.cat.faculty',
+  collaborator: 'members.cat.collaborator',
+  phd: 'members.cat.phd',
+  msc: 'members.cat.msc',
+  undergraduate: 'members.cat.undergraduate',
+  alumni: 'members.cat.alumni',
+};
+
+const areaTitle = (id: string) => {
+  const a = areas.find((x) => x.id === id);
+  return a ? pick(locale, a.title) : id;
+};
+---
+
+<section class="mx-auto max-w-6xl px-4 py-10">
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold text-cogito-900">{t('members.title')}</h1>
+    <p class="mt-2 text-cogito-500">{t('members.subtitle')}</p>
+  </header>
+
+  <div class="mb-8 flex flex-col gap-4" data-filter-root>
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="text-sm font-semibold text-cogito-700">{t('members.filter.category')}:</span>
+      <button type="button" class="filter-pill" data-filter-group="category" data-filter-value="" aria-pressed="true">
+        {t('common.all')}
+      </button>
+      {
+        memberCategories.map((c) => (
+          <button
+            type="button"
+            class="filter-pill"
+            data-filter-group="category"
+            data-filter-value={c}
+            aria-pressed="false"
+          >
+            {t(categoryKey[c])}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="text-sm font-semibold text-cogito-700">{t('members.filter.area')}:</span>
+      <button type="button" class="filter-pill" data-filter-group="area" data-filter-value="" aria-pressed="true">
+        {t('common.all')}
+      </button>
+      {
+        areas.map((a) => (
+          <button
+            type="button"
+            class="filter-pill"
+            data-filter-group="area"
+            data-filter-value={a.id}
+            aria-pressed="false"
+          >
+            {pick(locale, a.title)}
+          </button>
+        ))
+      }
+    </div>
+
+    <p class="text-sm text-cogito-400" data-filter-empty hidden>{t('common.empty')}</p>
+
+    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        members.map((m) => (
+          <li
+            class="card-3d flex flex-col"
+            data-filter-item
+            data-filter-category={m.category}
+            data-filter-area={m.areas.join(' ')}
+            data-search-text={`${m.name} ${m.bio['pt-br']} ${m.bio['en']}`}
+          >
+            <div class="flex items-center gap-4">
+              {m.photo ? (
+                <img src={m.photo} alt={m.name} class="h-16 w-16 rounded-full object-cover" />
+              ) : (
+                <span class="grid h-16 w-16 place-items-center rounded-full bg-cogito-100 text-xl font-bold text-cogito-500" aria-hidden="true">
+                  {m.name.charAt(0)}
+                </span>
+              )}
+              <div>
+                <h2 class="text-lg font-semibold text-cogito-800">{m.name}</h2>
+                <p class="text-sm text-cruzeiro-700">{pick(locale, m.role)}</p>
+                <p class="text-xs text-cogito-400">{pick(locale, m.institution)}</p>
+              </div>
+            </div>
+
+            <p class="mt-4 text-sm text-cogito-600">{pick(locale, m.bio)}</p>
+
+            <div class="mt-4">
+              <h3 class="text-xs font-semibold uppercase tracking-wide text-cogito-400">
+                {t('members.interests')}
+              </h3>
+              <ul class="mt-1 flex flex-wrap gap-1">
+                {m.interests.map((i) => (
+                  <li class="rounded-full bg-cogito-50 px-2 py-0.5 text-xs text-cogito-600">
+                    {pick(locale, i)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="mt-4">
+              <h3 class="text-xs font-semibold uppercase tracking-wide text-cogito-400">
+                {t('members.areas')}
+              </h3>
+              <ul class="mt-1 flex flex-wrap gap-1">
+                {m.areas.map((aid) => (
+                  <li class="rounded-full bg-cruzeiro-50 px-2 py-0.5 text-xs text-cruzeiro-700">
+                    {areaTitle(aid)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {m.links.length > 0 && (
+              <div class="mt-4">
+                <h3 class="text-xs font-semibold uppercase tracking-wide text-cogito-400">
+                  {t('common.links')}
+                </h3>
+                <ul class="mt-1 flex flex-wrap gap-2">
+                  {m.links.map((l) => (
+                    <li>
+                      <a
+                        href={l.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-sm text-cruzeiro-700 underline hover:text-cruzeiro-900"
+                      >
+                        {t(l.labelKey)}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/list-filter.ts';
+</script>

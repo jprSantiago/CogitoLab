@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { useTranslations, getLocale } from '../../../utils/i18n';
+import Join from '../../../components/sections/Join.astro';
+
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+---
+<BaseLayout title={t('join.title')} description={t('join.subtitle')}>
+  <Join />
+</BaseLayout>

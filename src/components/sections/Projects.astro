@@ -1,0 +1,119 @@
+---
+import { getLocale, useTranslations, localeUrl } from '../../utils/i18n';
+import { pick } from '../../data/types';
+import { projects, projectAgencies, projectStatuses } from '../../data/projects';
+import { getPublication } from '../../data/publications';
+
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+---
+
+<section class="mx-auto max-w-6xl px-4 py-10">
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold text-cogito-900">{t('projects.title')}</h1>
+    <p class="mt-2 text-cogito-500">{t('projects.subtitle')}</p>
+  </header>
+
+  <div data-filter-root>
+    <div class="mb-6 flex flex-col gap-3">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-sm font-semibold text-cogito-700">{t('projects.filter.agency')}:</span>
+        <button type="button" class="filter-pill" data-filter-group="agency" data-filter-value="" aria-pressed="true">{t('common.all')}</button>
+        {
+          projectAgencies.map((ag) => (
+            <button type="button" class="filter-pill" data-filter-group="agency" data-filter-value={ag} aria-pressed="false">{ag}</button>
+          ))
+        }
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-sm font-semibold text-cogito-700">{t('projects.filter.status')}:</span>
+        <button type="button" class="filter-pill" data-filter-group="status" data-filter-value="" aria-pressed="true">{t('common.all')}</button>
+        {
+          projectStatuses.map((s) => (
+            <button type="button" class="filter-pill" data-filter-group="status" data-filter-value={s} aria-pressed="false">{t(`projects.status.${s}`)}</button>
+          ))
+        }
+      </div>
+    </div>
+
+    <p class="mb-4 text-sm text-cogito-400" data-filter-empty hidden>{t('common.empty')}</p>
+
+    <ul class="grid gap-6 lg:grid-cols-2">
+      {
+        projects.map((p) => (
+          <li
+            class="card-3d"
+            data-filter-item
+            data-filter-agency={p.agency}
+            data-filter-status={p.status}
+          >
+            <details>
+              <summary class="cursor-pointer list-none">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <p class="text-xs font-semibold uppercase tracking-wide text-cruzeiro-600">{p.agency} {p.processNumber}</p>
+                    <h2 class="mt-1 text-lg font-semibold text-cogito-800">{pick(locale, p.title)}</h2>
+                  </div>
+                  <span class="shrink-0 rounded-full bg-cogito-100 px-3 py-1 text-xs font-medium text-cogito-700">
+                    {t(`projects.status.${p.status}`)}
+                  </span>
+                </div>
+              </summary>
+
+              <div class="mt-4 space-y-3 border-t border-cogito-100 pt-4 text-sm">
+                <p class="text-cogito-600">{pick(locale, p.description)}</p>
+                <dl class="grid grid-cols-[auto,1fr] gap-x-4 gap-y-1 text-cogito-600">
+                  <dt class="font-semibold text-cogito-700">{t('projects.field.period')}</dt>
+                  <dd>{p.period}</dd>
+                  <dt class="font-semibold text-cogito-700">{t('projects.field.institution')}</dt>
+                  <dd>{pick(locale, p.institution)}</dd>
+                  <dt class="font-semibold text-cogito-700">{t('projects.field.members')}</dt>
+                  <dd>
+                    <ul>
+                      {p.members.map((m) => (
+                        <li>{m.name} — <span class="text-cogito-400">{t(m.roleKey)}</span></li>
+                      ))}
+                    </ul>
+                  </dd>
+                </dl>
+
+                {p.publications.length > 0 && (
+                  <div>
+                    <h3 class="text-xs font-semibold uppercase tracking-wide text-cogito-400">{t('projects.field.publications')}</h3>
+                    <ul class="mt-1 space-y-1">
+                      {p.publications.map((pid) => {
+                        const pub = getPublication(pid);
+                        return pub ? (
+                          <li>
+                            <a href={localeUrl(locale, '/publications')} class="text-cruzeiro-700 underline hover:text-cruzeiro-900">{pub.title}</a>
+                          </li>
+                        ) : null;
+                      })}
+                    </ul>
+                  </div>
+                )}
+
+                {p.artifacts.length > 0 && (
+                  <div>
+                    <h3 class="text-xs font-semibold uppercase tracking-wide text-cogito-400">{t('projects.field.artifacts')}</h3>
+                    <ul class="mt-1 space-y-1">
+                      {p.artifacts.map((aid) => (
+                        <li>
+                          <a href={localeUrl(locale, '/artifacts')} class="text-cruzeiro-700 underline hover:text-cruzeiro-900">{aid}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </details>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/list-filter.ts';
+</script>

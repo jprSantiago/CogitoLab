@@ -1,0 +1,93 @@
+---
+import { getLocale, useTranslations } from '../../utils/i18n';
+import { pick, bilingual, type Localized } from '../../data/types';
+import { SITE_CONFIG } from '../../config/site';
+
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+
+interface Opportunity {
+  titleKey: string;
+  requirements: Localized;
+  scholarship: Localized;
+}
+
+const opportunities: Opportunity[] = [
+  {
+    titleKey: 'join.ic',
+    requirements: bilingual(
+      'Vínculo com instituição de ensino superior e disponibilidade para pesquisa.',
+      'Enrollment in a higher education institution and availability for research.'
+    ),
+    scholarship: bilingual(
+      'Bolsa de iniciação científica (quando disponível).',
+      'Undergraduate research scholarship (when available).'
+    ),
+  },
+  {
+    titleKey: 'join.msc',
+    requirements: bilingual(
+      'Graduação concluída e interesse em pesquisa em SE/IA.',
+      'Completed bachelor’s degree and interest in SE/AI research.'
+    ),
+    scholarship: bilingual(
+      'Bolsa de mestrado (demanda do edital vigente).',
+      'Master’s scholarship (per current call).'
+    ),
+  },
+  {
+    titleKey: 'join.phd',
+    requirements: bilingual(
+      'Mestrado concluído e proposta de tese alinhada às áreas do lab.',
+      'Completed master’s and thesis proposal aligned with lab areas.'
+    ),
+    scholarship: bilingual(
+      'Bolsa de doutorado (demanda do edital vigente).',
+      'PhD scholarship (per current call).'
+    ),
+  },
+  {
+    titleKey: 'join.collaboration',
+    requirements: bilingual(
+      'Interesse em co-orientação, projetos conjuntos ou transferência de tecnologia.',
+      'Interest in co-supervision, joint projects or technology transfer.'
+    ),
+    scholarship: bilingual('A definir conforme a natureza da colaboração.', 'TBD per collaboration.'),
+  },
+];
+
+const applicationEmail = SITE_CONFIG.social.email;
+---
+
+<section class="mx-auto max-w-6xl px-4 py-10">
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold text-cogito-900">{t('join.title')}</h1>
+    <p class="mt-2 text-cogito-500">{t('join.subtitle')}</p>
+  </header>
+
+  <div class="grid gap-6 sm:grid-cols-2">
+    {
+      opportunities.map((op) => (
+        <div class="card-3d">
+          <h2 class="text-xl font-semibold text-cogito-800">{t(op.titleKey)}</h2>
+          <div class="mt-3">
+            <h3 class="text-xs font-semibold uppercase tracking-wide text-cogito-400">{t('join.requirements')}</h3>
+            <p class="mt-1 text-sm text-cogito-600">{pick(locale, op.requirements)}</p>
+          </div>
+          <div class="mt-3">
+            <h3 class="text-xs font-semibold uppercase tracking-wide text-cogito-400">{t('join.scholarship')}</h3>
+            <p class="mt-1 text-sm text-cogito-600">{pick(locale, op.scholarship)}</p>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="glass-dark mt-10 rounded-3xl p-8 text-center">
+    <h2 class="text-2xl font-bold text-white">{t('join.howTo')}</h2>
+    <ol class="mx-auto mt-4 max-w-xl space-y-2 text-left text-cruzeiro-100">
+      <li><span class="font-semibold text-white">{t('join.step1')}</span> <a href={`mailto:${applicationEmail}`} class="underline">{applicationEmail}</a>.</li>
+      <li>{t('join.step2')}</li>
+    </ol>
+  </div>
+</section>

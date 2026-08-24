@@ -1,0 +1,94 @@
+---
+import { getLocale, useTranslations, localeUrl } from '../../utils/i18n';
+import { pick } from '../../data/types';
+import { newsCategories } from '../../data/news';
+
+interface Props {
+  page: {
+    data: any[];
+    currentPage: number;
+    lastPage: number;
+    url: { prev?: string; next?: string; current: string };
+  };
+}
+
+const { page } = Astro.props;
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+
+const formatDate = (iso: string) => {
+  const d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString(locale === 'pt-br' ? 'pt-BR' : 'en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+};
+---
+
+<section class="mx-auto max-w-6xl px-4 py-10">
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold text-cogito-900">{t('news.title')}</h1>
+    <p class="mt-2 text-cogito-500">{t('news.subtitle')}</p>
+  </header>
+
+  <div data-filter-root>
+    <div class="mb-6 flex flex-wrap items-center gap-2">
+      <span class="text-sm font-semibold text-cogito-700">{t('news.filter.category')}:</span>
+      <button type="button" class="filter-pill" data-filter-group="category" data-filter-value="" aria-pressed="true">{t('common.all')}</button>
+      {
+        newsCategories.map((c) => (
+          <button type="button" class="filter-pill" data-filter-group="category" data-filter-value={c} aria-pressed="false">{t(`news.cat.${c}`)}</button>
+        ))
+      }
+    </div>
+
+    <p class="mb-4 text-sm text-cogito-400" data-filter-empty hidden>{t('common.empty')}</p>
+
+    <ul class="grid gap-6 sm:grid-cols-2">
+      {
+        page.data.map((item) => (
+          <li class="card-3d" data-filter-item data-filter-category={item.category}>
+            <article>
+              <div class="flex items-center gap-2">
+                <span class="rounded-full bg-cruzeiro-50 px-2 py-0.5 text-xs font-medium text-cruzeiro-700">
+                  {t(`news.cat.${item.category}`)}
+                </span>
+                <time datetime={item.date} class="text-xs text-cogito-400">{formatDate(item.date)}</time>
+              </div>
+              <h2 class="mt-2 text-lg font-semibold text-cogito-800">{pick(locale, item.title)}</h2>
+              <p class="mt-1 text-sm text-cogito-600">{pick(locale, item.summary)}</p>
+              <a href={localeUrl(locale, '/news')} class="mt-3 inline-block text-sm text-cruzeiro-700 underline hover:text-cruzeiro-900">
+                {t('common.readMore')}
+              </a>
+            </article>
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      page.lastPage > 1 && (
+        <nav class="mt-10 flex items-center justify-center gap-4" aria-label="Pagination">
+          {page.url.prev ? (
+            <a href={page.url.prev} class="btn-ghost px-4 py-2 text-sm">{'←'}</a>
+          ) : (
+            <span class="px-4 py-2 text-sm text-cogito-300">←</span>
+          )}
+          <span class="text-sm text-cogito-600">
+            {page.currentPage} / {page.lastPage}
+          </span>
+          {page.url.next ? (
+            <a href={page.url.next} class="btn-ghost px-4 py-2 text-sm">→</a>
+          ) : (
+            <span class="px-4 py-2 text-sm text-cogito-300">→</span>
+          )}
+        </nav>
+      )
+    }
+  </div>
+</section>
+
+<script>
+  import '../../scripts/list-filter.ts';
+</script>

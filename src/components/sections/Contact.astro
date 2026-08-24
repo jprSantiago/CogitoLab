@@ -1,0 +1,49 @@
+---
+import { getLocale, useTranslations } from '../../utils/i18n';
+import { SITE_CONFIG } from '../../config/site';
+
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+
+const social = [
+  { key: 'contact.github', url: SITE_CONFIG.social.github, label: 'GitHub' },
+  { key: 'contact.linkedin', url: 'https://linkedin.com/company/cogitolab', label: 'LinkedIn' },
+  { key: 'contact.twitter', url: 'https://twitter.com/cogitolab', label: 'Twitter' },
+];
+---
+
+<section class="mx-auto max-w-6xl px-4 py-10">
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold text-cogito-900">{t('contact.title')}</h1>
+    <p class="mt-2 text-cogito-500">{t('contact.subtitle')}</p>
+  </header>
+
+  <div class="grid gap-6 md:grid-cols-2">
+    <div class="card-3d">
+      <h2 class="text-lg font-semibold text-cogito-800">{t('contact.general')}</h2>
+      <dl class="mt-4 space-y-3 text-sm">
+        <div>
+          <dt class="text-xs font-semibold uppercase tracking-wide text-cogito-400">{t('contact.email')}</dt>
+          <dd><a href={`mailto:${SITE_CONFIG.social.email}`} class="text-cruzeiro-700 underline hover:text-cruzeiro-900">{SITE_CONFIG.social.email}</a></dd>
+        </div>
+        <div>
+          <dt class="text-xs font-semibold uppercase tracking-wide text-cogito-400">{t('contact.location')}</dt>
+          <dd class="text-cogito-600">{t('contact.address')}</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="card-3d">
+      <h2 class="text-lg font-semibold text-cogito-800">{t('contact.social')}</h2>
+      <ul class="mt-4 flex flex-wrap gap-3">
+        {
+          social.map((s) => (
+            <li>
+              <a href={s.url} target="_blank" rel="noopener noreferrer" class="btn-ghost px-4 py-2 text-sm">{s.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
