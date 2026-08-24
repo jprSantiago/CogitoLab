@@ -1,46 +1,35 @@
 # ADR-002: Uso do Tailwind CSS para Estilização
 
-## Status
-Aceito
-
-## Data
-2026-08-23
+**Status:** Aceito
+**Data:** 2026-08-24
 
 ## Contexto
-O projeto precisa de uma solução de estilização que:
-- Permita desenvolvimento rápido
-- Suporte design responsivo
-- Tenha boa integração com Astro
-- Seja fácil de manuter
-- Tenha comunidade ativa
+
+O site precisa de estilização consistente, responsiva e de baixa manutenção,
+seguindo boas práticas de acessibilidade (WCAG 2.1 AA) e performance.
 
 ## Decisão
-Utilizar **Tailwind CSS** como framework de estilização.
 
-## Consequências
-### Positivas
-- Utility-first: desenvolvimento rápido e consistente
-- Design responsivo facilitado (breakpoints built-in)
-- Integração nativa com Astro (`@astrojs/tailwind`)
-- Purge automático de CSS não utilizado
-- Comunidade enorme e muitos recursos
-- Customização via `tailwind.config.js`
-
-### Negativas
-- HTML pode ficar "poluído" com classes
-- Curva de aprendizado para quem não conhece
-- Pode ser verboso para estilos complexos
+Adotar **Tailwind CSS** (utilitário *utility-first*), integrado ao Astro via
+plugin Vite oficial (`@tailwindcss/vite`), usando a versão 4 com configuração
+baseada em CSS (`@theme` / `@import "tailwindcss"`).
 
 ## Alternativas Consideradas
-### CSS Modules
-- **Rejeitado** porque: menos produtivo, sem utilitários built-in
 
-### Styled Components
-- **Rejeitado** porque: requer JS runtime, não ideal para estático
+- **CSS modules / CSS puro**: funciona, porém exige mais boilerplate para
+  manter consistência de espaçamentos, cores e breakpoints entre componentes.
+- **Tailwind v3 + `@astrojs/tailwind`**: estável, mas a v4 simplifica a
+  configuração (sem `tailwind.config.js` obrigatório) e tem melhor performance
+  no build via engine Oxide.
 
-### SCSS
-- **Rejeitado** porque: menos produtivo, sem utilitários de design
+## Consequências
 
-## Referências
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Astro + Tailwind](https://docs.astro.build/en/guides/integrations-guide/tailwind/)
+**Positivas**
+- Design system consistente via tokens (`--color-cogito-*`, `--color-brand-*`).
+- Responsividade e estados de foco acessíveis diretos na marcação.
+- Build rápido e sem JS extra no cliente.
+
+**Negativas / Mitigações**
+- HTML mais verboso com classes utilitárias — mitigado com componentes Astro
+  reutilizáveis (ex.: `Navbar`, `Footer`, `BaseLayout`).
+- Tailwind v4 é recente — versão fixada via `package.json` para reprodutibilidade.

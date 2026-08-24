@@ -1,49 +1,41 @@
 # ADR-001: Uso do Astro como Framework
 
-## Status
-Aceito
-
-## Data
-2026-08-23
+**Status:** Aceito
+**Data:** 2026-08-24
 
 ## Contexto
-O projeto Cogito Lab Website precisa de um framework web que suporte:
-- Site estático com conteúdo que não muda em tempo real
+
+O Cogito Lab precisa de um site institucional estático para apresentar identidade,
+membros, projetos, publicações e notícias. Requisitos do desafio (`Instructions.md`):
+
+- Site estático (conteúdo pouco mutável)
 - Hospedagem via GitHub Pages
 - i18n PT-BR/EN
-- Conteúdo em Markdown
-- Facilidade de manutenção por estudantes
-- Performance
-- Deploy simplificado via GitHub Actions
+- Conteúdo em Markdown / content collections
+- Manutenção por estudantes (baixa curva de aprendizado)
+- Performance (0 JS por padrão)
+- Deploy via GitHub Actions
 
 ## Decisão
-Utilizar **Astro** como framework principal do projeto.
 
-## Consequências
-### Positivas
-- Build estático otimizado (0 JS por padrão)
-- Suporte nativo a i18n via `@astrojs/i18n`
-- Content Collections para dados estruturados
-- Deploy nativo no GitHub Pages
-- Framework leve e rápido
-- Comunidade ativa e boa documentação
-- Facilidade de integrar com Tailwind CSS
-
-### Negativas
-- Curva de aprendizado para devs familiarizados com React/Vue
-- Menos opções de plugins comparado a frameworks mais maduros
-- Funcionalidades avançadas podem requerer customização
+Adotar **Astro** como framework principal.
 
 ## Alternativas Consideradas
-### Next.js
-- **Rejeitado** porque: overkill para site estático, requer server-side rendering, autenticação, etc.
 
-### Hugo
-- **Rejeitado** porque: menos flexível para componentes, Go template syntax menos intuitiva
+- **Next.js**: SSR, API routes e autenticação são desnecessários para um site
+  institucional — seria *overkill* e aumentaria a complexidade de deploy.
+- **Hugo / Jekyll**: maduros para estático, mas a experiência de componentes e
+  i18n do Astro é mais ergonômica para a equipe (familiaridade com componentes
+  baseados em HTML/JSX e TypeScript).
 
-### Jekyll
-- **Rejeitado** porque: Ruby dependency, performance inferior, menos moderno
+## Consequências
 
-## Referências
-- [Astro Docs](https://docs.astro.build/)
-- [PLANEJAMENTO.md](../PLANEJAMENTO.md)
+**Positivas**
+- Geração estática com 0 JS por padrão → performance e acessibilidade melhores.
+- i18n built-in via `astro:i18n` (roteamento por prefixo de locale).
+- Content collections tipadas para dados estruturados (membros, publicações…).
+- Integração nativa com GitHub Pages.
+
+**Negativas / Mitigações**
+- Curva inicial para quem nunca usou Astro — mitigada por docs e specs claras.
+- Requer Node 18.17+ (ambiente provisionado com Node 20 LTS).

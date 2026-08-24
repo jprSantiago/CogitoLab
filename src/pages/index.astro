@@ -1,0 +1,19 @@
+---
+// Página raiz. Com `prefixDefaultLocale: true` e `redirectToDefaultLocale: true`,
+// o Astro usa este index para gerar o redirect de `/` para o locale padrão.
+// O destino respeita `base` (project pages: /CogitoLab/pt-br/).
+const target = `${import.meta.env.BASE_URL}pt-br/`;
+---
+
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={target} />
+    <title>Cogito Lab</title>
+  </head>
+  <body>
+    <p>Redirecionando para <a href={target}>Cogito Lab</a>…</p>
+  </body>
+</html>

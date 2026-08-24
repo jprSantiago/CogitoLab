@@ -97,13 +97,13 @@ CogitoLab-main/
 
 | Tarefa | Spec | Status |
 |--------|------|--------|
-| Inicializar projeto Astro | `docs/specs/00-home-page.md` | ⬜ |
-| Configurar Tailwind CSS | — | ⬜ |
-| Configurar i18n (PT-BR/EN) | `docs/specs/10-i18n-system.md` | ⬜ |
-| Criar layout base (BaseLayout) | — | ⬜ |
-| Criar Navbar e Footer | — | ⬜ |
-| Configurar GitHub Actions para deploy | — | ⬜ |
-| Criar ADR-001 (Astro) e ADR-002 (Tailwind) | — | ⬜ |
+| Inicializar projeto Astro | `docs/specs/00-home-page.md` | ✅ |
+| Configurar Tailwind CSS | — | ✅ |
+| Configurar i18n (PT-BR/EN) | `docs/specs/10-i18n-system.md` | ✅ |
+| Criar layout base (BaseLayout) | — | ✅ |
+| Criar Navbar e Footer | — | ✅ |
+| Configurar GitHub Actions para deploy | — | ✅ |
+| Criar ADR-001 (Astro) e ADR-002 (Tailwind) | — | ✅ |
 
 **Entregável:** Projeto rodando localmente com i18n funcional e deploy automático.
 

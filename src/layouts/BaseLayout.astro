@@ -1,0 +1,62 @@
+---
+import '../styles/global.css';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
+import { getLocale, useTranslations, stripLocale } from '../utils/i18n';
+import { locales, defaultLocale } from '../i18n/config';
+import { SITE_CONFIG } from '../config/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+
+const pageTitle = title ? `${title} · ${t('site.title')}` : `${t('site.title')} — ${t('site.tagline')}`;
+const pageDescription = description ?? SITE_CONFIG.description;
+
+const pathWithoutLocale = stripLocale(Astro.url.pathname);
+const buildUrl = (l: string) => {
+  const rest = pathWithoutLocale === '/' ? '' : pathWithoutLocale;
+  const url = `${SITE_CONFIG.url}/${l}${rest}`;
+  return url.endsWith('/') ? url : `${url}/`;
+};
+
+const canonical = buildUrl(locale);
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:locale" content={locale} />
+    <meta property="og:url" content={canonical} />
+
+    <!-- Hreflang (SEO i18n) -->
+    {locales.map((l) => <link rel="alternate" hreflang={l} href={buildUrl(l)} />)}
+    <link rel="alternate" hreflang="x-default" href={buildUrl(defaultLocale)} />
+  </head>
+
+  <body class="flex min-h-screen flex-col">
+    <Navbar currentLocale={locale} pathname={Astro.url.pathname} />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer currentLocale={locale} />
+  </body>
+</html>

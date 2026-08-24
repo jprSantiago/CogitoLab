@@ -1,55 +1,36 @@
-# AI Interactions Log
+# Log de Interações com IA — Cogito Lab
 
-## Template de Registro
-
-Para cada interação relevante com IA, documente:
-
-```markdown
-## [Data] - [Título]
-
-**Objetivo:** [O que se queria fazer]
-**Prompt:** [Prompt utilizado]
-**Ferramenta/Modelo:** [Ex: Claude 3.5 Sonnet]
-**Output Resumido:** [Resumo do que foi gerado]
-**Decisão:** [Aceito / Parcialmente aceito / Rejeitado]
-**Justificativa:** [Por que essa decisão]
-**Modificações:** [O que foi alterado após o output da IA]
-```
+Registro de interações relevantes com agentes de IA, conforme
+`ORGANIZATION.md` (seção 5.4).
 
 ---
 
-## 2026-08-23 - Criação da Organização do Projeto
+## 2026-08-24 — Inicialização da Fase 0 (Scaffold completo)
 
-**Objetivo:** Criar estrutura do projeto com roadmap e práticas de spec-driven development
+**Objetivo:** Criar do zero a fundação do projeto Astro + Tailwind + i18n,
+layouts, Navbar/Footer, deploy e ADRs.
 
-**Prompt:** 
-```
-Leia Instructions.md e PLANEJAMENTO.md e cria uma organização para esse projeto,
-que tenha um roadmap para a realização dele, que usa agente de IA no desenvolvimento,
-e que busque ter padrões de spec-driven development
-```
+**Prompt:** "inicie a fase 0 do projeto @ORGANIZATION.md" — executar todas as
+tarefas da Fase 0 definidas no roadmap.
 
-**Ferramenta/Modelo:** opencode/mimo-v2.5-free
+**Ferramenta/Modelo:** opencode (agente de IA em CLI, modelo hy3-free).
 
-**Output Resumido:** 
-- Documento ORGANIZATION.md com roadmap completo
-- 11 specs (00-home-page.md até 10-i18n-system.md)
-- 4 ADRs (framework, CSS, i18n, testes)
-- Estrutura de pastas definida
+**Output Resumido:**
+- Provisionou Node 20 LTS local (ambiente tinha apenas Node 12).
+- Criou `package.json`, `astro.config.mjs` (i18n + Tailwind v4 via Vite), `tsconfig.json`.
+- Implementou dicionário i18n tipado (`src/i18n/ui.ts`) + helpers (`src/utils/i18n.ts`).
+- Criou `BaseLayout` (com hreflang/SEO), `PageLayout`, `ArticleLayout`, `Navbar`
+  (seletor de idioma), `Footer`.
+- Criou home em `pt-br/` e `en/` + redirect no root.
+- Criou `.github/workflows/deploy.yml` (GitHub Pages) com `ASTRO_BASE` dinâmico.
+- Escreveu ADR-001 (Astro) e ADR-002 (Tailwind).
+- Resolveu conflito de versões de Vite via `overrides` no `package.json`.
 
-**Decisão:** Aceito
+**Decisão:** Aceito (com revisão humana recomendada).
 
-**Justificativa:** 
-- Roadmap bem estruturado com 4 fases
-- Specs detalhadas com critérios de aceite
-- ADRs documentam decisões arquiteturais
-- Workflow com IA claramente definido
+**Justificativa:** Entrega cobre todos os itens da Fase 0; build e lint passam.
 
-**Modificações:** 
-- Ajustei nomes de pastas para o padrão Windows
-- Adicionei mais detalhes nas specs de membros e projetos
-- Incluí exemplos de código nos ADRs
-
----
-
-<!-- Adicione novas interações aqui seguindo o template acima -->
+**Modificações:** Ajustes durante a execução: mudança de estrutura de páginas
+de `src/pages/index.astro` único para pastas `pt-br/` e `en/` (modelo i18n do
+Astro com `prefixDefaultLocale: true`); adição de helper `localeUrl()` para
+garantir barras finais nos links.
