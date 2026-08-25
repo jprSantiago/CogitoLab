@@ -1,0 +1,51 @@
+---
+/**
+ * IntroSplash — tela de abertura que mostra apenas o logo do Cogito Lab e, em
+ * seguida, transiciona (desvanece) para a página inicial.
+ *
+ * Acessibilidade / performance:
+ * - O overlay nasce com o atributo `hidden`, portanto, SEM JavaScript ele nunca
+ *   aparece e o conteúdo fica 100% acessível (respeita "0 JS por padrão").
+ * - Com JS, é exibido uma única vez por sessão (sessionStorage) e respeita
+ *   `prefers-reduced-motion` (não anima).
+ */
+import BrainLogo from '../common/BrainLogo.astro';
+---
+
+<div id="intro-splash" class="intro-splash" hidden role="presentation" aria-hidden="true">
+  <div class="intro-splash__logo">
+    <BrainLogo size={150} class="h-32 w-32 sm:h-40 sm:w-40" />
+  </div>
+</div>
+
+<script>
+  const splash = document.getElementById('intro-splash');
+  if (splash) {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const seen = (() => {
+      try {
+        return sessionStorage.getItem('cogito_intro_seen') === '1';
+      } catch {
+        return false;
+      }
+    })();
+
+    if (!reduceMotion && !seen) {
+      splash.hidden = false;
+      try {
+        sessionStorage.setItem('cogito_intro_seen', '1');
+      } catch {
+        /* sessionStorage indisponível: o splash simplesmente reaparecerá */
+      }
+      splash.addEventListener(
+        'animationend',
+        (e: AnimationEvent) => {
+          if (e.target === splash && e.animationName === 'splashOut') {
+            splash.hidden = true;
+          }
+        },
+        { once: true }
+      );
+    }
+  }
+</script>

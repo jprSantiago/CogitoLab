@@ -27,6 +27,7 @@ const ptBR: Dict = {
   'lang.label': 'Idioma',
   'lang.pt-br': 'PT-BR',
   'lang.en': 'EN',
+  'theme.toggle': 'Alternar tema',
   'footer.rights': 'Todos os direitos reservados.',
   'footer.description': 'Grupo de pesquisa em Engenharia de Software, IA, Qualidade, Testes, Mobile/IoT e Inovação.',
   'home.hero.eyebrow': 'Grupo de Pesquisa',
@@ -42,6 +43,12 @@ const ptBR: Dict = {
   'home.sections.subtitle': 'Conheça as frentes de atuação do Cogito Lab.',
   'home.cta.title': 'Quer saber mais?',
   'home.cta.text': 'Veja como contribuir, nossos parceiros ou entre em contato.',
+  'home.stats.projects': 'Projetos',
+  'home.stats.publications': 'Publicações',
+  'home.stats.members': 'Membros',
+  'home.stats.areas': 'Áreas',
+  'home.stack.title': 'Tecnologias',
+  'home.stack.subtitle': 'Stack utilizado pelo lab nas pesquisas e no desenvolvimento.',
 
   // Genéricos de UI
   'common.all': 'Todos',
@@ -53,6 +60,7 @@ const ptBR: Dict = {
   'common.relatedPublications': 'Publicações relacionadas',
   'common.readMore': 'Leia mais',
   'common.contact': 'Contato',
+  'common.backToTop': 'Voltar ao topo',
 
   // Áreas
   'areas.title': 'Áreas de Pesquisa',
@@ -155,6 +163,7 @@ const ptBR: Dict = {
   'join.step1': 'Envie um e-mail para',
   'join.step2': 'Anexe seu CV e uma breve carta de interesse.',
   'join.emailLabel': 'E-mail para candidaturas',
+  'join.testimonials.title': 'Quem passou pelo lab',
 
   // Parceiros
   'partners.title': 'Parceiros e Fomento',
@@ -207,6 +216,7 @@ const en: Dict = {
   'lang.label': 'Language',
   'lang.pt-br': 'PT-BR',
   'lang.en': 'EN',
+  'theme.toggle': 'Toggle theme',
   'footer.rights': 'All rights reserved.',
   'footer.description': 'Research group on Software Engineering, AI, Quality, Testing, Mobile/IoT and Innovation.',
   'home.hero.eyebrow': 'Research Group',
@@ -222,6 +232,12 @@ const en: Dict = {
   'home.sections.subtitle': 'Discover the Cogito Lab’s areas of work.',
   'home.cta.title': 'Want to know more?',
   'home.cta.text': 'See how to contribute, our partners, or get in touch.',
+  'home.stats.projects': 'Projects',
+  'home.stats.publications': 'Publications',
+  'home.stats.members': 'Members',
+  'home.stats.areas': 'Areas',
+  'home.stack.title': 'Technologies',
+  'home.stack.subtitle': 'Stack used by the lab in research and development.',
 
   // Generic UI
   'common.all': 'All',
@@ -233,6 +249,7 @@ const en: Dict = {
   'common.relatedPublications': 'Related publications',
   'common.readMore': 'Read more',
   'common.contact': 'Contact',
+  'common.backToTop': 'Back to top',
 
   // Areas
   'areas.title': 'Research Areas',
@@ -335,6 +352,7 @@ const en: Dict = {
   'join.step1': 'Send an email to',
   'join.step2': 'Attach your CV and a short statement of interest.',
   'join.emailLabel': 'Application email',
+  'join.testimonials.title': 'Alumni voices',
 
   // Partners
   'partners.title': 'Partners & Funding',

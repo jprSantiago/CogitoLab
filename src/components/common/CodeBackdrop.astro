@@ -1,0 +1,31 @@
+---
+/**
+ * CodeBackdrop — textura decorativa de "código" muito sutil, usada como fundo
+ * de seções (ex.: Áreas de Pesquisa). Puramente decorativo, sem JavaScript.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+const uid = 'codebg-' + Math.random().toString(36).slice(2, 9);
+---
+
+<svg
+  class={className}
+  aria-hidden="true"
+  focusable="false"
+  preserveAspectRatio="xMidYMid slice"
+  viewBox="0 0 600 400"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <pattern id={uid} width="120" height="80" patternUnits="userSpaceOnUse">
+      <rect x="14" y="14" width="64" height="4" rx="2" fill="#9ec6ff" fill-opacity="0.06" />
+      <rect x="14" y="26" width="92" height="4" rx="2" fill="#9ec6ff" fill-opacity="0.05" />
+      <rect x="26" y="38" width="70" height="4" rx="2" fill="#9ec6ff" fill-opacity="0.06" />
+      <rect x="26" y="50" width="48" height="4" rx="2" fill="#9ec6ff" fill-opacity="0.05" />
+      <rect x="14" y="62" width="80" height="4" rx="2" fill="#9ec6ff" fill-opacity="0.06" />
+    </pattern>
+  </defs>
+  <rect width="600" height="400" fill={`url(#${uid})`} />
+</svg>

@@ -1,0 +1,58 @@
+---
+/**
+ * MonitorCode — ilustração de um monitor exibindo linhas de código, com um
+ * pequeno cérebro na tela para reforçar a identidade do lab. Decorativo.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+const uid = 'mon-' + Math.random().toString(36).slice(2, 9);
+---
+
+<svg
+  class={className}
+  aria-hidden="true"
+  focusable="false"
+  viewBox="0 0 240 200"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <linearGradient id={`${uid}-screen`} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#06245c" />
+      <stop offset="100%" stop-color="#00132e" />
+    </linearGradient>
+  </defs>
+
+  <!-- Monitor -->
+  <rect x="36" y="24" width="168" height="116" rx="12" fill={`url(#${uid}-screen)`} stroke="#6fa0dc" stroke-opacity="0.7" stroke-width="2.5" />
+  <rect x="48" y="36" width="144" height="92" rx="6" fill="#020617" fill-opacity="0.55" />
+
+  <!-- Linhas de código na tela -->
+  <g stroke-linecap="round">
+    <rect x="58" y="48" width="34" height="4" rx="2" fill="#7fe3ff" fill-opacity="0.85" />
+    <rect x="96" y="48" width="62" height="4" rx="2" fill="#bfe3ff" fill-opacity="0.6" />
+    <rect x="70" y="60" width="80" height="4" rx="2" fill="#bfe3ff" fill-opacity="0.55" />
+    <rect x="70" y="72" width="46" height="4" rx="2" fill="#7fe3ff" fill-opacity="0.8" />
+    <rect x="58" y="84" width="50" height="4" rx="2" fill="#bfe3ff" fill-opacity="0.6" />
+    <rect x="112" y="84" width="54" height="4" rx="2" fill="#bfe3ff" fill-opacity="0.5" />
+    <rect x="70" y="96" width="72" height="4" rx="2" fill="#bfe3ff" fill-opacity="0.55" />
+    <rect x="58" y="108" width="40" height="4" rx="2" fill="#7fe3ff" fill-opacity="0.75" />
+  </g>
+
+  <!-- Pequeno cérebro no canto da tela -->
+  <path
+    d="M168 104 C162 99 152 100 150 108 C147 110 146 116 150 119 C149 124 154 127 159 125
+       C160 128 166 128 168 125 C172 128 177 124 176 119 C180 116 179 110 176 108
+       C174 100 172 102 168 104 Z"
+    fill="#003da5"
+    stroke="#9ec6ff"
+    stroke-width="1.2"
+    stroke-opacity="0.9"
+  />
+
+  <!-- Suporte / base -->
+  <rect x="104" y="140" width="32" height="10" rx="3" fill="#6fa0dc" fill-opacity="0.7" />
+  <rect x="84" y="150" width="72" height="8" rx="4" fill="#6fa0dc" fill-opacity="0.7" />
+</svg>

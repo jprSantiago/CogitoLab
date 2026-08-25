@@ -180,6 +180,46 @@ details[open] > summary .details-chevron {
   animation: floaty 6s ease-in-out infinite;
 }
 
+/* Tela de abertura (intro): mostra só o logo e transiciona para a página */
+.intro-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(1000px 700px at 50% 40%, #0b2f73 0%, #003da5 45%, #00132e 100%);
+}
+.intro-splash[hidden] {
+  display: none;
+}
+.intro-splash:not([hidden]) {
+  animation: splashOut 0.6s ease 1.9s forwards;
+}
+.intro-splash__logo {
+  animation: splashLogo 1.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes splashLogo {
+  0% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes splashOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 /* Revelação ao rolar (aprimoramento progressivo) */
 .reveal {
   opacity: 1;
@@ -204,7 +244,9 @@ details[open] > summary .details-chevron {
   }
   .animate-fade-up,
   .animate-float,
-  .reveal {
+  .reveal,
+  .intro-splash:not([hidden]),
+  .intro-splash__logo {
     animation: none !important;
   }
   .card-3d,
@@ -212,4 +254,125 @@ details[open] > summary .details-chevron {
   .btn-ghost {
     transition: none !important;
   }
+}
+
+/* ============================================================
+   Tema claro (light) — alternado via data-theme no <html>.
+   O tema escuro (padrão) permanece inalterado; este bloco só
+   entra em ação quando data-theme="light".
+   ============================================================ */
+[data-theme='light'] {
+  color-scheme: light;
+}
+
+[data-theme='light'] .page-bg {
+  background: radial-gradient(1200px 700px at 50% -8%, #dbe7ff 0%, #eaf1fb 45%, #f8fbff 100%);
+}
+
+[data-theme='light'] body {
+  color: #0f172a;
+}
+
+/* Títulos e textos de apoio viram escuros no tema claro */
+[data-theme='light'] h1,
+[data-theme='light'] h2,
+[data-theme='light'] h3 {
+  color: #0f172a;
+}
+[data-theme='light'] .text-brand-50 {
+  color: #1e293b;
+}
+[data-theme='light'] .text-brand-100 {
+  color: #334155;
+}
+[data-theme='light'] .text-brand-200 {
+  color: #475569;
+}
+[data-theme='light'] .text-brand-300 {
+  color: #64748b;
+}
+
+/* Painel de vidro escuro → claro */
+[data-theme='light'] .glass-dark {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 61, 165, 0.18);
+  color: #0f172a;
+  box-shadow: 0 24px 60px -24px rgba(0, 61, 165, 0.25);
+}
+
+/* Cards (já claros) ganham borda sutil no tema claro */
+[data-theme='light'] .card-3d {
+  border-color: rgba(0, 61, 165, 0.18);
+}
+
+/* Botões fantasma */
+[data-theme='light'] .btn-ghost {
+  border-color: rgba(0, 61, 165, 0.35);
+  color: #003da5;
+  background: rgba(0, 61, 165, 0.06);
+}
+[data-theme='light'] .btn-ghost:hover {
+  background: rgba(0, 61, 165, 0.12);
+  color: #00235c;
+}
+
+/* Navbar clara */
+[data-theme='light'] .navbar {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(0, 61, 165, 0.2);
+}
+[data-theme='light'] .navbar a,
+[data-theme='light'] .navbar .text-brand-100 {
+  color: #0f172a;
+}
+[data-theme='light'] .navbar a:hover {
+  color: #003da5;
+}
+[data-theme='light'] .navbar a[aria-current='page'] {
+  background: rgba(0, 61, 165, 0.12);
+  color: #003da5;
+}
+[data-theme='light'] details.md\:hidden > ul,
+[data-theme='light'] .navbar details ul {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 61, 165, 0.2);
+}
+
+/* Filtros (pílulas) */
+[data-theme='light'] .filter-pill {
+  border-color: rgba(0, 61, 165, 0.3);
+  color: #334155;
+  background: rgba(0, 61, 165, 0.04);
+}
+[data-theme='light'] .filter-pill:hover {
+  background: rgba(0, 61, 165, 0.1);
+  color: #0f172a;
+}
+[data-theme='light'] .filter-pill[aria-pressed='true'] {
+  background: #003da5;
+  color: #fff;
+  border-color: #003da5;
+}
+[data-theme='light'] .filter-summary {
+  border-color: rgba(0, 61, 165, 0.3);
+  color: #334155;
+  background: rgba(0, 61, 165, 0.04);
+}
+[data-theme='light'] .filter-summary:hover {
+  background: rgba(0, 61, 165, 0.1);
+  color: #0f172a;
+}
+
+/* Botão de tema: mostra lua (escuro) ou sol (claro) */
+.theme-toggle .sun {
+  display: none;
+}
+.theme-toggle .moon {
+  display: block;
+}
+[data-theme='light'] .theme-toggle .sun {
+  display: block;
+}
+[data-theme='light'] .theme-toggle .moon {
+  display: none;
 }

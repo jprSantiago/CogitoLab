@@ -1,5 +1,6 @@
 ---
 import { getLocale, useTranslations, navItems, getAlternateLocaleUrl, localeUrl } from '../../utils/i18n';
+import BrainLogo from '../common/BrainLogo.astro';
 import type { Locale } from '../../i18n/config';
 
 interface Props {
@@ -27,7 +28,9 @@ const switchUrl = getAlternateLocaleUrl(locale, pathname);
     aria-label={t('nav.ariaLabel')}
   >
     <a href={localeUrl(locale)} class="flex items-center gap-2 font-semibold text-white">
-      <span class="logo-badge grid h-8 w-8 place-items-center rounded text-white" aria-hidden="true">C</span>
+      <span class="grid h-8 w-8 place-items-center overflow-hidden rounded-xl" aria-hidden="true">
+        <BrainLogo size={32} class="h-8 w-8" />
+      </span>
       <span class="text-lg">{t('site.title')}</span>
     </a>
 
@@ -66,6 +69,25 @@ const switchUrl = getAlternateLocaleUrl(locale, pathname);
         <span class="ml-1">{t(`lang.${otherLocale}`)}</span>
       </a>
 
+      <button
+        id="theme-toggle"
+        type="button"
+        class="theme-toggle rounded border border-brand-300/50 px-3 py-1.5 text-brand-100 transition hover:border-brand-200 hover:text-white"
+        aria-label={t('theme.toggle')}
+      >
+        <span class="moon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8Z" />
+          </svg>
+        </span>
+        <span class="sun" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19" />
+          </svg>
+        </span>
+      </button>
+
       <!-- Menu mobile -->
       <details class="md:hidden">
         <summary class="cursor-pointer rounded border border-brand-300/50 px-3 py-1.5 text-brand-100" aria-label="Menu">
@@ -97,3 +119,19 @@ const switchUrl = getAlternateLocaleUrl(locale, pathname);
     </div>
   </nav>
 </header>
+
+<script>
+  const btn = document.getElementById('theme-toggle');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      const root = document.documentElement;
+      const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      try {
+        localStorage.setItem('cogito-theme', next);
+      } catch {
+        /* localStorage indisponível */
+      }
+    });
+  }
+</script>

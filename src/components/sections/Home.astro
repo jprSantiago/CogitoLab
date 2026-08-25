@@ -1,8 +1,33 @@
 ---
 import { getLocale, useTranslations, localeUrl } from '../../utils/i18n';
+import BrainLogo from '../common/BrainLogo.astro';
+import { projects } from '../../data/projects';
+import { members } from '../../data/members';
+import { publications } from '../../data/publications';
+import { areas } from '../../data/areas';
 
 const locale = getLocale(Astro.currentLocale);
 const t = useTranslations(locale);
+
+const stats = [
+  { value: projects.length, label: t('home.stats.projects') },
+  { value: publications.length, label: t('home.stats.publications') },
+  { value: members.length, label: t('home.stats.members') },
+  { value: areas.length, label: t('home.stats.areas') },
+];
+
+const stack = [
+  'Astro',
+  'Tailwind CSS',
+  'TypeScript',
+  'Python',
+  'PyTorch',
+  'React',
+  'Docker',
+  'GitHub Actions',
+  'PostgreSQL',
+  'Vitest',
+];
 
 // Atalhos de seções em destaque na home (subconjunto da navegação).
 const featured = [
@@ -16,9 +41,11 @@ const featured = [
 <section class="relative mx-auto max-w-6xl px-4 py-16 text-center">
   <div class="animate-fade-up" style="animation-delay:.05s">
     <span
-      class="logo-badge animate-float mx-auto grid h-16 w-16 place-items-center rounded-2xl text-2xl font-black text-white"
+      class="logo-badge animate-float mx-auto grid h-24 w-24 place-items-center rounded-3xl"
       aria-hidden="true"
-    >C</span>
+    >
+      <BrainLogo size={96} class="h-24 w-24" />
+    </span>
   </div>
   <p
     class="mt-6 animate-fade-up text-sm font-semibold uppercase tracking-wide text-brand-200"
@@ -50,6 +77,20 @@ const featured = [
   >
     {t('home.hero.description')}
   </p>
+
+  <dl
+    class="mx-auto mt-10 grid max-w-2xl animate-fade-up grid-cols-2 gap-4 sm:grid-cols-4"
+    style="animation-delay:.35s"
+  >
+    {
+      stats.map((s) => (
+        <div class="glass-dark rounded-2xl px-3 py-4">
+          <dd class="text-3xl font-extrabold text-brand-50" data-counter={s.value}>0</dd>
+          <dt class="mt-1 text-xs text-brand-100">{s.label}</dt>
+        </div>
+      ))
+    }
+  </dl>
 </section>
 
 <section class="mx-auto grid max-w-6xl gap-6 px-4 pb-12 sm:grid-cols-2">
@@ -100,3 +141,51 @@ const featured = [
     </div>
   </div>
 </section>
+
+<section class="mx-auto max-w-6xl px-4 pb-12 reveal">
+  <h2 class="mb-2 text-2xl font-bold text-white">{t('home.stack.title')}</h2>
+  <p class="mb-6 text-brand-100">{t('home.stack.subtitle')}</p>
+  <div class="flex flex-wrap gap-2">
+    {
+      stack.map((tech) => (
+        <span class="rounded-full border border-brand-300/40 bg-white/5 px-3 py-1.5 text-sm text-brand-50">
+          {tech}
+        </span>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  // Contadores animados (aprimoramento progressivo; respeita reduced-motion)
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const counters = document.querySelectorAll<HTMLElement>('[data-counter]');
+  const run = (el: HTMLElement) => {
+    const target = Number(el.dataset.counter || '0');
+    if (reduce) {
+      el.textContent = String(target);
+      return;
+    }
+    const dur = 1200;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / dur);
+      el.textContent = String(Math.round(p * target));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          run(e.target as HTMLElement);
+          io.unobserve(e.target);
+        }
+      });
+    });
+    counters.forEach((c) => io.observe(c));
+  } else {
+    counters.forEach(run);
+  }
+</script>

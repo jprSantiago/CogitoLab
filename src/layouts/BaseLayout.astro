@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Navbar from '../components/layout/Navbar.astro';
 import Footer from '../components/layout/Footer.astro';
+import IntroSplash from '../components/layout/IntroSplash.astro';
 import { getLocale, useTranslations, stripLocale } from '../utils/i18n';
 import { locales, defaultLocale } from '../i18n/config';
 import { SITE_CONFIG } from '../config/site';
@@ -9,9 +10,10 @@ import { SITE_CONFIG } from '../config/site';
 interface Props {
   title?: string;
   description?: string;
+  intro?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, intro = false } = Astro.props;
 const locale = getLocale(Astro.currentLocale);
 const t = useTranslations(locale);
 
@@ -34,6 +36,16 @@ const canonical = buildUrl(locale);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+
+    <!-- Tema: aplica antes da pintura para evitar flash (light/dark) -->
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('cogito-theme');
+          if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {}
+      })();
+    </script>
     <meta name="generator" content={Astro.generator} />
 
     <title>{pageTitle}</title>
@@ -53,12 +65,24 @@ const canonical = buildUrl(locale);
   </head>
 
   <body class="flex min-h-screen flex-col">
+    {intro && <IntroSplash />}
     <div class="page-bg" aria-hidden="true"></div>
     <Navbar currentLocale={locale} pathname={Astro.url.pathname} />
     <main id="main" class="flex-1">
       <slot />
     </main>
     <Footer currentLocale={locale} />
+
+    <button
+      id="back-to-top"
+      type="button"
+      class="btn-primary fixed bottom-5 right-5 z-50 hidden"
+      aria-label={t('common.backToTop')}
+    >
+      <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7" />
+      </svg>
+    </button>
   </body>
 </html>
 
@@ -70,4 +94,16 @@ const canonical = buildUrl(locale);
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
-</script>
+  </script>
+
+  <script>
+    const btt = document.getElementById('back-to-top');
+    if (btt) {
+      window.addEventListener(
+        'scroll',
+        () => btt.classList.toggle('hidden', window.scrollY < 400),
+        { passive: true }
+      );
+      btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
+  </script>

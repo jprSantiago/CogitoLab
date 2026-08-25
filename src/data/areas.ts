@@ -10,7 +10,6 @@ export type AreaId =
 
 export interface Area {
   id: AreaId;
-  icon: string;
   title: Localized;
   description: Localized;
   topics: Localized[];
@@ -23,7 +22,6 @@ export interface Area {
 export const areas: Area[] = [
   {
     id: 'ai-se',
-    icon: '🤖',
     title: bilingual(
       'Inteligência Artificial para Engenharia de Software',
       'Artificial Intelligence for Software Engineering'
@@ -43,7 +41,6 @@ export const areas: Area[] = [
   },
   {
     id: 'quality',
-    icon: '📊',
     title: bilingual(
       'Qualidade de Software, Débito Técnico e Refatoração',
       'Software Quality, Technical Debt & Refactoring'
@@ -63,7 +60,6 @@ export const areas: Area[] = [
   },
   {
     id: 'testing',
-    icon: '🧪',
     title: bilingual(
       'Testes de Software e Confiabilidade',
       'Software Testing & Reliability'
@@ -83,7 +79,6 @@ export const areas: Area[] = [
   },
   {
     id: 'mobile-iot',
-    icon: '📱',
     title: bilingual(
       'Sistemas Configuráveis, Mobile e IoT',
       'Configurable Systems, Mobile & IoT'
@@ -103,7 +98,6 @@ export const areas: Area[] = [
   },
   {
     id: 'collaborative',
-    icon: '👥',
     title: bilingual(
       'Desenvolvimento Colaborativo e SE Empírica',
       'Collaborative Software Development & Empirical SE'
@@ -123,7 +117,6 @@ export const areas: Area[] = [
   },
   {
     id: 'innovation',
-    icon: '💡',
     title: bilingual(
       'Inovação, Empreendedorismo e Transferência de Tecnologia',
       'Innovation, Entrepreneurship & Technology Transfer'

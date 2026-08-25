@@ -312,6 +312,122 @@ minimalistas com expansão ao clicar; (4) deixar todos os cartões mais limpos/m
 - Uso do opencode para auditar a Fase 2 e propor as 6 melhorias; revisão crítica
   aplicada (gap EN resolvido por build real, não por refactor de componentes).
 
+---
+
+## 2026-08-25 — Modernização visual (logo, intro e fundos de seção)
+
+**Objetivo:** Modernizar o site conforme solicitação, sem alterar estrutura/conteúdo
+exigidos por `Instructions.md` e `ORGANIZATION.md`.
+
+### Solicitações atendidas
+1. **Nova logo (cérebro de código):** criado `src/components/common/BrainLogo.astro`,
+   um SVG onde o corpo do cérebro é preenchido com linhas de código minúsculas
+   (`const`, `if`, `for`, `class`, `</>`, etc.) recortadas no formato do cérebro via
+   `<clipPath>`, com sulcos que reforçam a leitura anatômica. Substituiu o "C" da
+   navbar (`Navbar.astro`) e o badge do hero (`Home.astro`). `public/favicon.svg`
+   também trocado por uma marca de cérebro simplificada.
+2. **Tela de abertura (intro):** criado `src/components/layout/IntroSplash.astro`,
+   que mostra **apenas o logo** em tela cheia e transiciona (desvanece) para a página
+   inicial. Disponibilizado via prop `intro` no `BaseLayout`, usada apenas nas home
+   (`pt-br/index.astro`, `en/index.astro`).
+3. **Fundos temáticos de seção:** criados `CodeBackdrop.astro` (textura de código
+   muito sutil) e `MonitorCode.astro` (monitor exibindo código, com mini-cérebro na
+   tela). Aplicados como fundo decorativo nas seções **Áreas** (`Areas.astro`) e
+   **Projetos** (`Projects.astro`), `aria-hidden` e `pointer-events-none`.
+4. **Cards de projeto simplificados:** removido o número de processo do cabeçalho do
+   card (`Projects.astro`), que exibia `CNPq 446729/2024-8`. Agora aparece apenas a
+   agência (`CNPq`/`FAPEMIG`). O dado `processNumber` permanece em `projects.ts`
+   para filtros/uso futuro, sem poluir a UI.
+
+### Decisão sobre "0 JS por padrão" (desvio comunicado)
+- A animação da intro é **CSS-driven**; o overlay nasce com `hidden`, então **sem
+  JavaScript ele nunca aparece** e o conteúdo fica 100% acessível. O único JS é um
+  script mínimo que (a) exibe a intro uma única vez por sessão via `sessionStorage`
+  e (b) respeita `prefers-reduced-motion`. Isso é consistente com o padrão já
+  existente de scripts client (`list-filter.ts`, scroll) e foi a única adição de JS.
+- O desvio foi considerado proporcional à solicitação explícita ("apareça a logo
+  apenas, e depois transicione"). Nenhuma outra alteração estrutural foi feita.
+
+### Verificação
+- `npm run build` → 18 páginas, build limpo.
+- `npm run test` → 96 testes passando (sem quebras em i18n, seções, a11y, nav).
+- `npm run lint` → sem erros (verificar no CI).
+
+### Sugestões de melhorias futuras (não implementadas)
+- **Modo claro/escuro** com toggle (mantém identidade azul atual como "dark").
+- **Ilustrações por área** (ícones SVG distintos em vez de emojis) nas 6 áreas.
+- **Estatísticas no hero** (nº de projetos, publicações, membros) com contadores animados.
+- **Seção "Tecnologias"** (stack do lab) com logos das ferramentas.
+- **Botão "voltar ao topo"** e melhorias de microinteração (já há reveal ao rolar).
+- **Open Graph images** por página (preview em redes sociais).
+- **Depoimentos** de ex-membros (alumni) para reforçar o "Junte-se".
+
+### Decisão de IA (opencode)
+- Geração de componentes SVG (BrainLogo, CodeBackdrop, MonitorCode, IntroSplash) e
+  integração nas seções existentes; revisão manual garantiu a11y (aria-hidden,
+  reduced-motion) e a regra de "0 JS por padrão" (splash oculto sem JS).
+
+---
+
+## 2026-08-25 — Aplicação das sugestões + nova logo "cérebro digital"
+
+**Objetivo:** O usuário aprovou a aplicação de todas as sugestões da pré-visualização
+(demo) no site oficial, e pediu uma nova logo: um **cérebro digital formado por rede
+de nós/conexões** (modelo "brain connections"), com **linhas de código nas bordas**,
+usada tanto na navbar quanto nas páginas.
+
+### Mudanças na logo
+  - **`BrainLogo.astro` reescrito** como "cérebro digital": **cérebro de lado (perfil)**
+    preenchido com gradiente da marca, recortado por uma **grade de nós conectados**
+    (linhas de conexão, estilo rede neural). As **linhas de código correm SOBRE as
+    próprias linhas de conexão** (texto rotacionado ao longo de cada aresta), e não
+    mais ao redor da borda. Contorno ciano com leve brilho (futurista).
+- **Unificação:** navbar, hero (`Home.astro`) e intro (`IntroSplash.astro`) passam a
+  usar `BrainLogo`. O componente `BrainLogoSide.astro` (perfil lateral) foi removido
+  por ficar sem uso. A `favicon.svg` permanece a marca de cérebro simplificada.
+- Mantido `aria-hidden` e zero JS na logo.
+
+### Sugestões da pré-visualização aplicadas no site oficial
+1. **Tema claro/escuro (toggle):** `BaseLayout` agora lê `localStorage` (`cogito-theme`)
+   num `<script is:inline>` no `<head>` (sem flash). `Navbar` ganhou botão `#theme-toggle`
+   (ícone lua/sol) que alterna `data-theme` no `<html>` e persiste a escolha.
+   Bloco `[data-theme="light"]` em `global.css` re-tematiza superfícies (`.page-bg`,
+   `body`, títulos, `.glass-dark`, `.card-3d`, `.btn-ghost`, `.navbar`, filtros).
+   O tema **escuro continua sendo o padrão e inalterado**.
+2. **Ícones SVG das áreas:** `AreaIcon.astro` (6 ícones de traço) integrado em
+   `Areas.astro`; campo `icon` (emoji) removido de `areas.ts` (sem uso em testes).
+3. **Contadores animados:** `Home.astro` agora mostra stats reais (projetos,
+   publicações, membros, áreas) com animação via `IntersectionObserver` + rAF,
+   respeitando `prefers-reduced-motion` (sem JS, mostra o valor final).
+4. **Seção "Tecnologias":** nova seção no `Home` com badges do stack do lab.
+5. **Depoimentos (alumni):** `Join.astro` ganhou seção de depoimentos alimentada por
+   `src/data/testimonials.ts` (Localized + `pick()`).
+6. **Botão "voltar ao topo":** adicionado em `BaseLayout` (aparece ao rolar > 400px).
+7. **Removida a página `/pt-br/demo/`** (era só pré-visualização) para evitar
+   código morto após a aplicação definitiva.
+
+### i18n
+- Novas chaves: `theme.toggle`, `home.stats.{projects,publications,members,areas}`,
+  `home.stack.{title,subtitle}`, `join.testimonials.title`, `common.backToTop`
+  (PT-BR e EN).
+
+### Notas de arquitetura / a11y
+- Toda animação respeita `prefers-reduced-motion`; logos e fundos são `aria-hidden`.
+- Tema claro implementado via CSS (overrides por seletor de atributo), sem tocar
+  na marcação dos componentes — mantém o tema escuro como fonte única e intacta.
+- JS adicionado: toggle de tema, back-to-top, contadores (todos progressivos e
+  opcionais; o conteúdo permanece acessível sem JS).
+
+### Verificação
+- `npm run build` → 18 páginas, build limpo.
+- `npm run test` → 96 testes passando.
+- `npm run lint` → 0 erros, 0 warnings (exit 0).
+
+### Decisão de IA (opencode)
+- Aprovação explícita do usuário ("pode aplicar tudo isso") autorizou a aplicação,
+  inclusive do tema claro (antes sinalizado como mudança grande). Revisão manual
+  garantiu coerência visual e acessibilidade.
+
 
 
 

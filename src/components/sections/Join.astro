@@ -2,6 +2,7 @@
 import { getLocale, useTranslations } from '../../utils/i18n';
 import { pick, bilingual, type Localized } from '../../data/types';
 import { SITE_CONFIG } from '../../config/site';
+import { testimonials } from '../../data/testimonials';
 
 const locale = getLocale(Astro.currentLocale);
 const t = useTranslations(locale);
@@ -90,4 +91,20 @@ const applicationEmail = SITE_CONFIG.social.email;
       <li>{t('join.step2')}</li>
     </ol>
   </div>
+
+  <section class="mt-10">
+    <h2 class="mb-6 text-2xl font-bold text-white">{t('join.testimonials.title')}</h2>
+    <div class="grid gap-4 sm:grid-cols-2">
+      {
+        testimonials.map((q) => (
+          <figure class="glass-dark rounded-2xl p-5">
+            <blockquote class="text-brand-50">“{pick(locale, q.quote)}”</blockquote>
+            <figcaption class="mt-3 text-sm font-semibold text-white">
+              {q.name} <span class="font-normal text-brand-200">— {pick(locale, q.role)}</span>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </section>
 </section>
