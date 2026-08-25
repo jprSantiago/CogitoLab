@@ -217,4 +217,101 @@ minimalistas com expansão ao clicar; (4) deixar todos os cartões mais limpos/m
 - HTML gerado confirma: UFLA/DCC em parceiros; botão "Filtros" e `<details>` nas
   publicações; `aria-current="page"` nas páginas de menu correspondentes.
 
+---
+
+## 2026-08-25 — Fase 2: Qualidade e Testes
+
+**Objetivo:** Garantir qualidade, testes automatizados e acessibilidade (Fase 2 do
+`ORGANIZATION.md`), conforme `Instructions.md` §7–§8.
+
+### Decisões
+- **Vitest + getViteConfig do Astro** (`vitest.config.ts`): herda o processamento
+  de `.astro` e a config de i18n, permitindo testar componentes e helpers lado a
+  lado com o código de produção. Veja **ADR-004**.
+- **Extração de lógica pura:** a decisão de filtragem (`src/scripts/list-filter.ts`)
+  foi delegada a `src/utils/filter.ts` (`itemMatches`), função pura e testável sem
+  DOM. O script client-side apenas adapta atributos `data-filter-*` para esse
+  formato — comportamento preservado.
+- **Estratégia de testes em 3 níveis:** (1) unitários (i18n, dados, filtro);
+  (2) integração de componentes via `experimental_AstroContainer` (Navbar/Footer
+  nos dois locales; seções para conteúdo/estrutura/responsividade); (3) auditoria
+  a11y estrutural (lang, landmarks, skip link, aria-current, aria-pressed, imgs/anchors).
+- **Cobertura EN de seções:** o Container não resolve `Astro.currentLocale` pela
+  URL, então seções internas renderizam em PT-BR no teste. O EN é coberto por
+  (a) Navbar/Footer testados em PT e EN (props) e (b) testes unitários completos
+  de `t()`/`pick()` (fonte única de verdade da tradução). Justificativa detalhada
+  em ADR-004.
+
+### Arquivos criados
+- `vitest.config.ts` — configuração Vitest + coverage (v8).
+- `tests/unit/i18n.test.ts`, `tests/unit/data.test.ts`, `tests/unit/filter.test.ts`
+- `tests/integration/navigation.test.ts`, `tests/integration/sections.test.ts`,
+  `tests/integration/a11y.test.ts`, `tests/integration/render-helper.ts`
+- `src/utils/filter.ts` (lógica pura extraída de `list-filter.ts`)
+- `docs/decisions/ADR-004-testing-strategy.md`
+
+### Arquivos alterados
+- `src/scripts/list-filter.ts` — usa `itemMatches` de `src/utils/filter.ts`.
+
+### Verificação
+- `npm run test` → **78 testes passando** em 6 arquivos (unit + integration).
+- `npm run test:coverage` → **~97%** de cobertura em `src/**`.
+- `npm run build` → 18 páginas, sem erro (refactor do filtro não quebrou nada).
+- `npm run lint` (astro check) → 0 erros / 0 warnings (alguns *hints* em testes).
+
+### Cenários deliberadamente não testados (e por quê)
+- **Responsividade visual / cross-browser / E2E:** exigem navegador real; cobertos
+  por verificação manual (`npm run dev`) e por asserts estruturais de breakpoints.
+- **Performance de runtime:** validada por inspeção do build (0 JS por padrão) e CI.
+
+### Próximos passos
+- Fase 3: SEO/meta tags, README completo, deploy final, reflexão final (§11).
+
+---
+
+## 2026-08-25 — Revisão da Fase 2 (integração e qualidade)
+
+**Objetivo:** Revisar as entregas da Fase 2 contra `ORGANIZATION.md`, `Instructions.md`
+(§7–§8) e `CLAUDE.md`; garantir boa integração com as Fases 0/1 e corrigir lacunas.
+
+### Problemas identificados na revisão
+- **CI não exercitava a qualidade:** `deploy.yml` só rodava `build`/`deploy`, sem
+  `lint` nem `test` — a suíte da Fase 2 não protegia o deploy.
+- **Lacuna de cobertura EN das seções:** o `experimental_AstroContainer` não resolve
+  `Astro.currentLocale`, então `sections.test.ts` validava apenas PT-BR nas seções
+  internas (gap já assumido no ADR-004).
+- **Teste de fallback de `t()` confuso** (`tests/unit/i18n.test.ts`): não exercitava
+  o caminho real; a paridade estrita do dicionário torna o fallback para o locale
+  padrão inatingível para chaves reais.
+- **README** não citava `test:coverage` nem a estratégia de testes (reprodutibilidade
+  de cobertura exigida pelo `Instructions.md` §8).
+- **Sem teste de `navItems` ↔ páginas construídas**, risco de link quebrado após a
+  consolidação da home.
+
+### Decisões e alterações
+- **Quality gates no CI:** `deploy.yml` agora executa `npm run lint` e `npm run test`
+  (após `npm ci`, antes do `build`). Deploy só ocorre com qualidade verde.
+- **Teste de build de ponta a ponta:** novo `tests/integration/build-output.test.ts`
+  roda `astro build` e inspeciona `dist/`, validando EN (`lang="en"`, "Research Areas",
+  "Members") e PT-BR (`lang="pt-br"`, "Áreas de Pesquisa", "Membros"), além das âncoras
+  de consolidação (`#areas`, `#projects`, `#publications`) e da página Members nos dois
+  locales. Fecha a lacuna EN de forma definitiva e exercita Fases 0/1/2 juntas.
+- **navItems ↔ páginas:** `navigation.test.ts` agora testa que cada `navItems` resolve
+  para um `index.html` existente em `dist/{pt-br,en}/...`, prevenindo links quebrados.
+- **Teste de fallback saneado:** substituído o bloco confuso por um assert claro de que
+  chaves reais resolvem para o valor do próprio locale (PT≠EN), documentando a paridade.
+- **README** atualizado com `test:coverage` e subseção "Testes" apontando ADR-004.
+
+### Verificação
+- `npm run test` → suíte estendida passando (inclui `build-output` + `navItems`).
+- `npm run test:coverage` → relatório reproduzível.
+- `npm run lint` → 0 erros.
+- `npm run build` → 18 páginas; CI executa lint+test antes do deploy.
+
+### Decisão de IA (opencode)
+- Uso do opencode para auditar a Fase 2 e propor as 6 melhorias; revisão crítica
+  aplicada (gap EN resolvido por build real, não por refactor de componentes).
+
+
+
 

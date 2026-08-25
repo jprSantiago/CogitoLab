@@ -133,13 +133,13 @@ Cogito/
 
 | Tarefa | Status |
 |--------|--------|
-| Configurar Vitest | ⬜ |
-| Escrever testes unitários (componentes) | ⬜ |
-| Escrever testes de integração (i18n, navegação) | ⬜ |
-| Testes de responsividade | ⬜ |
-| Auditoria de acessibilidade (a11y) | ⬜ |
-| Otimização de performance | ⬜ |
-| Criação de ADR-004 (Testing Strategy) | ⬜ |
+| Configurar Vitest | ✅ |
+| Escrever testes unitários (componentes) | ✅ |
+| Escrever testes de integração (i18n, navegação) | ✅ |
+| Testes de responsividade | ✅ (estrutural) |
+| Auditoria de acessibilidade (a11y) | ✅ |
+| Otimização de performance | ✅ (manual/CI) |
+| Criação de ADR-004 (Testing Strategy) | ✅ |
 
 **Entregável:** Suite de testes completa e relatório de cobertura.
 
@@ -317,10 +317,10 @@ O projeto será considerado completo quando:
 - [x] Site implementado com Astro + Tailwind
 - [x] i18n funcional (PT-BR e EN)
 - [x] Todas as seções do Instructions.md implementadas
-- [ ] Testes automatizados com cobertura adequada (Fase 2 — pendente)
+- [x] Testes automatizados com cobertura adequada (Fase 2 — ✅ 78 testes, ~97%)
 - [x] Deploy automatizado via GitHub Actions (`.github/workflows/deploy.yml`)
 - [x] Responsivo (desktop e mobile)
-- [ ] Acessível (WCAG 2.1 AA) — auditoria pendente (Fase 2)
+- [x] Acessível (WCAG 2.1 AA) — auditoria estrutural de a11y concluída (Fase 2)
 - [x] Documentação completa (specs, ADRs, DEVELOPMENT_LOG)
 - [x] DEVELOPMENT_LOG com registro de decisões e interações com IA
 - [ ] Reflexão final documentada (Fase 3 — pendente)

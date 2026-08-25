@@ -3,21 +3,21 @@
  * Sem JS, todos os itens permanecem visíveis; com JS, os botões de filtro
  * mostram/ocultam itens por grupo (category, area, status, type, etc.) e um
  * campo de busca filtra por texto. Múltiplos grupos combinam com E (AND).
+ *
+ * A decisão de exibição é delegada à função pura `itemMatches`
+ * (ver `src/utils/filter.ts`), que é coberta por testes unitários.
  */
 
-type FilterState = Record<string, string>;
+import { itemMatches, type FilterState } from '../utils/filter';
 
 function matches(item: HTMLElement, state: FilterState, query: string): boolean {
-  for (const [key, value] of Object.entries(state)) {
-    if (!value) continue;
-    const attr = (item.getAttribute(`data-filter-${key}`) || '').split(/\s+/).filter(Boolean);
-    if (!attr.includes(value)) return false;
+  const attrs: Record<string, string | undefined> = {};
+  for (const key of Object.keys(state)) {
+    const value = item.getAttribute(`data-filter-${key}`);
+    attrs[`data-filter-${key}`] = value ?? undefined;
   }
-  if (query) {
-    const text = (item.getAttribute('data-search-text') || '').toLowerCase();
-    if (!text.includes(query)) return false;
-  }
-  return true;
+  const searchText = item.getAttribute('data-search-text') ?? '';
+  return itemMatches(attrs, searchText, state, query);
 }
 
 function apply(root: HTMLElement, state: FilterState, query: string) {

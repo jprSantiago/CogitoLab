@@ -45,6 +45,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Lint (astro check)
+        run: npm run lint
+
+      - name: Test (Vitest)
+        run: npm run test
+
       - name: Build
         run: npm run build
         env:

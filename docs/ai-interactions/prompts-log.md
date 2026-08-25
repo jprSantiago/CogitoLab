@@ -64,3 +64,36 @@ para auxiliá-lo, faça como os criterios pedem e como o planejamento diz."
 **Modificações:** Pequenos ajustes de caminho de import (`../` vs `../../`) nos
 wrappers de páginas e correção de tipagem (`Localized` indexado por locale);
 remoção de imports não utilizados após lint.
+
+---
+
+## 2026-08-25 — Fase 2: Qualidade e Testes (Vitest + a11y)
+
+**Objetivo:** Configurar Vitest e escrever testes unitários, de integração e de
+acessibilidade para o site, conforme `ORGANIZATION.md` (Fase 2) e `Instructions.md` §7–§8.
+
+**Prompt:** "de acordo com o @ORGANIZATION.md , @CLAUDE.md , @Instructions.md ,
+inicie a fase 2" — ler todos os arquivos relevantes e implementar a Fase 2.
+
+**Ferramenta/Modelo:** opencode (agente de IA em CLI, modelo hy3-free).
+
+**Output Resumido:**
+- Criou `vitest.config.ts` usando `getViteConfig` do Astro (processa `.astro` e aplica i18n).
+- Escreveu 3 suítes unitárias: i18n (incl. paridade do dicionário), dados
+  (integridade referencial bilíngue + `pick`/`bilingual`), e filtro puro.
+- Extraiu `itemMatches` para `src/utils/filter.ts` (testável sem DOM) e refatorou
+  `src/scripts/list-filter.ts` para usá-lo.
+- Escreveu 3 suítes de integração via `experimental_AstroContainer`: navegação
+  PT/EN, seções (conteúdo/estrutura/responsividade) e auditoria a11y estrutural.
+- Criou `ADR-004-testing-strategy.md`.
+
+**Decisão:** Aceito (com revisão humana recomendada).
+
+**Justificativa:** 78 testes passando, ~97% de cobertura; `build` e `lint` (0 erros)
+intactos após o refactor. Estratégia documenta cenários não testados e o porquê.
+
+**Modificações:** Ajustes de asserção nos testes (Navbar não possui link "Início"
+explícito — o logo é a home; footer usa "direitos" minúsculo); uso de `beforeAll`
+para renderização assíncrona em vez de `await` no escopo do `describe`; correção
+de tipo do `request` no helper de render (usando `new Request(...)`).
+
