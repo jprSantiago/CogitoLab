@@ -1,5 +1,5 @@
 ---
-import { getLocale, useTranslations, localeUrl } from '../../utils/i18n';
+import { getLocale, useTranslations } from '../../utils/i18n';
 import { pick } from '../../data/types';
 import { areas } from '../../data/areas';
 import { getProject } from '../../data/projects';
@@ -9,10 +9,10 @@ const locale = getLocale(Astro.currentLocale);
 const t = useTranslations(locale);
 ---
 
-<section class="mx-auto max-w-6xl px-4 py-10">
+<section id="areas" class="mx-auto max-w-6xl scroll-mt-24 px-4 py-10">
   <header class="mb-8">
-    <h1 class="text-3xl font-bold text-cogito-900">{t('areas.title')}</h1>
-    <p class="mt-2 text-cogito-500">{t('areas.subtitle')}</p>
+    <h1 class="text-3xl font-bold text-white">{t('areas.title')}</h1>
+    <p class="mt-2 text-brand-100">{t('areas.subtitle')}</p>
   </header>
 
   <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -20,7 +20,7 @@ const t = useTranslations(locale);
       areas.map((area) => (
         <details class="card-3d group" id={`area-${area.id}`}>
           <summary class="flex cursor-pointer items-center gap-4 list-none">
-            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-cruzeiro-600 text-2xl text-white" aria-hidden="true">
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand-600 text-2xl text-white" aria-hidden="true">
               {area.icon}
             </span>
             <h2 class="text-lg font-semibold text-cogito-800">{pick(locale, area.title)}</h2>
@@ -49,7 +49,7 @@ const t = useTranslations(locale);
                   const p = getProject(pid);
                   return p ? (
                     <li>
-                      <a href={localeUrl(locale, '/projects')} class="text-sm text-cruzeiro-700 underline hover:text-cruzeiro-900">
+                      <a href="#projects" class="text-sm text-brand-700 underline hover:text-brand-900">
                         {pick(locale, p.title)}
                       </a>
                     </li>
@@ -67,7 +67,7 @@ const t = useTranslations(locale);
                   const pub = getPublication(pubid);
                   return pub ? (
                     <li>
-                      <a href={localeUrl(locale, '/publications')} class="text-sm text-cruzeiro-700 underline hover:text-cruzeiro-900">
+                      <a href="#publications" class="text-sm text-brand-700 underline hover:text-brand-900">
                         {pub.title}
                       </a>
                     </li>

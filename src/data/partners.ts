@@ -18,6 +18,14 @@ export interface Partner {
 
 export const partners: Partner[] = [
   {
+    id: 'ufla', name: 'Universidade Federal de Lavras', type: 'university', url: 'https://www.ufla.br',
+    description: bilingual('Instituição de origem do lab.', 'Lab’s home institution.'),
+  },
+  {
+    id: 'dcc-ufla', name: 'DCC — Departamento de Ciência da Computação da UFLA', type: 'university', url: 'https://www.dcc.ufla.br',
+    description: bilingual('Unidade acadêmica de origem do lab.', 'Lab’s home academic unit.'),
+  },
+  {
     id: 'uf', name: 'Universidade Federal', type: 'university', url: 'https://example.org/uf',
     description: bilingual('Instituição de origem do lab.', 'Lab’s home institution.'),
   },

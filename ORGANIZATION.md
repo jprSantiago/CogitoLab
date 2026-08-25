@@ -39,7 +39,7 @@ Cogito/
 │   │   └── ArticleLayout.astro
 │   ├── pages/
 │   │   ├── index.astro             # Redirect → /pt-br/
-│   │   ├── pt-br/                  # Home + about, areas, members, projects, publications, artifacts, partners, join, contact, news/[...page]
+│   │   ├── pt-br/                  # Home (index.astro, com seções Areas/Projects/Publications) + about, members, artifacts, partners, join, contact, news/[...page]
 │   │   └── en/                     # Mesmo conjunto (EN)
 │   ├── scripts/
 │   │   └── list-filter.ts          # Filtro/busca client-side (progressive enhancement)
@@ -109,11 +109,11 @@ Cogito/
 | Tarefa | Spec | Arquivos | Status |
 |--------|------|----------|--------|
 | Home page (identidade do lab) | `docs/specs/00-home-page.md` | `src/components/sections/Home.astro` (Fase 0) | ✅ |
-| Seção de Áreas de Pesquisa | `docs/specs/04-areas-section.md` | `src/components/sections/Areas.astro`, `src/data/areas.ts` | ✅ |
+| Seção de Áreas de Pesquisa | `docs/specs/04-areas-section.md` | `src/components/sections/Areas.astro` (renderizada na Home `index.astro`), `src/data/areas.ts` | ✅ |
 | Página Sobre | — (sem spec dedicada; ver DEVELOPMENT_LOG) | `src/components/sections/About.astro` | ✅ |
 | Seção de Membros | `docs/specs/01-members-section.md` | `src/components/sections/Members.astro`, `src/data/members.ts` | ✅ |
-| Seção de Projetos | `docs/specs/02-projects-section.md` | `src/components/sections/Projects.astro`, `src/data/projects.ts` | ✅ |
-| Seção de Publicações | `docs/specs/03-publications-section.md` | `src/components/sections/Publications.astro`, `src/data/publications.ts` | ✅ |
+| Seção de Projetos | `docs/specs/02-projects-section.md` | `src/components/sections/Projects.astro` (renderizada na Home `index.astro`), `src/data/projects.ts` | ✅ |
+| Seção de Publicações | `docs/specs/03-publications-section.md` | `src/components/sections/Publications.astro` (renderizada na Home `index.astro`), `src/data/publications.ts` | ✅ |
 | Seção de Notícias | `docs/specs/05-news-section.md` | `src/components/sections/News.astro`, `src/data/news.ts`, `src/pages/*/news/[...page].astro` | ✅ |
 | Seção de Artefatos | `docs/specs/06-artifacts-section.md` | `src/components/sections/Artifacts.astro`, `src/data/artifacts.ts` | ✅ |
 | Página Junte-se ao Lab | `docs/specs/07-join-section.md` | `src/components/sections/Join.astro` | ✅ |
@@ -123,6 +123,8 @@ Cogito/
 **Entregável:** Site com todas as seções implementadas e conteúdo em ambos os idiomas.
 
 > **Decisão de dados:** em vez de Content Collections (previsto no planejamento inicial), a Fase 1 usa módulos tipados em `src/data/*` com `Localized<T>` + `pick()` (`src/data/types.ts`), integrados ao i18n da Fase 0. Justificativa detalhada em `DEVELOPMENT_LOG.md` (seção "Fase 1: Conteúdo Estático").
+
+> **Consolidação na Home (2026-08-25):** as seções **Areas**, **Projects** e **Publications** deixaram de ser páginas dedicadas (`src/pages/{pt-br,en}/{areas,projects,publications}/` foram removidas) e passaram a ser renderizadas na página inicial (`src/pages/{pt-br,en}/index.astro`), conforme permitido pelo `Instructions.md` §5 ("no mandatory page structure"). Itens retirados de `navItems`/footer; cross-links internos usam âncoras (`#areas`, `#projects`, `#publications`). Detalhes no `DEVELOPMENT_LOG.md` (entrada "2026-08-25 — Mudança de tema...").
 
 ---
 
@@ -315,13 +317,13 @@ O projeto será considerado completo quando:
 - [x] Site implementado com Astro + Tailwind
 - [x] i18n funcional (PT-BR e EN)
 - [x] Todas as seções do Instructions.md implementadas
-- [x] Testes automatizados com cobertura adequada
-- [x] Deploy automatizado via GitHub Actions
+- [ ] Testes automatizados com cobertura adequada (Fase 2 — pendente)
+- [x] Deploy automatizado via GitHub Actions (`.github/workflows/deploy.yml`)
 - [x] Responsivo (desktop e mobile)
-- [x] Acessível (WCAG 2.1 AA)
-- [x] Documentação completa
+- [ ] Acessível (WCAG 2.1 AA) — auditoria pendente (Fase 2)
+- [x] Documentação completa (specs, ADRs, DEVELOPMENT_LOG)
 - [x] DEVELOPMENT_LOG com registro de decisões e interações com IA
-- [x] Reflexão final documentada
+- [ ] Reflexão final documentada (Fase 3 — pendente)
 
 ---
 

@@ -61,10 +61,7 @@ export type NavItem = { key: string; href: string };
  * e o prefixo é aplicado no componente Navbar.
  */
 export const navItems: NavItem[] = [
-  { key: 'nav.areas', href: '/areas' },
   { key: 'nav.members', href: '/members' },
-  { key: 'nav.projects', href: '/projects' },
-  { key: 'nav.publications', href: '/publications' },
   { key: 'nav.artifacts', href: '/artifacts' },
   { key: 'nav.news', href: '/news' },
   { key: 'nav.join', href: '/join' },

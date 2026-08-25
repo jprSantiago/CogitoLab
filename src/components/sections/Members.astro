@@ -1,5 +1,6 @@
 ---
 import { getLocale, useTranslations } from '../../utils/i18n';
+import FilterBar from '../common/FilterBar.astro';
 import { pick } from '../../data/types';
 import { members, memberCategories } from '../../data/members';
 import { areas } from '../../data/areas';
@@ -24,13 +25,14 @@ const areaTitle = (id: string) => {
 
 <section class="mx-auto max-w-6xl px-4 py-10">
   <header class="mb-8">
-    <h1 class="text-3xl font-bold text-cogito-900">{t('members.title')}</h1>
-    <p class="mt-2 text-cogito-500">{t('members.subtitle')}</p>
+    <h1 class="text-3xl font-bold text-white">{t('members.title')}</h1>
+    <p class="mt-2 text-brand-100">{t('members.subtitle')}</p>
   </header>
 
   <div class="mb-8 flex flex-col gap-4" data-filter-root>
+    <FilterBar>
     <div class="flex flex-wrap items-center gap-2">
-      <span class="text-sm font-semibold text-cogito-700">{t('members.filter.category')}:</span>
+      <span class="text-sm font-semibold text-brand-100">{t('members.filter.category')}:</span>
       <button type="button" class="filter-pill" data-filter-group="category" data-filter-value="" aria-pressed="true">
         {t('common.all')}
       </button>
@@ -50,7 +52,7 @@ const areaTitle = (id: string) => {
     </div>
 
     <div class="flex flex-wrap items-center gap-2">
-      <span class="text-sm font-semibold text-cogito-700">{t('members.filter.area')}:</span>
+      <span class="text-sm font-semibold text-brand-100">{t('members.filter.area')}:</span>
       <button type="button" class="filter-pill" data-filter-group="area" data-filter-value="" aria-pressed="true">
         {t('common.all')}
       </button>
@@ -68,8 +70,9 @@ const areaTitle = (id: string) => {
         ))
       }
     </div>
+    </FilterBar>
 
-    <p class="text-sm text-cogito-400" data-filter-empty hidden>{t('common.empty')}</p>
+    <p class="text-sm text-brand-200" data-filter-empty hidden>{t('common.empty')}</p>
 
     <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
@@ -91,7 +94,7 @@ const areaTitle = (id: string) => {
               )}
               <div>
                 <h2 class="text-lg font-semibold text-cogito-800">{m.name}</h2>
-                <p class="text-sm text-cruzeiro-700">{pick(locale, m.role)}</p>
+                <p class="text-sm text-brand-700">{pick(locale, m.role)}</p>
                 <p class="text-xs text-cogito-400">{pick(locale, m.institution)}</p>
               </div>
             </div>
@@ -117,7 +120,7 @@ const areaTitle = (id: string) => {
               </h3>
               <ul class="mt-1 flex flex-wrap gap-1">
                 {m.areas.map((aid) => (
-                  <li class="rounded-full bg-cruzeiro-50 px-2 py-0.5 text-xs text-cruzeiro-700">
+                  <li class="rounded-full bg-brand-50 px-2 py-0.5 text-xs text-brand-700">
                     {areaTitle(aid)}
                   </li>
                 ))}
@@ -136,7 +139,7 @@ const areaTitle = (id: string) => {
                         href={l.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="text-sm text-cruzeiro-700 underline hover:text-cruzeiro-900"
+                        class="text-sm text-brand-700 underline hover:text-brand-900"
                       >
                         {t(l.labelKey)}
                       </a>

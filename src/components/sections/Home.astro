@@ -1,13 +1,16 @@
 ---
-import { getLocale, useTranslations, navItems, localeUrl } from '../../utils/i18n';
+import { getLocale, useTranslations, localeUrl } from '../../utils/i18n';
 
 const locale = getLocale(Astro.currentLocale);
 const t = useTranslations(locale);
 
-// Seções em destaque na home (subconjunto da navegação).
-const featured = navItems.filter((i) =>
-  ['nav.areas', 'nav.members', 'nav.projects', 'nav.news'].includes(i.key)
-);
+// Atalhos de seções em destaque na home (subconjunto da navegação).
+const featured = [
+  { key: 'nav.areas', href: '#areas' },
+  { key: 'nav.projects', href: '#projects' },
+  { key: 'nav.members', href: localeUrl(locale, '/members') },
+  { key: 'nav.news', href: localeUrl(locale, '/news') },
+];
 ---
 
 <section class="relative mx-auto max-w-6xl px-4 py-16 text-center">
@@ -18,31 +21,31 @@ const featured = navItems.filter((i) =>
     >C</span>
   </div>
   <p
-    class="mt-6 animate-fade-up text-sm font-semibold uppercase tracking-wide text-cruzeiro-600"
+    class="mt-6 animate-fade-up text-sm font-semibold uppercase tracking-wide text-brand-200"
     style="animation-delay:.1s"
   >
     {t('home.hero.eyebrow')}
   </p>
   <h1
-    class="mt-3 animate-fade-up text-5xl font-extrabold tracking-tight text-cogito-900 sm:text-6xl"
+    class="mt-3 animate-fade-up text-5xl font-extrabold tracking-tight text-white sm:text-6xl"
     style="animation-delay:.15s"
   >
     {t('home.hero.title')}
   </h1>
   <blockquote
-    class="mt-6 animate-fade-up text-xl italic text-cogito-600"
+    class="mt-6 animate-fade-up text-xl italic text-brand-100"
     style="animation-delay:.2s"
   >
     {t('home.hero.quote')}
   </blockquote>
   <p
-    class="mx-auto mt-3 max-w-2xl animate-fade-up text-cogito-500"
+    class="mx-auto mt-3 max-w-2xl animate-fade-up text-brand-100"
     style="animation-delay:.25s"
   >
     {t('home.hero.quoteContext')}
   </p>
   <p
-    class="mx-auto mt-6 max-w-2xl animate-fade-up text-lg text-cogito-700"
+    class="mx-auto mt-6 max-w-2xl animate-fade-up text-lg text-brand-50"
     style="animation-delay:.3s"
   >
     {t('home.hero.description')}
@@ -61,8 +64,8 @@ const featured = navItems.filter((i) =>
 </section>
 
 <section class="mx-auto max-w-6xl px-4 pb-12 reveal">
-  <h2 class="mb-6 text-2xl font-bold text-cogito-900">{t('home.sections.title')}</h2>
-  <p class="mb-6 text-cogito-500">{t('home.sections.subtitle')}</p>
+  <h2 class="mb-6 text-2xl font-bold text-white">{t('home.sections.title')}</h2>
+  <p class="mb-6 text-brand-100">{t('home.sections.subtitle')}</p>
   <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
     {
       featured.map((item) => (
@@ -80,7 +83,7 @@ const featured = navItems.filter((i) =>
 <section class="mx-auto max-w-6xl px-4 pb-20 reveal">
   <div class="glass-dark rounded-3xl p-10 text-center">
     <h2 class="text-2xl font-bold text-white">{t('home.cta.title')}</h2>
-    <p class="mx-auto mt-2 max-w-xl text-cruzeiro-100">{t('home.cta.text')}</p>
+    <p class="mx-auto mt-2 max-w-xl text-brand-100">{t('home.cta.text')}</p>
     <div class="mt-6 flex flex-wrap justify-center gap-3">
       <a
         href={localeUrl(locale, '/join')}

@@ -129,3 +129,92 @@ seguindo as specs `docs/specs/00`–`09` e o fluxo Spec-Driven (SPEC → PLAN �
 ### Próximos passos
 - Fase 2: testes (Vitest), a11y, performance (ADR-004).
 - Fase 3: SEO/meta, README, deploy final, reflexão.
+
+---
+
+## 2026-08-25 — Mudança de tema: azul desde o primeiro frame + consolidação na home
+
+**Objetivo:** Alterar o tema para que o site seja **azul com texto branco/claro desde o
+primeiro frame** (e permaneça azul ao rolar), conforme pedido do usuário; e transferir
+as seções **Áreas de Pesquisa, Projetos e Publicações** para a página principal, já que
+o `Instructions.md` (seção 5) **não exige** estrutura de páginas fixa ("There is no
+mandatory page structure").
+
+### Decisões
+- **Fundo sempre azul:** removido o overlay branco (`.page-bg::after`) e o JS que variava
+  `--scroll` no scroll. O `--scroll` deixou de existir; o `BaseLayout` mantém apenas o
+  script de `data-scrolled` (sombra da navbar ao rolar). `color-scheme` mudou para `dark`.
+- **Legibilidade no azul:** texto direto sobre o fundo azul passou a ser claro
+  (`text-white` / `text-cruzeiro-100/200`); os cartões (`card-3d`, `glass`) continuam
+  claros com texto escuro (`text-cogito-800`), formando o contraste "azul + branco".
+  Pílulas de filtro (`.filter-pill`) e inputs de busca reestilizados para o tema azul.
+- **Navbar e Footer** passaram a ser translúcidos azuis (`bg-cruzeiro-900/40`) com texto
+  branco; menu mobile e links ajustados.
+- **Consolidação na home:** `pt-br/index.astro` e `en/index.astro` agora renderizam
+  `<Home/>`, `<Areas/>`, `<Projects/>`, `<Publications/>`. As seções receberam `id`
+  (`#areas`, `#projects`, `#publications`) com `scroll-mt-24` para o navbar fixo.
+- **Remoção de páginas dedicadas:** excluídos `src/pages/{pt-br,en}/{areas,projects,publications}/`.
+  Itens correspondentes removidos de `navItems` (`src/utils/i18n.ts`) e do rodapé.
+- **Links internos:** referências cruzadas dentro das seções transferidas agora usam
+  âncoras (`#projects`, `#publications`); links para páginas ainda existentes
+  (`/artifacts`) foram mantidos.
+
+### Arquivos alterados
+- `src/styles/global.css` — fundo azul fixo; `body` claro; `card-3d`/`glass` com texto
+  escuro; `.filter-pill` azul.
+- `src/layouts/BaseLayout.astro` — script de scroll simplificado.
+- `src/components/layout/{Navbar,Footer}.astro` — tema azul translúcido.
+- `src/components/sections/Home.astro` — hero claro; atalhos de seção com âncoras.
+- `src/components/sections/{Areas,Projects,Publications,Members,News,Artifacts,Partners,Join,About,Contact}.astro`
+  — cabeçalhos/filtros claros; `id` nas seções transferidas; cross-links por âncora.
+- `src/utils/i18n.ts`, `src/pages/{pt-br,en}/index.astro` — remoção de páginas e consolidação.
+
+### Verificação
+- `npm run build` → 18 páginas, sem erro.
+- `npm run lint` (astro check) → 0 erros / 0 warnings / 0 hints.
+- i18n PT-BR/EN preservado; contraste mantido (cartões claros + texto claro sobre azul).
+
+---
+
+## 2026-08-25 — Filtros colapsáveis, cards minimalistas, publicações expansíveis e nav ativa
+
+**Objetivo:** (1) adicionar UFLA e DCC como parceiros; (2) esconder os filtros atrás de um
+botão "Filtros" em todas as seções com filtragem; (3) tornar os cards de publicações
+minimalistas com expansão ao clicar; (4) deixar todos os cartões mais limpos/minimalistas;
+(5) destacar a página ativa no menu.
+
+### Decisões
+- **Filtros colapsáveis (0 JS):** criado `src/components/common/FilterBar.astro` que envolve
+  os controles de filtro em um `<details>` nativo com `<summary>` estilizada como botão
+  "Filtros" (chave `common.filter`, já existente). Aplicado em Members, News, Artifacts,
+  Partners, Projects e Publications. Mantém progressive enhancement: sem JS os filtros
+  aparecem recolhidos e a filtragem continua funcionando ao abrir.
+- **Publicações expansíveis:** cada publicação virou um `<li class="card-3d">` contendo um
+  `<details>`; o `<summary>` mostra apenas título + veículo·ano + tipo (card minimalista),
+  e o corpo (autores, DOI/links, artefatos, projetos relacionados) aparece ao clicar.
+  Chevron `▾` indica expansão (CSS `.details-chevron`).
+- **Cards minimalistas:** `.card-3d` reestilizado em `global.css` — bordas mais suaves,
+  sombra leve e hover sutil (`translateY(-3px)`), removendo o efeito 3D pesado. Aplica-se
+  uniformemente a todos os cartões do site.
+- **Nav ativa:** `Navbar.astro` calcula a rota atual (`pathname`) e marca o item ativo com
+  `aria-current="page"` + destaque (`bg-white/15` + texto branco e semibold), no menu
+  desktop e no menu mobile.
+- **Parceiros:** adicionados `ufla` (Universidade Federal de Lavras) e `dcc-ufla`
+  (DCC — Departamento de Ciência da Computação da UFLA) em `src/data/partners.ts`.
+
+### Arquivos alterados
+- `src/data/partners.ts` — UFLA e DCC.
+- `src/components/common/FilterBar.astro` — novo componente.
+- `src/components/sections/{Members,News,Artifacts,Partners,Projects,Publications}.astro`
+  — filtros envolvidos em `FilterBar`; Publications com cards expansíveis.
+- `src/components/layout/Navbar.astro` — estado ativo.
+- `src/styles/global.css` — `.card-3d` minimalista; `.filter-summary`/`.filter-chevron`
+  e `.details-chevron`.
+
+### Verificação
+- `npm run build` → 18 páginas, sem erro.
+- `npm run lint` (astro check) → 0 erros / 0 warnings / 0 hints.
+- HTML gerado confirma: UFLA/DCC em parceiros; botão "Filtros" e `<details>` nas
+  publicações; `aria-current="page"` nas páginas de menu correspondentes.
+
+

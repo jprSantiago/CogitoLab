@@ -99,6 +99,9 @@ ADRs estão em `docs/decisions/`:
 
 ## Regras Importantes
 
+0. **Antes de iniciar qualquer fase**, ler todos os arquivos relevantes do projeto
+   (specs, ADRs, componentes, layouts, páginas, traduções, etc.) para saber o que
+   já foi feito, como foi feito e o que ainda deve ser feito.
 1. **Antes de criar** um componente, verificar se já existe
 2. **Seguir as specs** em `docs/specs/` para implementação
 3. **Testar** localmente com `npm run dev`

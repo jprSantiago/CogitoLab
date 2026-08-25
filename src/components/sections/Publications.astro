@@ -1,5 +1,6 @@
 ---
 import { getLocale, useTranslations } from '../../utils/i18n';
+import FilterBar from '../common/FilterBar.astro';
 import { pick } from '../../data/types';
 import { publications, publicationTypes, publicationYears } from '../../data/publications';
 import { areas } from '../../data/areas';
@@ -11,23 +12,24 @@ const t = useTranslations(locale);
 const sorted = [...publications].sort((a, b) => b.year - a.year);
 ---
 
-<section class="mx-auto max-w-6xl px-4 py-10">
+<section id="publications" class="mx-auto max-w-6xl scroll-mt-24 px-4 py-10">
   <header class="mb-8">
-    <h1 class="text-3xl font-bold text-cogito-900">{t('publications.title')}</h1>
-    <p class="mt-2 text-cogito-500">{t('publications.subtitle')}</p>
+    <h1 class="text-3xl font-bold text-white">{t('publications.title')}</h1>
+    <p class="mt-2 text-brand-100">{t('publications.subtitle')}</p>
   </header>
 
   <div data-filter-root>
+    <FilterBar>
     <div class="mb-6 flex flex-col gap-3">
       <input
         type="search"
         data-search-input
         placeholder={t('publications.search')}
         aria-label={t('publications.search')}
-        class="w-full rounded-full border border-cogito-200 px-4 py-2 text-sm text-cogito-700 focus:border-cruzeiro-500"
+        class="w-full rounded-full border border-brand-300/50 bg-white/10 px-4 py-2 text-sm text-white placeholder-brand-200/70 focus:border-brand-200"
       />
       <div class="flex flex-wrap items-center gap-2">
-        <span class="text-sm font-semibold text-cogito-700">{t('publications.filter.year')}:</span>
+        <span class="text-sm font-semibold text-brand-100">{t('publications.filter.year')}:</span>
         <button type="button" class="filter-pill" data-filter-group="year" data-filter-value="" aria-pressed="true">{t('common.all')}</button>
         {
           publicationYears.map((y) => (
@@ -36,7 +38,7 @@ const sorted = [...publications].sort((a, b) => b.year - a.year);
         }
       </div>
       <div class="flex flex-wrap items-center gap-2">
-        <span class="text-sm font-semibold text-cogito-700">{t('publications.filter.type')}:</span>
+        <span class="text-sm font-semibold text-brand-100">{t('publications.filter.type')}:</span>
         <button type="button" class="filter-pill" data-filter-group="type" data-filter-value="" aria-pressed="true">{t('common.all')}</button>
         {
           publicationTypes.map((tp) => (
@@ -45,7 +47,7 @@ const sorted = [...publications].sort((a, b) => b.year - a.year);
         }
       </div>
       <div class="flex flex-wrap items-center gap-2">
-        <span class="text-sm font-semibold text-cogito-700">{t('publications.filter.area')}:</span>
+        <span class="text-sm font-semibold text-brand-100">{t('publications.filter.area')}:</span>
         <button type="button" class="filter-pill" data-filter-group="area" data-filter-value="" aria-pressed="true">{t('common.all')}</button>
         {
           areas.map((a) => (
@@ -54,8 +56,9 @@ const sorted = [...publications].sort((a, b) => b.year - a.year);
         }
       </div>
     </div>
+    </FilterBar>
 
-    <p class="mb-4 text-sm text-cogito-400" data-filter-empty hidden>{t('common.empty')}</p>
+    <p class="mb-4 text-sm text-brand-200" data-filter-empty hidden>{t('common.empty')}</p>
 
     <ul class="space-y-4">
       {
@@ -68,37 +71,46 @@ const sorted = [...publications].sort((a, b) => b.year - a.year);
             data-filter-area={pub.areas.join(' ')}
             data-search-text={`${pub.title} ${pub.authors.join(' ')}`}
           >
-            <article>
-              <h2 class="text-lg font-semibold text-cogito-800">{pub.title}</h2>
-              <p class="mt-1 text-sm text-cogito-500">{t('publications.authors')}: {pub.authors.join(', ')}</p>
-              <p class="text-sm text-cruzeiro-700">{pub.venue} · {pub.year}</p>
-              <div class="mt-2 flex flex-wrap gap-2">
-                <span class="rounded-full bg-cogito-100 px-2 py-0.5 text-xs text-cogito-600">{t(`publications.type.${pub.type}`)}</span>
-                {pub.doi && (
-                  <a href={`https://doi.org/${pub.doi}`} target="_blank" rel="noopener noreferrer" class="rounded-full bg-cruzeiro-50 px-2 py-0.5 text-xs text-cruzeiro-700 underline hover:text-cruzeiro-900">
-                    {t('publications.doi')}
-                  </a>
+            <details>
+              <summary class="flex cursor-pointer list-none items-start justify-between gap-3">
+                <div>
+                  <h2 class="text-lg font-semibold text-cogito-800">{pub.title}</h2>
+                  <p class="mt-1 text-sm text-brand-700">{pub.venue} · {pub.year}</p>
+                </div>
+                <div class="flex shrink-0 items-center gap-2">
+                  <span class="rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">{t(`publications.type.${pub.type}`)}</span>
+                  <span class="details-chevron text-cogito-400" aria-hidden="true">▾</span>
+                </div>
+              </summary>
+              <div class="mt-4 space-y-3 border-t border-cogito-100 pt-4 text-sm">
+                <p class="text-cogito-600">{t('publications.authors')}: {pub.authors.join(', ')}</p>
+                <div class="flex flex-wrap gap-2">
+                  {pub.doi && (
+                    <a href={`https://doi.org/${pub.doi}`} target="_blank" rel="noopener noreferrer" class="rounded-full bg-brand-50 px-2 py-0.5 text-xs text-brand-700 underline hover:text-brand-900">
+                      {t('publications.doi')}
+                    </a>
+                  )}
+                  {pub.url && (
+                    <a href={pub.url} target="_blank" rel="noopener noreferrer" class="rounded-full bg-brand-50 px-2 py-0.5 text-xs text-brand-700 underline hover:text-brand-900">
+                      {t('common.links')}
+                    </a>
+                  )}
+                  {pub.artifacts.map((art) => (
+                    <a href={art.url} target="_blank" rel="noopener noreferrer" class="rounded-full bg-cogito-50 px-2 py-0.5 text-xs text-cogito-600 underline hover:text-cogito-800">
+                      {art.type}
+                    </a>
+                  ))}
+                </div>
+                {pub.projects.length > 0 && (
+                  <p class="text-xs text-cogito-400">
+                    {t('common.relatedProjects')}: {pub.projects.map((pid) => {
+                      const pr = getProject(pid);
+                      return pr ? pick(locale, pr.title) : pid;
+                    }).join(' · ')}
+                  </p>
                 )}
-                {pub.url && (
-                  <a href={pub.url} target="_blank" rel="noopener noreferrer" class="rounded-full bg-cruzeiro-50 px-2 py-0.5 text-xs text-cruzeiro-700 underline hover:text-cruzeiro-900">
-                    {t('common.links')}
-                  </a>
-                )}
-                {pub.artifacts.map((art) => (
-                  <a href={art.url} target="_blank" rel="noopener noreferrer" class="rounded-full bg-cogito-50 px-2 py-0.5 text-xs text-cogito-600 underline hover:text-cogito-800">
-                    {art.type}
-                  </a>
-                ))}
               </div>
-              {pub.projects.length > 0 && (
-                <p class="mt-2 text-xs text-cogito-400">
-                  {t('common.relatedProjects')}: {pub.projects.map((pid) => {
-                    const pr = getProject(pid);
-                    return pr ? pick(locale, pr.title) : pid;
-                  }).join(' · ')}
-                </p>
-              )}
-            </article>
+            </details>
           </li>
         ))
       }

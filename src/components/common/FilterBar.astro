@@ -1,0 +1,21 @@
+---
+import { getLocale, useTranslations } from '../../utils/i18n';
+
+interface Props {
+  label?: string;
+}
+
+const { label } = Astro.props;
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+---
+
+<details class="filter-group">
+  <summary class="filter-summary">
+    {label ?? t('common.filter')}
+    <span class="filter-chevron" aria-hidden="true">▾</span>
+  </summary>
+  <div class="filter-panel mt-3">
+    <slot />
+  </div>
+</details>

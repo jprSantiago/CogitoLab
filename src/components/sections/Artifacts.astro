@@ -1,5 +1,6 @@
 ---
 import { getLocale, useTranslations } from '../../utils/i18n';
+import FilterBar from '../common/FilterBar.astro';
 import { pick } from '../../data/types';
 import { artifacts, artifactTypes } from '../../data/artifacts';
 import { areas } from '../../data/areas';
@@ -12,14 +13,15 @@ const t = useTranslations(locale);
 
 <section class="mx-auto max-w-6xl px-4 py-10">
   <header class="mb-8">
-    <h1 class="text-3xl font-bold text-cogito-900">{t('artifacts.title')}</h1>
-    <p class="mt-2 text-cogito-500">{t('artifacts.subtitle')}</p>
+    <h1 class="text-3xl font-bold text-white">{t('artifacts.title')}</h1>
+    <p class="mt-2 text-brand-100">{t('artifacts.subtitle')}</p>
   </header>
 
   <div data-filter-root>
+    <FilterBar>
     <div class="mb-6 flex flex-col gap-3">
       <div class="flex flex-wrap items-center gap-2">
-        <span class="text-sm font-semibold text-cogito-700">{t('artifacts.filter.type')}:</span>
+        <span class="text-sm font-semibold text-brand-100">{t('artifacts.filter.type')}:</span>
         <button type="button" class="filter-pill" data-filter-group="type" data-filter-value="" aria-pressed="true">{t('common.all')}</button>
         {
           artifactTypes.map((tp) => (
@@ -28,7 +30,7 @@ const t = useTranslations(locale);
         }
       </div>
       <div class="flex flex-wrap items-center gap-2">
-        <span class="text-sm font-semibold text-cogito-700">{t('artifacts.filter.area')}:</span>
+        <span class="text-sm font-semibold text-brand-100">{t('artifacts.filter.area')}:</span>
         <button type="button" class="filter-pill" data-filter-group="area" data-filter-value="" aria-pressed="true">{t('common.all')}</button>
         {
           areas.map((a) => (
@@ -37,18 +39,19 @@ const t = useTranslations(locale);
         }
       </div>
     </div>
+    </FilterBar>
 
-    <p class="mb-4 text-sm text-cogito-400" data-filter-empty hidden>{t('common.empty')}</p>
+    <p class="mb-4 text-sm text-brand-200" data-filter-empty hidden>{t('common.empty')}</p>
 
     <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
         artifacts.map((art) => (
           <li class="card-3d" data-filter-item data-filter-type={art.type} data-filter-area={art.areas.join(' ')}>
             <article>
-              <span class="rounded-full bg-cruzeiro-50 px-2 py-0.5 text-xs font-medium text-cruzeiro-700">{t(`artifacts.type.${art.type}`)}</span>
+              <span class="rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">{t(`artifacts.type.${art.type}`)}</span>
               <h2 class="mt-2 text-lg font-semibold text-cogito-800">{art.name}</h2>
               <p class="mt-1 text-sm text-cogito-600">{pick(locale, art.description)}</p>
-              <a href={art.url} target="_blank" rel="noopener noreferrer" class="mt-3 inline-block text-sm text-cruzeiro-700 underline hover:text-cruzeiro-900">{t('common.links')}</a>
+              <a href={art.url} target="_blank" rel="noopener noreferrer" class="mt-3 inline-block text-sm text-brand-700 underline hover:text-brand-900">{t('common.links')}</a>
               {art.projects.length > 0 && (
                 <p class="mt-2 text-xs text-cogito-400">
                   {t('common.relatedProjects')}: {art.projects.map((pid) => {

@@ -12,31 +12,24 @@
   --color-cogito-800: #0f172a;
   --color-cogito-900: #020617;
 
-  --color-brand-400: #38bdf8;
-  --color-brand-500: #0ea5e9;
-  --color-brand-600: #0284c7;
-  --color-brand-700: #0369a1;
-
-  /* Azul inspirado no Cruzeiro Esporte Clube (azul da marca) */
-  --color-cruzeiro-50: #eaf1fb;
-  --color-cruzeiro-100: #cfe0f7;
-  --color-cruzeiro-200: #a9c8ee;
-  --color-cruzeiro-300: #6fa0dc;
-  --color-cruzeiro-400: #3f78c4;
-  --color-cruzeiro-500: #003da5;
-  --color-cruzeiro-600: #002f7d;
-  --color-cruzeiro-700: #00235c;
-  --color-cruzeiro-800: #001a44;
-  --color-cruzeiro-900: #00132e;
+  /* Azul da marca Cogito Lab (neutro, sem referência a terceiros) */
+  --color-brand-50: #eaf1fb;
+  --color-brand-100: #cfe0f7;
+  --color-brand-200: #a9c8ee;
+  --color-brand-300: #6fa0dc;
+  --color-brand-400: #3f78c4;
+  --color-brand-500: #003da5;
+  --color-brand-600: #002f7d;
+  --color-brand-700: #00235c;
+  --color-brand-800: #001a44;
+  --color-brand-900: #00132e;
 
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     Roboto, Helvetica, Arial, sans-serif;
 }
 
 :root {
-  color-scheme: light;
-  /* 1 = topo (branco), 0 = final (azul). Atualizado via JS no scroll. */
-  --scroll: 1;
+  color-scheme: dark;
 }
 
 html {
@@ -44,12 +37,12 @@ html {
 }
 
 body {
-  @apply bg-transparent text-cogito-800 antialiased font-sans;
+  @apply bg-transparent text-brand-50 antialiased font-sans;
   position: relative;
   min-height: 100vh;
 }
 
-/* Fundo fixo: base azul revelada conforme o overlay branco some no scroll */
+/* Fundo fixo azul (tema do site) */
 .page-bg {
   position: fixed;
   inset: 0;
@@ -57,18 +50,10 @@ body {
   background:
     radial-gradient(1200px 700px at 50% -8%, #1d4f91 0%, #003da5 45%, #00132e 100%);
 }
-.page-bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
-  opacity: var(--scroll, 1);
-  transition: opacity 120ms linear;
-}
 
 /* Painel de vidro (estilo Discord) */
 .glass {
-  @apply rounded-3xl border border-white/60 bg-white/70 backdrop-blur-md;
+  @apply rounded-3xl border border-white/60 bg-white/70 text-cogito-800 backdrop-blur-md;
   box-shadow: 0 10px 30px -10px rgba(0, 61, 165, 0.25);
 }
 
@@ -80,21 +65,20 @@ body {
   backdrop-filter: blur(12px);
 }
 
-/* Card com profundidade 3D */
+/* Card minimalista e limpo */
 .card-3d {
-  @apply rounded-3xl border border-white/70 bg-white/80 p-6 backdrop-blur-md;
+  @apply rounded-2xl border border-white/60 bg-white/75 p-5 text-cogito-800 backdrop-blur-md;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    0 18px 40px -20px rgba(0, 61, 165, 0.35);
-  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
-    box-shadow 0.35s ease;
-  transform: perspective(900px) translateZ(0);
+    0 1px 2px rgba(0, 19, 46, 0.04),
+    0 8px 24px -16px rgba(0, 61, 165, 0.3);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 .card-3d:hover {
-  transform: perspective(900px) translateY(-6px) translateZ(20px);
+  transform: translateY(-3px);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.7),
-    0 30px 60px -22px rgba(0, 61, 165, 0.5);
+    0 1px 2px rgba(0, 19, 46, 0.06),
+    0 16px 36px -18px rgba(0, 61, 165, 0.4);
+  border-color: rgba(255, 255, 255, 0.9);
 }
 
 /* Botões */
@@ -129,15 +113,37 @@ body {
   box-shadow: 0 8px 20px -6px rgba(0, 61, 165, 0.6);
 }
 
-/* Pílulas de filtro (reutilizáveis entre seções) */
+/* Pílulas de filtro (reutilizáveis entre seções) — tema azul */
 .filter-pill {
-  @apply rounded-full border border-cogito-200 px-3 py-1.5 text-sm text-cogito-600 transition;
+  @apply rounded-full border border-brand-300/50 bg-white/5 px-3 py-1.5 text-sm text-brand-100 transition;
 }
 .filter-pill:hover {
-  @apply border-cruzeiro-500 text-cruzeiro-700;
+  @apply border-brand-200 bg-white/10 text-white;
 }
 .filter-pill[aria-pressed='true'] {
-  @apply border-cruzeiro-600 bg-cruzeiro-600 text-white;
+  @apply border-brand-400 bg-brand-500 text-white;
+}
+
+/* Barra de filtros colapsável (botão "Filtros") — nativo <details>, 0 JS */
+.filter-summary {
+  @apply inline-flex cursor-pointer list-none items-center gap-2 rounded-full border border-brand-300/50 bg-white/5 px-4 py-2 text-sm font-medium text-brand-100 transition hover:bg-white/10 hover:text-white;
+}
+.filter-summary::-webkit-details-marker {
+  display: none;
+}
+.filter-chevron {
+  transition: transform 0.2s ease;
+}
+.filter-group[open] .filter-chevron {
+  transform: rotate(180deg);
+}
+
+/* Chevron de cards expansíveis (publicações) */
+.details-chevron {
+  transition: transform 0.2s ease;
+}
+details[open] > summary .details-chevron {
+  transform: rotate(180deg);
 }
 
 /* Navbar ganha sombra/realce ao rolar */
@@ -188,7 +194,7 @@ body {
 
 /* Foco visível para acessibilidade (WCAG 2.1 AA) */
 :focus-visible {
-  outline: 2px solid var(--color-cruzeiro-500);
+  outline: 2px solid var(--color-brand-500);
   outline-offset: 2px;
 }
 
