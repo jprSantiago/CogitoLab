@@ -6,6 +6,6 @@ import Partners from '../../../components/sections/Partners.astro';
 const locale = getLocale(Astro.currentLocale);
 const t = useTranslations(locale);
 ---
-<BaseLayout title={t('partners.title')} description={t('partners.subtitle')}>
+<BaseLayout section="partners">
   <Partners />
 </BaseLayout>

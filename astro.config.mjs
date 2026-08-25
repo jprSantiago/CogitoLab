@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
+import sitemap from '@astrojs/sitemap';
 
 // Site configurado para deploy no GitHub Pages.
 // A base é ajustada automaticamente no CI via variável de ambiente, se necessário.
@@ -25,4 +26,13 @@ export default defineConfig({
   },
 
   devToolbar: { enabled: false },
+
+  integrations: [
+    sitemap({
+      i18n: {
+        defaultLocale: 'pt-br',
+        locales: { 'pt-br': 'pt-br', en: 'en' },
+      },
+    }),
+  ],
 });

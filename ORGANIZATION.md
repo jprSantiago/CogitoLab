@@ -150,13 +150,13 @@ Cogito/
 
 | Tarefa | Status |
 |--------|--------|
-| Revisão de design e UX | ⬜ |
-| Testes cross-browser | ⬜ |
-| SEO e meta tags | ⬜ |
-| README completo | ⬜ |
-| DEVELOPMENT_LOG atualizado | ⬜ |
-| Deploy final no GitHub Pages | ⬜ |
-| Reflexão final (seção 11 do Instructions) | ⬜ |
+| Revisão de design e UX | ✅ |
+| Testes cross-browser | ✅ (estrutural + vendor prefix Safari) |
+| SEO e meta tags | ✅ |
+| README completo | ✅ |
+| DEVELOPMENT_LOG atualizado | ✅ |
+| Deploy final no GitHub Pages | ✅ |
+| Reflexão final (seção 11 do Instructions) | ✅ |
 
 **Entregável:** Site em produção, documentação completa.
 
@@ -323,7 +323,7 @@ O projeto será considerado completo quando:
 - [x] Acessível (WCAG 2.1 AA) — auditoria estrutural de a11y concluída (Fase 2)
 - [x] Documentação completa (specs, ADRs, DEVELOPMENT_LOG)
 - [x] DEVELOPMENT_LOG com registro de decisões e interações com IA
-- [ ] Reflexão final documentada (Fase 3 — pendente)
+- [x] Reflexão final documentada (Fase 3 — ✅)
 
 ---
 

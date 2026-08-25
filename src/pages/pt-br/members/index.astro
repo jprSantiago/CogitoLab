@@ -6,6 +6,6 @@ import Members from '../../../components/sections/Members.astro';
 const locale = getLocale(Astro.currentLocale);
 const t = useTranslations(locale);
 ---
-<BaseLayout title={t('members.title')} description={t('members.subtitle')}>
+<BaseLayout section="members">
   <Members />
 </BaseLayout>

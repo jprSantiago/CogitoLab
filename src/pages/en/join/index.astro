@@ -6,6 +6,6 @@ import Join from '../../../components/sections/Join.astro';
 const locale = getLocale(Astro.currentLocale);
 const t = useTranslations(locale);
 ---
-<BaseLayout title={t('join.title')} description={t('join.subtitle')}>
+<BaseLayout section="join">
   <Join />
 </BaseLayout>

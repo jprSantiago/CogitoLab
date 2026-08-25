@@ -1,12 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations, getLocale } from '../../utils/i18n';
 import Home from '../../components/sections/Home.astro';
 import Areas from '../../components/sections/Areas.astro';
 import Projects from '../../components/sections/Projects.astro';
 import Publications from '../../components/sections/Publications.astro';
+
+const locale = getLocale(Astro.currentLocale);
+const t = useTranslations(locale);
 ---
 
-<BaseLayout intro>
+<BaseLayout intro description={t('meta.home')}>
   <Home />
   <Areas />
   <Projects />

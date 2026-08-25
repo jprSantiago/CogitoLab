@@ -428,6 +428,116 @@ usada tanto na navbar quanto nas páginas.
   inclusive do tema claro (antes sinalizado como mudança grande). Revisão manual
   garantiu coerência visual e acessibilidade.
 
+---
+
+## 2026-08-25 — Fase 3: Refinamento e Deploy
+
+**Objetivo:** Polish final, SEO, documentação completa, deploy e reflexão
+(conforme `ORGANIZATION.md` Fase 3 e `Instructions.md` §11–§12).
+
+### Decisões e alterações
+- **SEO (meta tags):** `BaseLayout.astro` passou a derivar `title`/`description`
+  por seção a partir do dicionário (`meta.*` em `src/i18n/ui.ts`, PT-BR e EN) e
+  ganhou **Twitter Card**, **`og:site_name`**, **`og:image`** e **JSON-LD**
+  (`ResearchOrganization` + `WebSite`). As páginas de seção já passavam
+  `title`/`description` explícitos; agora todas têm OG/Twitter/hreflang consistentes.
+- **Sitemap i18n + robots:** integrado `@astrojs/sitemap` (`astro.config.mjs`)
+  com mapa de locales; criado endpoint `src/pages/robots.txt.ts` que aponta para
+  o `sitemap-index.xml` usando `Astro.site` (base-aware, funciona para user/org
+  e project pages). Criada `public/og-image.svg` (1200×630, marca Cogito Lab).
+- **Cross-browser:** adicionado `-webkit-backdrop-filter` em `.glass-dark` e
+  `.btn-ghost` (`global.css`) para suporte a Safari (o `backdrop-blur-*` do
+  Tailwind já gera o prefixo; estas eram declarações CSS cruas).
+- **Design/UX:** revisão das seções, navbar, footer e tokens de tema; o site já
+  possuía skip-link, `aria-current`, `prefers-reduced-motion`, foco visível e
+  contraste AA. Nenhum defeito bloqueante encontrado — as melhorias foram
+  pontuais (prefixo Safari e reforço de SEO).
+- **README:** reescrito com arquitetura de conteúdo, estrutura de pastas, SEO,
+  testes e deploy (`README.md`).
+- **Reflexão final:** adicionada seção "Reflexão Final" (abaixo) atendendo ao
+  `Instructions.md` §11.
+
+### Nota sobre a imagem de OG (SVG)
+A `og-image.svg` é vetorial e leve, porém **algumas plataformas sociais (ex.: X/Twitter, Facebook)
+não renderizam SVG em `og:image`**, exibindo o card sem imagem. Uma variante PNG
+(rasterizada, ex.: via `resvg`/`sharp`) seria o aprimoramento ideal e fica como
+pendência documentada — o restante do SEO (tags, JSON-LD, sitemap) é independente.
+
+### Verificação
+- `npm run build` → 18 páginas + `robots.txt` + `sitemap-index.xml` + `og-image.svg`,
+  sem erro. Inspeção do HTML confirma OG/Twitter/hreflang/JSON-LD por página.
+- `npm run lint` (astro check) → 0 erros.
+- `npm run test` → suíte existente mantida verde (96 testes); o CI roda
+  lint+test antes do deploy.
+
+### Decisão de IA (opencode)
+- Uso do opencode para levantar e implementar o pacote de SEO (sitemap, robots,
+  JSON-LD, Twitter/OG), o prefixo cross-browser e a redação de README/reflexão.
+  Revisão manual garantiu que `Astro.site` e `BASE_URL` produzem URLs absolutas
+  corretas em pages de projeto.
+
+### Revisão de integração (opencode)
+- Revisão das alterações da Fase 3 contra `ORGANIZATION.md`: o pacote de SEO estava
+  presente, mas o `section` em `BaseLayout.astro` (que deriva título/descrição de
+  `meta.*`) era **código morto** — nenhuma página passava `section`, e `meta.home`
+  não era usado na Home. Corrigido:
+  - Home (`pt-br/`, `en/`) agora passa `description={t('meta.home')}`.
+  - Páginas de seção (members, artifacts, news, join, partners, about, contact)
+    convertidas para `<BaseLayout section="X">`, ativando o dicionário `meta.*`.
+  - `jsonLd` agora é **base-aware** (`SITE_CONFIG.url + BASE_URL`) em `@id`/`url`.
+- Verificação: `npm run lint` (0 erros), `npm run test` (96 verdes),
+  `npm run build` (emite `robots.txt` + `sitemap-index.xml`).
+
+---
+
+## Reflexão Final (Instructions.md §11)
+
+1. **Principais decisões técnicas:** (a) Astro + Tailwind v4 com **0 JS por padrão**
+   e progressive enhancement; (b) i18n URL-based (`@astrojs/i18n`) com dicionário
+   tipado e dados bilíngues `Localized<T>`+`pick()` desacoplados da apresentação;
+   (c) testes em 3 níveis com `experimental_AstroContainer` + build real de ponta
+   a ponta; (d) consolidação de Áreas/Projetos/Publicações na Home (tema permitido
+   pelo desafio); (e) tema claro/escuro via atributo CSS, sem alterar a marcação.
+
+2. **Parte de que mais me satisfaz:** a **arquitetura de i18n + dados tipados** —
+   adicionar uma tradução ou um novo membro/projeto não exige duplicar lógica nem
+   componentes, e o dicionário estrito impede chaves órfãs. É manutenível por
+   estudantes não experientes, como o desafio prevê.
+
+3. **Problema mais importante:** o **conflito de Vite** (`@tailwindcss/vite` puxava
+   Vite 7 vs. Vite 6 do Astro) e, depois, a **lacuna de cobertura EN das seções**
+   no container de testes. Resolvidos com `overrides` no `package.json` e com um
+   teste de build real (`build-output.test.ts`) que valida EN/PT-BR em `dist/`.
+
+4. **Como a IA ajudou:** geração de componentes SVG (BrainLogo, fundos de código),
+   auditoria das fases (ex.: qualidade ausente no CI, gap EN), proposta de pacote
+   de SEO e redação de docs. Acelerou tarefas mecânicas e levantou pontos de
+   qualidade que eu revisava criticamente.
+
+5. **Onde a IA sugeriu algo inadequado:** sugestões de **refactor de componentes**
+   para "resolver" o locale no container de testes — inflaria o código de produção
+   só por causa do teste. Avaliado como inadequado e substituído por teste de build
+   real (decisão registrada no ADR-004). Também houve sugestões cosméticas
+   excessivas que, se aplicadas sem critério, prejudicariam a coerência visual.
+
+6. **Como avaliei a confiança nas sugestões:** (i) rodava `build`/`lint`/`test`
+   após cada mudança; (ii) preferia a solução que exercitava o caminho real de
+   produção em vez de contornos só para o teste; (iii) revisava a11y (aria-*,
+   reduced-motion, contraste) e o princípio "0 JS por padrão" antes de aceitar.
+
+7. **Com uma semana a mais:** (a) gerar **OG image em PNG** (preview real em rede
+   social); (b) adicionar **dados reais** de membros/projetos (hoje parcialmente
+   representativos) e paginação/busca server-side mais robusta; (c) **E2E real**
+   (Playwright) para fluxo de troca de idioma/tema; (d) modo de alto contraste e
+   translações finas de microcopy.
+
+8. **Evidências de confiabilidade:** `npm run test` **96 testes verdes** (unit +
+   integração + build real), `npm run lint` **0 erros**, `npm run build` **18
+   páginas + sitemap/robots** estável, e CI com **quality gates** (lint+test antes
+   do deploy). A cobertura de ~97% em `src/**` exercita helpers de i18n, dados e
+   filtragem — as partes de maior risco de regressão.
+
+
 
 
 

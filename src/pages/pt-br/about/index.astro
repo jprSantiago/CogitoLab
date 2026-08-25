@@ -6,6 +6,6 @@ import About from '../../../components/sections/About.astro';
 const locale = getLocale(Astro.currentLocale);
 const t = useTranslations(locale);
 ---
-<BaseLayout title={t('about.title')} description={t('about.subtitle')}>
+<BaseLayout section="about">
   <About />
 </BaseLayout>

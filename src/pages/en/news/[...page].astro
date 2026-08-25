@@ -13,6 +13,6 @@ export const getStaticPaths = (async ({ paginate }) => {
 const { page } = Astro.props;
 const t = useTranslations('en');
 ---
-<BaseLayout title={t('news.title')} description={t('news.subtitle')}>
+<BaseLayout section="news">
   <News page={page} />
 </BaseLayout>

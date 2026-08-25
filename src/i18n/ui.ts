@@ -195,6 +195,19 @@ const ptBR: Dict = {
   'about.values': 'Valores',
   'about.history': 'História',
   'about.team': 'Equipe',
+
+  // Meta tags (SEO por página)
+  'meta.home': 'Grupo de pesquisa em Engenharia de Software, IA, Qualidade, Testes, Mobile/IoT e Inovação.',
+  'meta.areas': 'Seis linhas de pesquisa do Cogito Lab: IA, qualidade, testes, IoT e inovação.',
+  'meta.projects': 'Projetos de pesquisa financiados pelo Cogito Lab.',
+  'meta.publications': 'Publicações científicas associadas ao Cogito Lab.',
+  'meta.members': 'Conheça os pesquisadores, estudantes e colaboradores do Cogito Lab.',
+  'meta.partners': 'Instituições e agências de fomento que apoiam o Cogito Lab.',
+  'meta.contact': 'Fale com o Cogito Lab: e-mail, localização e redes sociais.',
+  'meta.artifacts': 'Software, ferramentas, datasets e pacotes de replicação do Cogito Lab.',
+  'meta.join': 'Oportunidades de iniciação, mestrado, doutorado e colaboração no Cogito Lab.',
+  'meta.about': 'Missão, visão e valores do Cogito Lab.',
+  'meta.news': 'Notícias, conquistas e atividades do Cogito Lab.',
 };
 
 const en: Dict = {
@@ -384,6 +397,19 @@ const en: Dict = {
   'about.values': 'Values',
   'about.history': 'History',
   'about.team': 'Team',
+
+  // Meta tags (SEO per page)
+  'meta.home': 'Research group on Software Engineering, AI, Quality, Testing, Mobile/IoT and Innovation.',
+  'meta.areas': 'Six research lines at Cogito Lab: AI, quality, testing, IoT and innovation.',
+  'meta.projects': 'Funded research projects led by the Cogito Lab.',
+  'meta.publications': 'Scientific publications associated with the Cogito Lab.',
+  'meta.members': 'Meet the researchers, students and collaborators of the Cogito Lab.',
+  'meta.partners': 'Institutions and funding agencies that support the Cogito Lab.',
+  'meta.contact': 'Get in touch with the Cogito Lab: email, location and social networks.',
+  'meta.artifacts': 'Software, tools, datasets and replication packages from the Cogito Lab.',
+  'meta.join': 'Undergraduate, master’s, PhD and collaboration opportunities at the Cogito Lab.',
+  'meta.about': 'Mission, vision and values of the Cogito Lab.',
+  'meta.news': 'News, achievements and activities of the Cogito Lab.',
 };
 
 export const ui: Record<Locale, Dict> = {
