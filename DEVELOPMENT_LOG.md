@@ -544,94 +544,96 @@ pendência documentada — o restante do SEO (tags, JSON-LD, sitemap) é indepen
 
 ---
 
-## 2026-08-26 � Corre��o de deploy em GitHub Pages (project page)
+## 2026-08-26 — Correção de deploy em GitHub Pages (project page)
 
-**Problema:** Ap�s deploy, a p�gina inicial carregava, mas qualquer subp�gina
-(`/en/`, `/pt-br/members/`, etc.) retornava *"404 � There isn`t a GitHub Pages
+**Problema:** Após deploy, a página inicial carregava, mas qualquer subpágina
+(`/en/`, `/pt-br/members/`, etc.) retornava *"404 — There isn't a GitHub Pages
 site here"*.
 
-**Causa raiz:** O reposit�rio `jprSantiago/CogitoLab` � uma **project page**,
+**Causa raiz:** O repositório `jprSantiago/CogitoLab` é uma **project page**,
 servida em `https://jprsantiago.github.io/CogitoLab/`. O Astro `base` estava
 correto no CI (`/CogitoLab/`), mas os links internos eram gerados por
-`localeUrl()`/`buildUrl()` como caminhos relativos � **raiz** (`/pt-br/members/`),
-e o Astro **n�o** prefixa automaticamente `<a href>` com `base`. Assim, ao clicar
+`localeUrl()`/`buildUrl()` como caminhos relativos à **raiz** (`/pt-br/members/`),
+e o Astro **não** prefixa automaticamente `<a href>` com `base`. Assim, ao clicar
 em um link, o navegador ia para `https://jprsantiago.github.io/pt-br/...` (raiz do
-usu�rio, onde n�o h� site) em vez de `.../CogitoLab/pt-br/...`. Havia tamb�m
-duplica��o de `/CogitoLab/` nas URLs can�nicas/OG porque `BaseLayout` concatenava
-`SITE_CONFIG.url` (que j� inclui o base) com `import.meta.env.BASE_URL`.
+usuário, onde não há site) em vez de `.../CogitoLab/pt-br/...`. Havia também
+duplicação de `/CogitoLab/` nas URLs canônicas/OG porque `BaseLayout` concatenava
+`SITE_CONFIG.url` (que já inclui o base) com `import.meta.env.BASE_URL`.
 
-**Corre��es:**
+**Correções:**
 - `src/utils/i18n.ts`: `localeUrl()` agora prefixa `import.meta.env.BASE_URL`;
   `getAlternateLocaleUrl()` remove o prefixo de `base` do `pathname` antes de
-  extrair o locale (evita duplica��o).
+  extrair o locale (evita duplicação).
 - `src/layouts/BaseLayout.astro`: `pathWithoutLocale` ignora o `base`; URLs
-  can�nicas/OG/json-ld usam `SITE_CONFIG.url` sem re-concatenar `BASE_URL`.
+  canônicas/OG/json-ld usam `SITE_CONFIG.url` sem re-concatenar `BASE_URL`.
 - `astro.config.mjs` e `src/config/site.ts`: defaults passam a refletir a project
   page (`/CogitoLab/` e `https://jprsantiago.github.io/CogitoLab`) para builds
   locais/uploads, mantendo o override via `ASTRO_BASE`/`ASTRO_SITE` no CI.
 
-**Verifica��o:** `npm run build` (18 p�ginas, links `/CogitoLab/...` corretos,
-sem duplica��o), `npm run lint` (0 erros). Para publicar: commit/push na `main`
-(re)dispara o workflow; confirmar que GitHub Pages ? Source = "GitHub Actions".
+**Verificação:** `npm run build` (18 páginas, links `/CogitoLab/...` corretos,
+sem duplicação), `npm run lint` (0 erros). Para publicar: commit/push na `main`
+(re)dispara o workflow; confirmar que GitHub Pages → Source = "GitHub Actions".
 
 ---
 
-## 2026-08-26 — Revis�o p�s-ajuste: links duplicados na Home (double `localeUrl`)
+## 2026-08-26 — Revisão pós-ajuste: links duplicados na Home (double `localeUrl`)
 
-**Problema encontrado na revis�o:** mesmo ap�s o ajuste do `base`, os cards
-"Explore" da Home (Membros, Not�cias) geravam `/CogitoLab/pt-br/CogitoLab/pt-br/members/`
+**Problema encontrado na revisão:** mesmo após o ajuste do `base`, os cards
+"Explore" da Home (Membros, Notícias) geravam `/CogitoLab/pt-br/CogitoLab/pt-br/members/`
 (base duplicado → 404 no GitHub Pages).
 
 **Causa raiz:** no `src/components/sections/Home.astro`, o array `featured`
-(usado nos cards) j� envolvia os hrefs com `localeUrl(...)` (linhas 36-37), e o
-template aplicava `localeUrl(...)` **novamente** (linha 114). Tamb�m havia um
+(usado nos cards) já envolvia os hrefs com `localeUrl(...)` (linhas 36-37), e o
+template aplicava `localeUrl(...)` **novamente** (linha 114). Também havia um
 off-by-one inofensivo (`'/' + path.slice(base.length - 1)`) em `getAlternateLocaleUrl`
-e em `BaseLayout`, que produzia uma barra dupla transit�ria normalizada pelo
+e em `BaseLayout`, que produzia uma barra dupla transitória normalizada pelo
 `stripLocale`.
 
-**Corre��es:**
+**Correções:**
 - `src/components/sections/Home.astro`: array `featured` passa a usar hrefs brutos
-  (`/#areas`, `/#projects`, `/members`, `/news`); o `localeUrl` � aplicado uma
-  �nica vez no template.
+  (`/#areas`, `/#projects`, `/members`, `/news`); o `localeUrl` é aplicado uma
+  única vez no template.
 - `src/utils/i18n.ts` e `src/layouts/BaseLayout.astro`: ajuste de
   `path.slice(base.length - 1)` para `path.slice(base.length)` (remove o `base`
   completo, sem off-by-one).
-- `tests/integration/navigation.test.ts`: novo grupo de testes que l� o `dist`
-  buildado e garante a aus�ncia de base duplicado e a presen�a dos links corretos
+- `tests/integration/navigation.test.ts`: novo grupo de testes que lê o `dist`
+  buildado e garante a ausência de base duplicado e a presença dos links corretos
   `/CogitoLab/pt-br/members/` e `/CogitoLab/pt-br/news/`.
 
-**Verifica��o:** `npm run build` (18 p�ginas), `npm run lint` (0 erros),
-`npm run test` (98 testes passando, incluindo os novos de regress�o). O
-`dist/pt-br/index.html` n�o cont�m mais `/CogitoLab/pt-br/CogitoLab/`.
+**Verificação:** `npm run build` (18 páginas), `npm run lint` (0 erros),
+`npm run test` (98 testes passando, incluindo os novos de regressão). O
+`dist/pt-br/index.html` não contém mais `/CogitoLab/pt-br/CogitoLab/`.
+
+---
+
 ## Estética e UX — revolução visual (carrossel, nova logo, intro 2s, reveal)
 
 **Intro (tela de carregamento):** IntroSplash.astro + global.css — mostra apenas
-a logo por 2s e transiciona (fade-out em 0.7s após 2s). Mantém-se seguro sem JS
-(sessionStorage) e respeita prefers-reduced-motion.
+a logo por 2s e transiciona (fade-out em 0,7s após 2s). Mantém-se seguro sem JS
+(sessionStorage) e respeita `prefers-reduced-motion`.
 
-**Nova logo:** src/components/common/BrainLogo.astro redesenhado como LÂMPADA com
-CÉREBRO 3D de lado (gradiente claro→escuro, highlight e giros). Atualizados também
-public/favicon.svg e public/og-image.svg.
+**Nova logo:** `src/components/common/BrainLogo.astro` redesenhado como LÂMPADA
+com CÉREBRO 3D de lado (gradiente claro→escuro, highlight e giros). Atualizados
+também `public/favicon.svg` e `public/og-image.svg`.
 
-**Menu arredondado:** src/components/layout/Navbar.astro — itens de navegação agora
-são pílulas (ounded-full) no desktop e no mobile.
+**Menu arredondado:** `src/components/layout/Navbar.astro` — itens de navegação
+agora são pílulas (`rounded-full`) no desktop e no mobile.
 
-**Carrossel/roleta (Projetos e Publicações):** novo src/scripts/card-carousel.ts +
-CSS .carousel em global.css. Cards posicionados em 3D: ativo à frente; anterior/
-próximo em segundo plano (escala 0.82, opacidade 0.5, atrás). Setas (prev/next),
-teclado (←/→) e respeito ao filtro (hidden). Fallback sem JS: cards em fluxo normal.
-Projects.astro e Publications.astro envolvem a lista no carrossel; chaves
-carousel.prev/carousel.next adicionadas em src/i18n/ui.ts (pt-br/en).
+**Carrossel/roleta (Projetos e Publicações):** novo `src/scripts/card-carousel.ts`
++ CSS `.carousel` em `global.css`. Cards posicionados em 3D: ativo à frente;
+anterior/próximo em segundo plano (escala 0,82, opacidade 0,5, atrás). Setas
+(prev/next), teclado (←/→) e respeito ao filtro (hidden). Fallback sem JS: cards em
+fluxo normal. `Projects.astro` e `Publications.astro` envolvem a lista no
+carrossel; chaves `carousel.prev`/`carousel.next` adicionadas em `src/i18n/ui.ts`
+(pt-br/en).
 
-**Revelação progressiva ao scroll:** novo src/scripts/reveal.ts + CSS .reveal/
-.reveal-ready em global.css. Ativada só com JS e sem reduced-motion; aplica
-.reveal a section, ooter e .card-3d:not(.carousel__slide). Observa a viewport
-e remove as classes após a transição (não conflita com hover). Se o script não carregar,
-nada fica oculto. Tags <section> receberam eveal server-side.
+**Revelação progressiva ao scroll:** novo `src/scripts/reveal.ts` + CSS
+`.reveal`/`.reveal-ready` em `global.css`. Ativada só com JS e sem
+`reduced-motion`; aplica `.reveal` a `section`, `footer` e
+`.card-3d:not(.carousel__slide)`. Observa a viewport e remove as classes após a
+transição (não conflita com hover). Se o script não carregar, nada fica oculto.
+Tags `<section>` receberam `.reveal` server-side.
 
-**Verificação:** 
-pm run build (18 páginas), 
-pm run lint (0 erros), 
-pm run test
-(99 testes passando). 	ests/integration/sections.test.ts atualizado para validar a
-estrutura do carrossel em Projetos e Publicações.
+**Verificação:** `npm run build` (18 páginas), `npm run lint` (0 erros),
+`npm run test` (99 testes passando). `tests/integration/sections.test.ts`
+atualizado para validar a estrutura do carrossel em Projetos e Publicações.
