@@ -48,14 +48,14 @@ jobs:
       - name: Lint (astro check)
         run: npm run lint
 
-      - name: Test (Vitest)
-        run: npm run test
-
       - name: Build
         run: npm run build
         env:
           ASTRO_BASE: ${{ steps.base.outputs.base }}
           ASTRO_SITE: ${{ steps.base.outputs.site }}
+
+      - name: Test (Vitest)
+        run: npm run test
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

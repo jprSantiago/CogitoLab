@@ -1,4 +1,5 @@
 import { beforeAll, describe, expect, it } from 'vitest';
+import { execSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import Navbar from '../../src/components/layout/Navbar.astro';
@@ -7,6 +8,12 @@ import { navItems } from '../../src/utils/i18n';
 import { renderComponent } from './render-helper';
 
 const distDir = resolve(process.cwd(), 'dist');
+
+beforeAll(() => {
+  if (!existsSync(distDir)) {
+    execSync('npm run build', { stdio: 'ignore', timeout: 180_000 });
+  }
+}, 200_000);
 
 describe('Navbar — Portuguese (pt-br)', () => {
   let html = '';
