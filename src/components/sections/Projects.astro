@@ -10,7 +10,7 @@ const locale = getLocale(Astro.currentLocale);
 const t = useTranslations(locale);
 ---
 
-<section id="projects" class="relative mx-auto max-w-6xl scroll-mt-24 px-4 py-10">
+<section id="projects" class="reveal relative mx-auto max-w-6xl scroll-mt-24 px-4 py-10">
   <CodeBackdrop class="pointer-events-none absolute inset-0 h-full w-full opacity-60" />
 
   <div class="relative z-10">
@@ -45,11 +45,13 @@ const t = useTranslations(locale);
 
     <p class="mb-4 text-sm text-brand-200" data-filter-empty hidden>{t('common.empty')}</p>
 
-    <ul class="grid gap-6 lg:grid-cols-2">
+    <div class="carousel" data-carousel>
+      <button type="button" class="carousel__btn carousel__btn--prev" data-carousel-prev aria-label={t('carousel.prev')}>&#8249;</button>
+      <ul class="carousel__track">
       {
         projects.map((p) => (
           <li
-            class="card-3d"
+            class="carousel__slide card-3d"
             data-filter-item
             data-filter-agency={p.agency}
             data-filter-status={p.status}
@@ -117,11 +119,14 @@ const t = useTranslations(locale);
           </li>
         ))
       }
-    </ul>
+      </ul>
+      <button type="button" class="carousel__btn carousel__btn--next" data-carousel-next aria-label={t('carousel.next')}>&#8250;</button>
+    </div>
   </div>
   </div>
 </section>
 
 <script>
   import '../../scripts/list-filter.ts';
+  import '../../scripts/card-carousel.ts';
 </script>

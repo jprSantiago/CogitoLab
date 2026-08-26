@@ -62,6 +62,10 @@ const ptBR: Dict = {
   'common.contact': 'Contato',
   'common.backToTop': 'Voltar ao topo',
 
+  // Carrossel (Projetos / Publicações)
+  'carousel.prev': 'Anterior',
+  'carousel.next': 'Próximo',
+
   // Áreas
   'areas.title': 'Áreas de Pesquisa',
   'areas.subtitle': 'Seis linhas de investigação que guiam o trabalho do Cogito Lab.',
@@ -263,6 +267,10 @@ const en: Dict = {
   'common.readMore': 'Read more',
   'common.contact': 'Contact',
   'common.backToTop': 'Back to top',
+
+  // Carousel (Projects / Publications)
+  'carousel.prev': 'Previous',
+  'carousel.next': 'Next',
 
   // Areas
   'areas.title': 'Research Areas',

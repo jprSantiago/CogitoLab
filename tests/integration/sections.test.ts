@@ -29,8 +29,12 @@ describe('Areas section', () => {
     expect(ids).toBe(6);
   });
 
-  it('uses a responsive grid layout', () => {
-    expect(html).toMatch(responsive);
+  it('renders a carousel/roulette for the areas', () => {
+    expect(html).toContain('data-carousel');
+    expect(html).toContain('carousel__track');
+    expect(html).toContain('data-carousel-prev');
+    expect(html).toContain('data-carousel-next');
+    expect(html).toContain('carousel__slide');
   });
 });
 
@@ -70,8 +74,12 @@ describe('Projects section', () => {
     expect(html).toContain('Em andamento');
   });
 
-  it('uses a responsive grid layout', () => {
-    expect(html).toMatch(responsive);
+  it('renders a carousel/roulette for the cards', () => {
+    expect(html).toContain('data-carousel');
+    expect(html).toContain('carousel__track');
+    expect(html).toContain('data-carousel-prev');
+    expect(html).toContain('data-carousel-next');
+    expect(html).toContain('carousel__slide');
   });
 });
 

@@ -182,7 +182,7 @@ details[open] > summary .details-chevron {
   animation: floaty 6s ease-in-out infinite;
 }
 
-/* Tela de abertura (intro): mostra só o logo e transiciona para a página */
+/* Tela de abertura (intro): mostra só o logo por 2s e transiciona para a página */
 .intro-splash {
   position: fixed;
   inset: 0;
@@ -196,23 +196,27 @@ details[open] > summary .details-chevron {
   display: none;
 }
 .intro-splash:not([hidden]) {
-  animation: splashOut 0.6s ease 1.9s forwards;
+  animation: splashOut 0.7s ease 2s forwards;
 }
 .intro-splash__logo {
-  animation: splashLogo 1.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation: splashLogo 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 @keyframes splashLogo {
   0% {
     opacity: 0;
     transform: scale(0.82);
   }
-  30% {
+  25% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  80% {
     opacity: 1;
     transform: scale(1);
   }
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1.04);
   }
 }
 @keyframes splashOut {
@@ -220,6 +224,134 @@ details[open] > summary .details-chevron {
     opacity: 0;
     visibility: hidden;
   }
+}
+
+/* ============================================================
+   Carrossel / roleta de cards (Projetos e Publicações)
+   - Sem JS, os cards aparecem em fluxo normal (acessível / 0 JS).
+   - Com JS, o carrossel recebe a classe `is-carousel` e os cards
+     são posicionados: o ativo à frente (centro); anterior/próximo
+     em segundo plano, atrás e com escala/opacidade menores.
+   ============================================================ */
+.carousel {
+  max-width: 760px;
+  margin: 2rem auto 0;
+  padding: 0 3rem;
+}
+.carousel__track {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.carousel__btn {
+  display: none;
+}
+/* Estado ativo (após o JS inicializar o carrossel) */
+.carousel.is-carousel {
+  position: relative;
+}
+.carousel.is-carousel .carousel__track {
+  position: relative;
+  width: 100%;
+  min-height: 460px;
+}
+.carousel.is-carousel .carousel__slide {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(560px, 100%);
+  margin: 0;
+  transform: translate(-50%, -50%) scale(0.7);
+  opacity: 0;
+  transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1),
+    opacity 0.45s ease;
+  will-change: transform, opacity;
+}
+.carousel.is-carousel .carousel__btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(0, 61, 165, 0.55);
+  color: #fff;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.carousel.is-carousel .carousel__btn:hover {
+  background: rgba(0, 61, 165, 0.85);
+  border-color: rgba(255, 255, 255, 0.85);
+  transform: translateY(-50%) scale(1.08);
+}
+.carousel.is-carousel .carousel__btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.carousel.is-carousel .carousel__btn--prev {
+  left: 0;
+}
+.carousel.is-carousel .carousel__btn--next {
+  right: 0;
+}
+@media (max-width: 640px) {
+  .carousel {
+    padding: 0 2.5rem;
+  }
+  .carousel.is-carousel .carousel__btn {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1.1rem;
+  }
+}
+/* Tema claro: botões do carrossel */
+[data-theme='light'] .carousel.is-carousel .carousel__btn {
+  border-color: rgba(0, 61, 165, 0.4);
+  background: rgba(0, 61, 165, 0.9);
+  color: #fff;
+}
+
+/* Realce animado ao trocar de card pela seta (ou teclado) */
+@keyframes cardPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(127, 227, 255, 0),
+      0 24px 60px -24px rgba(0, 19, 46, 0.8);
+  }
+  40% {
+    box-shadow: 0 0 0 4px rgba(127, 227, 255, 0.55),
+      0 24px 60px -24px rgba(0, 19, 46, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(127, 227, 255, 0),
+      0 24px 60px -24px rgba(0, 19, 46, 0.8);
+  }
+}
+.carousel.is-carousel .carousel__slide.is-entering {
+  animation: cardPulse 0.55s ease;
+}
+
+/* ============================================================
+   Revelação progressiva ao rolar (aprimoramento progressivo)
+   - Ativada só quando <html> tem a classe `reveal-ready` (JS, sem
+     reduced-motion). Sem JS ou com reduced-motion, tudo visível.
+   ============================================================ */
+.reveal-ready .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal-ready .reveal.is-visible {
+  opacity: 1;
+  transform: none;
 }
 
 /* Revelação ao rolar (aprimoramento progressivo) */
@@ -252,9 +384,14 @@ details[open] > summary .details-chevron {
     animation: none !important;
   }
   .card-3d,
+  .carousel.is-carousel .carousel__slide,
+  .carousel__btn,
   .btn-primary,
   .btn-ghost {
     transition: none !important;
+  }
+  .carousel.is-carousel .carousel__slide.is-entering {
+    animation: none !important;
   }
 }
 

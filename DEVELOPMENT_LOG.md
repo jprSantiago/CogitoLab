@@ -1,4 +1,4 @@
-# Development Log — Cogito Lab Website
+﻿# Development Log — Cogito Lab Website
 
 Este arquivo registra decisões, implementações e interações com agentes de IA
 ao longo do desenvolvimento do site.
@@ -603,3 +603,35 @@ e em `BaseLayout`, que produzia uma barra dupla transit�ria normalizada pelo
 **Verifica��o:** `npm run build` (18 p�ginas), `npm run lint` (0 erros),
 `npm run test` (98 testes passando, incluindo os novos de regress�o). O
 `dist/pt-br/index.html` n�o cont�m mais `/CogitoLab/pt-br/CogitoLab/`.
+## Estética e UX — revolução visual (carrossel, nova logo, intro 2s, reveal)
+
+**Intro (tela de carregamento):** IntroSplash.astro + global.css — mostra apenas
+a logo por 2s e transiciona (fade-out em 0.7s após 2s). Mantém-se seguro sem JS
+(sessionStorage) e respeita prefers-reduced-motion.
+
+**Nova logo:** src/components/common/BrainLogo.astro redesenhado como LÂMPADA com
+CÉREBRO 3D de lado (gradiente claro→escuro, highlight e giros). Atualizados também
+public/favicon.svg e public/og-image.svg.
+
+**Menu arredondado:** src/components/layout/Navbar.astro — itens de navegação agora
+são pílulas (ounded-full) no desktop e no mobile.
+
+**Carrossel/roleta (Projetos e Publicações):** novo src/scripts/card-carousel.ts +
+CSS .carousel em global.css. Cards posicionados em 3D: ativo à frente; anterior/
+próximo em segundo plano (escala 0.82, opacidade 0.5, atrás). Setas (prev/next),
+teclado (←/→) e respeito ao filtro (hidden). Fallback sem JS: cards em fluxo normal.
+Projects.astro e Publications.astro envolvem a lista no carrossel; chaves
+carousel.prev/carousel.next adicionadas em src/i18n/ui.ts (pt-br/en).
+
+**Revelação progressiva ao scroll:** novo src/scripts/reveal.ts + CSS .reveal/
+.reveal-ready em global.css. Ativada só com JS e sem reduced-motion; aplica
+.reveal a section, ooter e .card-3d:not(.carousel__slide). Observa a viewport
+e remove as classes após a transição (não conflita com hover). Se o script não carregar,
+nada fica oculto. Tags <section> receberam eveal server-side.
+
+**Verificação:** 
+pm run build (18 páginas), 
+pm run lint (0 erros), 
+pm run test
+(99 testes passando). 	ests/integration/sections.test.ts atualizado para validar a
+estrutura do carrossel em Projetos e Publicações.
