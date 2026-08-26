@@ -7,8 +7,9 @@ import sitemap from '@astrojs/sitemap';
 // A base é ajustada automaticamente no CI via variável de ambiente, se necessário.
 export default defineConfig({
   // `site` e `base` são ajustados pelo CI para pages de projeto (ex.: /CogitoLab/).
-  site: process.env.ASTRO_SITE || 'https://cogitolab.github.io',
-  base: process.env.ASTRO_BASE || '/',
+  // O padrão já reflete a project page deste repo para builds locais/uploads.
+  site: process.env.ASTRO_SITE || 'https://jprsantiago.github.io/CogitoLab',
+  base: process.env.ASTRO_BASE || '/CogitoLab/',
   trailingSlash: 'always',
 
   // i18n: URLs prefixadas (/pt-br/..., /en/...)

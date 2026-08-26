@@ -37,8 +37,14 @@ export function stripLocale(pathname: string): string {
  * Gera a URL de um locale alternativo preservando o caminho da página atual.
  */
 export function getAlternateLocaleUrl(currentLocale: Locale, pathname: string): string {
+  const base = import.meta.env.BASE_URL;
+  let path = pathname;
+  // Remove o prefixo de `base` (project pages) antes de extrair o locale.
+  if (base !== '/' && path.startsWith(base)) {
+    path = '/' + path.slice(base.length);
+  }
   const target = locales.find((l) => l !== currentLocale) ?? defaultLocale;
-  const rest = stripLocale(pathname);
+  const rest = stripLocale(path);
   return localeUrl(target, rest === '/' ? '/' : rest);
 }
 
@@ -51,7 +57,9 @@ export function getAlternateLocaleUrl(currentLocale: Locale, pathname: string): 
 export function localeUrl(locale: Locale, path = '/'): string {
   const clean = path === '/' ? '' : path.startsWith('/') ? path : `/${path}`;
   const url = `/${locale}${clean}`;
-  return url.endsWith('/') ? url : `${url}/`;
+  const withSlash = url.endsWith('/') ? url : `${url}/`;
+  // Inclui `base` (project pages: /CogitoLab/) para gerar caminhos corretos.
+  return `${import.meta.env.BASE_URL}${withSlash.replace(/^\//, '')}`;
 }
 
 export type NavItem = { key: string; href: string };

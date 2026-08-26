@@ -109,3 +109,22 @@ describe('Navigation — every navItem resolves to a built page (both locales)',
     }
   }
 });
+
+describe('Built home page — links respect project-page base (no double prefix)', () => {
+  const homeHtml = () => {
+    const file = resolve(distDir, 'pt-br', 'index.html');
+    return existsSync(file) ? require('node:fs').readFileSync(file, 'utf-8') : '';
+  };
+
+  it('does not duplicate the base path in any internal link', () => {
+    const html = homeHtml();
+    expect(html).not.toContain('/CogitoLab/pt-br/CogitoLab/');
+    expect(html).not.toContain('/CogitoLab/en/CogitoLab/');
+  });
+
+  it('home "Explore" cards point to correctly based member/news pages', () => {
+    const html = homeHtml();
+    expect(html).toContain('href="/CogitoLab/pt-br/members/"');
+    expect(html).toContain('href="/CogitoLab/pt-br/news/"');
+  });
+});

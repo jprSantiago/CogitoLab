@@ -541,3 +541,65 @@ pendência documentada — o restante do SEO (tags, JSON-LD, sitemap) é indepen
 
 
 
+
+---
+
+## 2026-08-26 � Corre��o de deploy em GitHub Pages (project page)
+
+**Problema:** Ap�s deploy, a p�gina inicial carregava, mas qualquer subp�gina
+(`/en/`, `/pt-br/members/`, etc.) retornava *"404 � There isn`t a GitHub Pages
+site here"*.
+
+**Causa raiz:** O reposit�rio `jprSantiago/CogitoLab` � uma **project page**,
+servida em `https://jprsantiago.github.io/CogitoLab/`. O Astro `base` estava
+correto no CI (`/CogitoLab/`), mas os links internos eram gerados por
+`localeUrl()`/`buildUrl()` como caminhos relativos � **raiz** (`/pt-br/members/`),
+e o Astro **n�o** prefixa automaticamente `<a href>` com `base`. Assim, ao clicar
+em um link, o navegador ia para `https://jprsantiago.github.io/pt-br/...` (raiz do
+usu�rio, onde n�o h� site) em vez de `.../CogitoLab/pt-br/...`. Havia tamb�m
+duplica��o de `/CogitoLab/` nas URLs can�nicas/OG porque `BaseLayout` concatenava
+`SITE_CONFIG.url` (que j� inclui o base) com `import.meta.env.BASE_URL`.
+
+**Corre��es:**
+- `src/utils/i18n.ts`: `localeUrl()` agora prefixa `import.meta.env.BASE_URL`;
+  `getAlternateLocaleUrl()` remove o prefixo de `base` do `pathname` antes de
+  extrair o locale (evita duplica��o).
+- `src/layouts/BaseLayout.astro`: `pathWithoutLocale` ignora o `base`; URLs
+  can�nicas/OG/json-ld usam `SITE_CONFIG.url` sem re-concatenar `BASE_URL`.
+- `astro.config.mjs` e `src/config/site.ts`: defaults passam a refletir a project
+  page (`/CogitoLab/` e `https://jprsantiago.github.io/CogitoLab`) para builds
+  locais/uploads, mantendo o override via `ASTRO_BASE`/`ASTRO_SITE` no CI.
+
+**Verifica��o:** `npm run build` (18 p�ginas, links `/CogitoLab/...` corretos,
+sem duplica��o), `npm run lint` (0 erros). Para publicar: commit/push na `main`
+(re)dispara o workflow; confirmar que GitHub Pages ? Source = "GitHub Actions".
+
+---
+
+## 2026-08-26 — Revis�o p�s-ajuste: links duplicados na Home (double `localeUrl`)
+
+**Problema encontrado na revis�o:** mesmo ap�s o ajuste do `base`, os cards
+"Explore" da Home (Membros, Not�cias) geravam `/CogitoLab/pt-br/CogitoLab/pt-br/members/`
+(base duplicado → 404 no GitHub Pages).
+
+**Causa raiz:** no `src/components/sections/Home.astro`, o array `featured`
+(usado nos cards) j� envolvia os hrefs com `localeUrl(...)` (linhas 36-37), e o
+template aplicava `localeUrl(...)` **novamente** (linha 114). Tamb�m havia um
+off-by-one inofensivo (`'/' + path.slice(base.length - 1)`) em `getAlternateLocaleUrl`
+e em `BaseLayout`, que produzia uma barra dupla transit�ria normalizada pelo
+`stripLocale`.
+
+**Corre��es:**
+- `src/components/sections/Home.astro`: array `featured` passa a usar hrefs brutos
+  (`/#areas`, `/#projects`, `/members`, `/news`); o `localeUrl` � aplicado uma
+  �nica vez no template.
+- `src/utils/i18n.ts` e `src/layouts/BaseLayout.astro`: ajuste de
+  `path.slice(base.length - 1)` para `path.slice(base.length)` (remove o `base`
+  completo, sem off-by-one).
+- `tests/integration/navigation.test.ts`: novo grupo de testes que l� o `dist`
+  buildado e garante a aus�ncia de base duplicado e a presen�a dos links corretos
+  `/CogitoLab/pt-br/members/` e `/CogitoLab/pt-br/news/`.
+
+**Verifica��o:** `npm run build` (18 p�ginas), `npm run lint` (0 erros),
+`npm run test` (98 testes passando, incluindo os novos de regress�o). O
+`dist/pt-br/index.html` n�o cont�m mais `/CogitoLab/pt-br/CogitoLab/`.
