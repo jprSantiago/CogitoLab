@@ -317,7 +317,7 @@ O projeto será considerado completo quando:
 - [x] Site implementado com Astro + Tailwind
 - [x] i18n funcional (PT-BR e EN)
 - [x] Todas as seções do Instructions.md implementadas
-- [x] Testes automatizados com cobertura adequada (Fase 2 — ✅ 78 testes, ~97%)
+- [x] Testes automatizados com cobertura adequada (Fase 2 — ✅ 104 testes, ~95%)
 - [x] Deploy automatizado via GitHub Actions (`.github/workflows/deploy.yml`)
 - [x] Responsivo (desktop e mobile)
 - [x] Acessível (WCAG 2.1 AA) — auditoria estrutural de a11y concluída (Fase 2)

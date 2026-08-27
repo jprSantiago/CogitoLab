@@ -3,7 +3,6 @@ import type { GetStaticPaths } from 'astro';
 import { news } from '../../../data/news';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import News from '../../../components/sections/News.astro';
-import { useTranslations } from '../../../utils/i18n';
 
 export const getStaticPaths = (async ({ paginate }) => {
   const sorted = [...news].sort((a, b) => b.date.localeCompare(a.date));
@@ -11,7 +10,6 @@ export const getStaticPaths = (async ({ paginate }) => {
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
-const t = useTranslations('pt-br');
 ---
 <BaseLayout section="news">
   <News page={page} />

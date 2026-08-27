@@ -70,8 +70,10 @@ describe('Projects section', () => {
   it('renders the title and project data', () => {
     expect(html).toContain('Projetos');
     expect(html).toContain('CNPq');
-    expect(html).toContain('Avaliação da Qualidade de Código Gerado por IA');
+    expect(html).toContain('Avaliação da Qualidade de Código Gerado por Inteligência Artificial');
     expect(html).toContain('Em andamento');
+    expect(html).toContain('VUEI');
+    expect(html).toContain('Novo SEED');
   });
 
   it('renders a carousel/roulette for the cards', () => {

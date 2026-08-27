@@ -38,7 +38,7 @@ const ptBR: Dict = {
   'home.hero.mission': 'Missão',
   'home.hero.missionText': 'Avançar o conhecimento e formar pesquisadores através de investigação rigorosa e colaborativa.',
   'home.hero.institutions': 'Instituições',
-  'home.hero.institutionsText': 'Vinculado a instituições de ensino e pesquisa (a definir).',
+  'home.hero.institutionsText': 'Vinculado à UFLA e a instituições de ensino e pesquisa parceiras.',
   'home.sections.title': 'Explore',
   'home.sections.subtitle': 'Conheça as frentes de atuação do Cogito Lab.',
   'home.cta.title': 'Quer saber mais?',
@@ -109,6 +109,7 @@ const ptBR: Dict = {
   'projects.field.members': 'Equipe',
   'projects.field.publications': 'Publicações',
   'projects.field.artifacts': 'Artefatos',
+  'projects.field.initiatives': 'Iniciativas',
 
   // Publicações
   'publications.title': 'Publicações',
@@ -125,6 +126,7 @@ const ptBR: Dict = {
   'publications.authors': 'Autores',
   'publications.venue': 'Veículo',
   'publications.doi': 'DOI',
+  'publications.sampleNote': 'Dados de exemplo — registros ilustrativos, não representam publicações reais.',
 
   // Notícias
   'news.title': 'Notícias e Atividades',
@@ -244,7 +246,7 @@ const en: Dict = {
   'home.hero.mission': 'Mission',
   'home.hero.missionText': 'Advance knowledge and train researchers through rigorous and collaborative inquiry.',
   'home.hero.institutions': 'Institutions',
-  'home.hero.institutionsText': 'Affiliated with teaching and research institutions (TBD).',
+  'home.hero.institutionsText': 'Affiliated with UFLA and partner teaching and research institutions.',
   'home.sections.title': 'Explore',
   'home.sections.subtitle': 'Discover the Cogito Lab’s areas of work.',
   'home.cta.title': 'Want to know more?',
@@ -315,6 +317,7 @@ const en: Dict = {
   'projects.field.members': 'Team',
   'projects.field.publications': 'Publications',
   'projects.field.artifacts': 'Artifacts',
+  'projects.field.initiatives': 'Initiatives',
 
   // Publications
   'publications.title': 'Publications',
@@ -331,6 +334,7 @@ const en: Dict = {
   'publications.authors': 'Authors',
   'publications.venue': 'Venue',
   'publications.doi': 'DOI',
+  'publications.sampleNote': 'Sample data — illustrative records, not real publications.',
 
   // News
   'news.title': 'News & Activities',

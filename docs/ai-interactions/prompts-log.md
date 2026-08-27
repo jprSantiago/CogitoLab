@@ -3,10 +3,6 @@
 Registro de interações relevantes com agentes de IA, conforme
 `ORGANIZATION.md` (seção 5.4).
 
-Este arquivo atende ao critério de avaliação **4.5 — Uso crítico de Inteligência
-Artificial**, documentando não apenas *o que* a IA produziu, mas *como* as
-instruções foram formuladas, *como* as respostas foram avaliadas criticamente e
-*quais* sugestões foram modificadas ou rejeitadas.
 
 ---
 
@@ -162,7 +158,7 @@ de tipo do `request` no helper de render (usando `new Request(...)`).
 
 ---
 
-## Síntese do uso crítico de IA (para o critério 4.5)
+## Síntese do uso crítico de IA
 
 - **Boas instruções:** evoluíram de comandos genéricos ("inicie a fase X") para
   prompts estruturados (papel + objetivo + restrições + critério de aceitação +

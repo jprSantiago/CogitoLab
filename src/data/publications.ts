@@ -21,6 +21,8 @@ export interface Publication {
   projects: string[];
   artifacts: PublicationArtifact[];
   abstract: Localized;
+  /** True quando o registro é representativo/exemplo (Instruções §3.5). */
+  isSample?: boolean;
 }
 
 export const publications: Publication[] = [
@@ -31,6 +33,7 @@ export const publications: Publication[] = [
     venue: 'ICSE 2024',
     year: 2024,
     type: 'conference',
+    isSample: true,
     doi: '10.1145/0000000.0000001',
     url: 'https://doi.org/10.1145/0000000.0000001',
     areas: ['ai-se', 'collaborative'],
@@ -48,6 +51,7 @@ export const publications: Publication[] = [
     venue: 'Journal of Software: Evolution and Process',
     year: 2024,
     type: 'journal',
+    isSample: true,
     doi: '10.1002/smr.0002',
     url: 'https://doi.org/10.1002/smr.0002',
     areas: ['quality'],
@@ -65,6 +69,7 @@ export const publications: Publication[] = [
     venue: 'ASE 2024',
     year: 2024,
     type: 'conference',
+    isSample: true,
     doi: '10.1145/0000000.0000003',
     url: 'https://doi.org/10.1145/0000000.0000003',
     areas: ['testing', 'ai-se'],

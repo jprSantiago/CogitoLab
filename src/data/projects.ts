@@ -25,6 +25,8 @@ export interface Project {
   publications: string[];
   artifacts: string[];
   description: Localized;
+  /** Iniciativas relacionadas (ex.: VUEI, Novo SEED). */
+  initiatives?: string[];
 }
 
 export const projects: Project[] = [
@@ -33,8 +35,8 @@ export const projects: Project[] = [
     agency: 'CNPq',
     processNumber: '446729/2024-8',
     title: bilingual(
-      'Avaliação da Qualidade de Código Gerado por IA em Engenharia de Software',
-      'Evaluating the Quality of AI-Generated Code in Software Engineering'
+      'Avaliação da Qualidade de Código Gerado por Inteligência Artificial na Resolução de Dívidas Técnicas e Conflitos de Integração em Projetos Reais.',
+      'Evaluating the Quality of Artificial-Intelligence-Generated Code in Fixing Technical Debt and Merge Conflicts in Real-World Projects'
     ),
     role: 'coordinator',
     period: '2024–2026',
@@ -48,8 +50,8 @@ export const projects: Project[] = [
     publications: ['paper-2024-01', 'paper-2024-03'],
     artifacts: ['ai-code-evaluator'],
     description: bilingual(
-      'Projeto que investiga métricas e práticas para avaliar a qualidade de código produzido por modelos de IA generativa.',
-      'Project investigating metrics and practices to evaluate the quality of code produced by generative AI models.'
+      'Investiga a qualidade de código produzido por IA generativa na correção de débitos técnicos e conflitos de integração em projetos reais de software.',
+      'Investigates the quality of code produced by generative AI in fixing technical debt and merge conflicts in real-world software projects.'
     ),
   },
   {
@@ -57,8 +59,8 @@ export const projects: Project[] = [
     agency: 'CNPq',
     processNumber: '406089/2025-6',
     title: bilingual(
-      'Agentes de IA para Revisão de Código Colaborativa',
-      'AI Agents for Collaborative Code Review'
+      'LLM4IoT: Detecção e Correção de Falhas de Interação de Dispositivos com Grandes Modelos de Linguagem em Sistemas de Software IoT.',
+      'LLM4IoT: Detection and Correction of Device Interaction Failures using Large Language Models in IoT Software Systems'
     ),
     role: 'subcoordinator',
     period: '2025–2027',
@@ -72,8 +74,8 @@ export const projects: Project[] = [
     publications: ['paper-2024-01'],
     artifacts: ['review-agent'],
     description: bilingual(
-      'Desenvolvimento de agentes de IA que auxiliam revisores humanos em revisões de código distribuídas.',
-      'Development of AI agents that assist human reviewers in distributed code reviews.'
+      'Aplica grandes modelos de linguagem para detectar e corrigir falhas de interação entre dispositivos em sistemas de software IoT.',
+      'Applies large language models to detect and correct device interaction failures in IoT software systems.'
     ),
   },
   {
@@ -81,8 +83,8 @@ export const projects: Project[] = [
     agency: 'FAPEMIG',
     processNumber: 'APQ-01488-24',
     title: bilingual(
-      'Débito Técnico e Refatoração em Sistemas Legados',
-      'Technical Debt and Refactoring in Legacy Systems'
+      'Avaliação da Qualidade de Código de Teste Gerado por Inteligência Artificial em Aplicações para Dispositivos Móveis.',
+      'Evaluation of the Quality of AI-Generated Test Code in Applications for Mobile Devices'
     ),
     role: 'subcoordinator',
     period: '2024–2026',
@@ -95,8 +97,8 @@ export const projects: Project[] = [
     publications: ['paper-2024-02'],
     artifacts: ['debt-dashboard'],
     description: bilingual(
-      'Mapeamento e gestão de débito técnico com apoio a decisões de refatoração segura.',
-      'Mapping and management of technical debt with support for safe refactoring decisions.'
+      'Avalia a qualidade de código de teste gerado por IA em aplicações para dispositivos móveis.',
+      'Evaluates the quality of AI-generated test code in mobile device applications.'
     ),
   },
   {
@@ -104,8 +106,8 @@ export const projects: Project[] = [
     agency: 'FAPEMIG',
     processNumber: 'APQ-04113-25',
     title: bilingual(
-      'Testes Automatizados para Confiabilidade de Sistemas',
-      'Automated Testing for Systems Reliability'
+      'Transformação Empreendedora: Consolidando o Ecossistema de Inovação no Unilavras.',
+      'Entrepreneurial Transformation: Consolidating the Innovation Ecosystem at Unilavras'
     ),
     role: 'subcoordinator',
     period: '2025–2027',
@@ -118,17 +120,18 @@ export const projects: Project[] = [
     publications: ['paper-2024-03'],
     artifacts: ['test-gen-tool'],
     description: bilingual(
-      'Técnicas de geração automática de casos de teste voltadas à confiabilidade.',
-      'Automatic test case generation techniques aimed at reliability.'
+      'Consolida o ecossistema de inovação no Unilavras por meio de transformação empreendedora. Iniciativa: VUEI.',
+      'Consolidates the innovation ecosystem at Unilavras through entrepreneurial transformation. Initiative: VUEI.'
     ),
+    initiatives: ['VUEI'],
   },
   {
     id: 'fapemig-APQ-03990-26',
     agency: 'FAPEMIG',
     processNumber: 'APQ-03990-26',
     title: bilingual(
-      'Sistemas Configuráveis e Aplicações Mobile/IoT',
-      'Configurable Systems and Mobile/IoT Applications'
+      'Programa Vertentes ScaleUp.',
+      'Vertentes ScaleUp Program'
     ),
     role: 'collaborator',
     period: '2026–2028',
@@ -141,9 +144,10 @@ export const projects: Project[] = [
     publications: [],
     artifacts: [],
     description: bilingual(
-      'Linhas de produto de software e infraestrutura IoT para aplicações móveis.',
-      'Software product lines and IoT infrastructure for mobile applications.'
+      'Programa de fomento Vertentes ScaleUp. Iniciativa: Novo SEED.',
+      'Vertentes ScaleUp fostering program. Initiative: Novo SEED.'
     ),
+    initiatives: ['Novo SEED'],
   },
 ];
 

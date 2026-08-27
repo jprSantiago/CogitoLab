@@ -26,6 +26,10 @@ export const partners: Partner[] = [
     description: bilingual('Unidade acadêmica de origem do lab.', 'Lab’s home academic unit.'),
   },
   {
+    id: 'unilavras', name: 'Universidade de Lavras (Unilavras)', type: 'university', url: 'https://www.unilavras.edu.br',
+    description: bilingual('Instituição parceira no ecossistema de inovação (iniciativa VUEI).', 'Partner institution in the innovation ecosystem (VUEI initiative).'),
+  },
+  {
     id: 'uf', name: 'Universidade Federal', type: 'university', url: 'https://example.org/uf',
     description: bilingual('Instituição de origem do lab.', 'Lab’s home institution.'),
   },

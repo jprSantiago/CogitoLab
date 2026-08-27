@@ -111,6 +111,82 @@ describe('Data integrity — referential consistency', () => {
   });
 });
 
+describe('Publications as sample data (Instructions §3.5)', () => {
+  it('every publication is explicitly flagged as sample data', () => {
+    expect(publications.length).toBeGreaterThan(0);
+    for (const pub of publications) {
+      expect(pub.isSample).toBe(true);
+    }
+  });
+});
+
+describe('Projects conform to Instructions.md §3.4 (mandated initial set)', () => {
+  const mandated = [
+    {
+      id: 'cnpq-446729-2024',
+      processNumber: '446729/2024-8',
+      agency: 'CNPq',
+      role: 'coordinator' as const,
+      pt: 'Avaliação da Qualidade de Código Gerado por Inteligência Artificial na Resolução de Dívidas Técnicas e Conflitos de Integração em Projetos Reais.',
+      en: 'Evaluating the Quality of Artificial-Intelligence-Generated Code in Fixing Technical Debt and Merge Conflicts in Real-World Projects',
+      initiatives: [] as string[],
+    },
+    {
+      id: 'cnpq-406089-2025',
+      processNumber: '406089/2025-6',
+      agency: 'CNPq',
+      role: 'subcoordinator' as const,
+      pt: 'LLM4IoT: Detecção e Correção de Falhas de Interação de Dispositivos com Grandes Modelos de Linguagem em Sistemas de Software IoT.',
+      en: 'LLM4IoT: Detection and Correction of Device Interaction Failures using Large Language Models in IoT Software Systems',
+      initiatives: [] as string[],
+    },
+    {
+      id: 'fapemig-APQ-01488-24',
+      processNumber: 'APQ-01488-24',
+      agency: 'FAPEMIG',
+      role: 'subcoordinator' as const,
+      pt: 'Avaliação da Qualidade de Código de Teste Gerado por Inteligência Artificial em Aplicações para Dispositivos Móveis.',
+      en: 'Evaluation of the Quality of AI-Generated Test Code in Applications for Mobile Devices',
+      initiatives: [] as string[],
+    },
+    {
+      id: 'fapemig-APQ-04113-25',
+      processNumber: 'APQ-04113-25',
+      agency: 'FAPEMIG',
+      role: 'subcoordinator' as const,
+      pt: 'Transformação Empreendedora: Consolidando o Ecossistema de Inovação no Unilavras.',
+      en: 'Entrepreneurial Transformation: Consolidating the Innovation Ecosystem at Unilavras',
+      initiatives: ['VUEI'],
+    },
+    {
+      id: 'fapemig-APQ-03990-26',
+      processNumber: 'APQ-03990-26',
+      agency: 'FAPEMIG',
+      role: 'collaborator' as const,
+      pt: 'Programa Vertentes ScaleUp.',
+      en: 'Vertentes ScaleUp Program',
+      initiatives: ['Novo SEED'],
+    },
+  ];
+
+  it('exactly the 5 mandated initial projects are present', () => {
+    expect(projects).toHaveLength(5);
+  });
+
+  for (const exp of mandated) {
+    it(`project ${exp.id} matches the mandated title and metadata`, () => {
+      const p = getProject(exp.id);
+      expect(p).toBeDefined();
+      expect(p!.processNumber).toBe(exp.processNumber);
+      expect(p!.agency).toBe(exp.agency);
+      expect(p!.role).toBe(exp.role);
+      expect(pick('pt-br', p!.title)).toBe(exp.pt);
+      expect(pick('en', p!.title)).toBe(exp.en);
+      expect(p!.initiatives ?? []).toEqual(exp.initiatives);
+    });
+  }
+});
+
 describe('Bilingual data coverage (EN parity)', () => {
   it('every area has both locales defined and non-empty', () => {
     for (const a of areas) {

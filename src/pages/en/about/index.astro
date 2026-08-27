@@ -1,10 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { useTranslations, getLocale } from '../../../utils/i18n';
 import About from '../../../components/sections/About.astro';
-
-const locale = getLocale(Astro.currentLocale);
-const t = useTranslations(locale);
 ---
 <BaseLayout section="about">
   <About />

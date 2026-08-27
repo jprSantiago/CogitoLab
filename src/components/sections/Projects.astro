@@ -114,6 +114,17 @@ const t = useTranslations(locale);
                     </ul>
                   </div>
                 )}
+
+                {p.initiatives && p.initiatives.length > 0 && (
+                  <div>
+                    <h3 class="text-xs font-semibold uppercase tracking-wide text-cogito-400">{t('projects.field.initiatives')}</h3>
+                    <ul class="mt-1 space-y-1">
+                      {p.initiatives.map((i) => (
+                        <li class="font-medium text-cogito-700">{i}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </details>
           </li>
