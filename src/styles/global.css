@@ -237,9 +237,15 @@ details[open] > summary .details-chevron {
   max-width: 760px;
   margin: 2rem auto 0;
   padding: 0 3rem;
-  /* Contém os cards vizinhos (que transbordam a moldura em telas estreitas),
-     evitando scroll horizontal no mobile e o "vazamento" dos cards no desktop. */
+  /* Em telas estreitas (mobile/tablet) contém os cards vizinhos para evitar
+     scroll horizontal. Em telas largas (desktop), deixamos transbordar para
+     que os cards laterais apareçam em segundo plano (efeito "roleta"). */
   overflow: hidden;
+}
+@media (min-width: 1200px) {
+  .carousel {
+    overflow: visible;
+  }
 }
 .carousel__track {
   margin: 0;
@@ -343,30 +349,26 @@ details[open] > summary .details-chevron {
 
 /* ============================================================
    Revelação progressiva ao rolar (aprimoramento progressivo)
+   - Controlada exclusivamente via JS/IntersectionObserver para ter
+     comportamento idêntico entre desktop e mobile (sem depender de
+     animation-timeline, que variava muito entre navegadores).
    - Ativada só quando <html> tem a classe `reveal-ready` (JS, sem
      reduced-motion). Sem JS ou com reduced-motion, tudo visível.
+   - Duração mais longa (1.1s) para tornar a progressão mais evidente.
    ============================================================ */
+.reveal {
+  opacity: 1;
+}
 .reveal-ready .reveal {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform: translateY(40px);
+  transition: opacity 1.1s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 1.1s cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: opacity, transform;
 }
 .reveal-ready .reveal.is-visible {
   opacity: 1;
   transform: none;
-}
-
-/* Revelação ao rolar (aprimoramento progressivo) */
-.reveal {
-  opacity: 1;
-}
-@supports (animation-timeline: view()) {
-  .reveal {
-    animation: fadeUp linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 55%;
-  }
 }
 
 /* Foco visível para acessibilidade (WCAG 2.1 AA) */

@@ -6,7 +6,7 @@
  * Acessibilidade / performance:
  * - O overlay nasce com o atributo `hidden`, portanto, SEM JavaScript ele nunca
  *   aparece e o conteúdo fica 100% acessível (respeita "0 JS por padrão").
- * - Com JS, é exibido uma única vez por sessão (sessionStorage) e respeita
+ * - Com JS, é exibido a cada carregamento da home e respeita
  *   `prefers-reduced-motion` (não anima).
  */
 import BrainLogo from '../common/BrainLogo.astro';
@@ -18,28 +18,15 @@ import BrainLogo from '../common/BrainLogo.astro';
   </div>
 </div>
 
-<script>
+<script is:inline>
   const splash = document.getElementById('intro-splash');
   if (splash) {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const seen = (() => {
-      try {
-        return sessionStorage.getItem('cogito_intro_seen') === '1';
-      } catch {
-        return false;
-      }
-    })();
-
-    if (!reduceMotion && !seen) {
+    if (!reduceMotion) {
       splash.hidden = false;
-      try {
-        sessionStorage.setItem('cogito_intro_seen', '1');
-      } catch {
-        /* sessionStorage indisponível: o splash simplesmente reaparecerá */
-      }
       splash.addEventListener(
         'animationend',
-        (e: AnimationEvent) => {
+        (e) => {
           if (e.target === splash && e.animationName === 'splashOut') {
             splash.hidden = true;
           }

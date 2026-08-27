@@ -689,3 +689,34 @@ como "uma vez por sessão" (`sessionStorage`), conforme decisão do usuário.
 - `npm run build` (18 páginas), `npm run lint` (0 erros), `npm run test`
   (98 testes passando). Filtro/carrossel validados com happy-dom (DOM real)
   em Membros, Projetos e Publicações.
+
+## 2026-08-27 - Correcoes de animacao (reveal, roleta, splash)
+
+### Problema reportado
+- Mobile: progressao de reveal correta, porem muito rapida.
+- PC: progressao (reveal), efeito roleta (carrossel) e tela de carregamento
+  (IntroSplash) nao estavam acontecendo.
+
+### Causas e correcoes
+- **Reveal no PC:** o bloco @supports (animation-timeline: view()) em
+  global.css assumia o reveal via CSS scroll-driven em navegadores que suportam
+  a feature (desktop), com range curto que fazia a animacao parecer inexistente.
+  Removido o bloco; o reveal passa a ser 100% JS/IntersectionObserver, igual no
+  mobile. Transicao aumentada de 0.7s -> 1.1s e translateY 28px -> 40px para
+  tornar a progressao mais evidente (conserto do 'muito rapido' no mobile).
+- **Roleta no PC:** o overflow: hidden adicionado ao .carousel no commit
+  anterior para conter o scroll no mobile tambem cortava os cards laterais no
+  desktop, matando o efeito 3D. Agora overflow: hidden so vale abaixo de
+  1200px; em telas largas fica overflow: visible e os cards laterais aparecem.
+- **IntroSplash no PC:** era exibido uma unica vez por sessao (sessionStorage) e
+  empacotado como modulo. Agora o script e is:inline e exibido a cada
+  carregamento da home (mantendo o respeito a prefers-reduced-motion).
+- O script de reveal foi inlineizado em BaseLayout.astro (eliminado
+  src/scripts/reveal.ts, que ficou sem referencias) para rodar em qualquer
+  ambiente de servico.
+
+### Arquivos
+- src/styles/global.css (reveal + carousel)
+- src/components/layout/IntroSplash.astro
+- src/layouts/BaseLayout.astro
+- src/scripts/reveal.ts (removido)
