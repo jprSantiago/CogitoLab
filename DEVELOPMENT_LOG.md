@@ -637,3 +637,55 @@ Tags `<section>` receberam `.reveal` server-side.
 **Verificação:** `npm run build` (18 páginas), `npm run lint` (0 erros),
 `npm run test` (99 testes passando). `tests/integration/sections.test.ts`
 atualizado para validar a estrutura do carrossel em Projetos e Publicações.
+
+---
+
+## 2026-08-27 — Correção de filtros, carrossel e responsividade mobile
+
+**Objetivo:** Corrigir três defeitos reportados em produção — (1) filtro de
+listas inerte; (2) layout "fora do esquadro" no celular; (3) animação do
+carrossel aparentemente quebrada no PC. A tela de intro (2s) foi mantida
+como "uma vez por sessão" (`sessionStorage`), conforme decisão do usuário.
+
+### Problemas e correções
+
+- **Filtro inerte (bug crítico, afetava Membros, Projetos, Publicações, News,
+  Artifacts e Partners):** `src/scripts/list-filter.ts` agrupava filtros
+  lendo `[data-filter-value]` *dentro* de cada `[data-filter-group]`. Porém
+  as seções colocam `data-filter-group` e `data-filter-value` **no próprio
+  botão** (`<button data-filter-group="..." data-filter-value="...">`), então
+  `group.querySelectorAll('[data-filter-value]')` retornava vazio e **nenhum
+  listener de clique era anexado** — o filtro não fazia nada. Corrigido:
+  `init` agora lê a chave `data-filter-group` direto de cada botão (ou do
+  ancestral) e agrupa os botões por chave, anexando o handler em cada um.
+  Validação com DOM real (happy-dom): selecionar "FAPEMIG" em Projetos oculta
+  2/5; "faculty" em Membros oculta 5/6; busca "survey" em Publicações oculta
+  2/3. `src/utils/filter.ts` (lógica pura) permaneceu inalterado.
+
+- **Site fora do esquadro no celular / carrossel vazando no PC:** os cards
+  vizinhos do carrossel (`offset ±1`) usam `translateX(±50%)` sobre
+  `width: min(560px,100%)`; em telas estreitas transbordam o viewport
+  (scroll horizontal no mobile) e, no PC, vazam além da moldura de 760px do
+  `.carousel`, parecendo quebrado. Corrigido em `src/styles/global.css`:
+  `.carousel { overflow: hidden }` contém os vizinhos (elimina o scroll
+  horizontal no mobile e o vazamento no desktop). O carrossel continua
+  avançando/animando normalmente (verificado). Em `src/scripts/card-carousel.ts`,
+  a altura do trilho passou de `+24` para `+48`px para a sombra do card ativo
+  não ser cortada pelo `overflow: hidden`.
+
+- **Intro de 2s:** mantida como "uma vez por sessão" (`IntroSplash.astro`).
+  Observação: sob `prefers-reduced-motion: reduce` a intro e a transição do
+  carrossel são intencionalmente desativadas (acessibilidade); se o PC do
+  usuário tiver essa preferência, explica a impressão de "animação não
+  funciona".
+
+### Arquivos alterados
+- `src/scripts/list-filter.ts` — regra de agrupamento do filtro (botão carrega
+  `data-filter-group`).
+- `src/styles/global.css` — `.carousel { overflow: hidden }`.
+- `src/scripts/card-carousel.ts` — `track.style.height` `+24 → +48`.
+
+### Verificação
+- `npm run build` (18 páginas), `npm run lint` (0 erros), `npm run test`
+  (98 testes passando). Filtro/carrossel validados com happy-dom (DOM real)
+  em Membros, Projetos e Publicações.

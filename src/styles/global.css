@@ -237,6 +237,9 @@ details[open] > summary .details-chevron {
   max-width: 760px;
   margin: 2rem auto 0;
   padding: 0 3rem;
+  /* Contém os cards vizinhos (que transbordam a moldura em telas estreitas),
+     evitando scroll horizontal no mobile e o "vazamento" dos cards no desktop. */
+  overflow: hidden;
 }
 .carousel__track {
   margin: 0;

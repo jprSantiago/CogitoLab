@@ -83,7 +83,7 @@ function initCarousel(root: CarouselRoot) {
     // Ajusta a altura do trilho ao card ativo (suporta <details> expandido).
     const activeEl = vis.length ? vis[active] : null;
     if (activeEl && track) {
-      track.style.height = `${activeEl.offsetHeight + 24}px`;
+      track.style.height = `${activeEl.offsetHeight + 48}px`;
     }
 
     const disabled = vis.length <= 1;
