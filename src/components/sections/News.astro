@@ -3,6 +3,8 @@ import { getLocale, useTranslations, localeUrl } from '../../utils/i18n';
 import FilterBar from '../common/FilterBar.astro';
 import { pick } from '../../data/types';
 import { newsCategories } from '../../data/news';
+import { members } from '../../data/members';
+import { getProject } from '../../data/projects';
 
 interface Props {
   page: {
@@ -61,6 +63,28 @@ const formatDate = (iso: string) => {
               </div>
               <h2 class="mt-2 text-lg font-semibold text-cogito-800">{pick(locale, item.title)}</h2>
               <p class="mt-1 text-sm text-cogito-600">{pick(locale, item.summary)}</p>
+
+              {(item.members.length > 0 || item.projects.length > 0) && (
+                <div class="mt-3 flex flex-wrap gap-3 text-xs text-cogito-400">
+                  {item.members.length > 0 && (
+                    <span>
+                      {t('news.relatedMembers')}: {item.members.map((mid: string) => {
+                        const member = members.find((m) => m.id === mid);
+                        return member ? member.name : mid;
+                      }).join(', ')}
+                    </span>
+                  )}
+                  {item.projects.length > 0 && (
+                    <span>
+                      {t('news.relatedProjects')}: {item.projects.map((pid: string) => {
+                        const pr = getProject(pid);
+                        return pr ? pick(locale, pr.title) : pid;
+                      }).join(', ')}
+                    </span>
+                  )}
+                </div>
+              )}
+
               <a href={localeUrl(locale, '/news')} class="mt-3 inline-block text-sm text-brand-700 underline hover:text-brand-900">
                 {t('common.readMore')}
               </a>

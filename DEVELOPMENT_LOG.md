@@ -492,50 +492,43 @@ pendência documentada — o restante do SEO (tags, JSON-LD, sitemap) é indepen
 
 ## Reflexão Final (Instructions.md §11)
 
-1. **Principais decisões técnicas:** (a) Astro + Tailwind v4 com **0 JS por padrão**
-   e progressive enhancement; (b) i18n URL-based (`@astrojs/i18n`) com dicionário
-   tipado e dados bilíngues `Localized<T>`+`pick()` desacoplados da apresentação;
-   (c) testes em 3 níveis com `experimental_AstroContainer` + build real de ponta
-   a ponta; (d) consolidação de Áreas/Projetos/Publicações na Home (tema permitido
-   pelo desafio); (e) tema claro/escuro via atributo CSS, sem alterar a marcação.
+1. **Principais decisões técnicas:** Primeiro foi a decisão sobre o uso da IA —
+   qual usar e quanto usar. Depois, a escolha da framework consumiu boa parte do
+   tempo no primeiro dia do projeto. Após essas decisões iniciais, nenhuma delas
+   pesou muito durante o desenvolvimento, exceto a estrutura do site: muitas
+   coisas não estavam agradando visualmente e tiveram que ser ajustadas
+   repetidamente até chegar ao resultado desejado.
 
-2. **Parte de que mais me satisfaz:** a **arquitetura de i18n + dados tipados** —
-   adicionar uma tradução ou um novo membro/projeto não exige duplicar lógica nem
-   componentes, e o dicionário estrito impede chaves órfãs. É manutenível por
-   estudantes não experientes, como o desafio prevê.
+2. **Parte de que mais me satisfaz:** A organização e a aparência do site. Gastei
+   muito tempo editando a estética até deixar da forma que eu almejava.
 
-3. **Problema mais importante:** o **conflito de Vite** (`@tailwindcss/vite` puxava
-   Vite 7 vs. Vite 6 do Astro) e, depois, a **lacuna de cobertura EN das seções**
-   no container de testes. Resolvidos com `overrides` no `package.json` e com um
-   teste de build real (`build-output.test.ts`) que valida EN/PT-BR em `dist/`.
+3. **Problema mais importante:** O fato do site ter que rodar em qualquer
+   dispositivo causou erros recorrentes. Animações que funcionavam no desktop
+   tiravam o site do esquadro no celular, e quando o problema era corrigido no
+   mobile, refletia negativamente no computador — e vice-versa. Esse ciclo de
+   ida e volta entre dispositivos foi o maior desafio.
 
-4. **Como a IA ajudou:** geração de componentes SVG (BrainLogo, fundos de código),
-   auditoria das fases (ex.: qualidade ausente no CI, gap EN), proposta de pacote
-   de SEO e redação de docs. Acelerou tarefas mecânicas e levantou pontos de
-   qualidade que eu revisava criticamente.
+4. **Como a IA ajudou:** A IA foi essencial durante todo o desenvolvimento. Sem
+   ela, o site não teria saído do lugar. Desde a escolha dos frameworks até a
+   fase final, a IA foi fundamental para avançar em cada etapa.
 
-5. **Onde a IA sugeriu algo inadequado:** sugestões de **refactor de componentes**
-   para "resolver" o locale no container de testes — inflaria o código de produção
-   só por causa do teste. Avaliado como inadequado e substituído por teste de build
-   real (decisão registrada no ADR-004). Também houve sugestões cosméticas
-   excessivas que, se aplicadas sem critério, prejudicariam a coerência visual.
+5. **Onde a IA sugeriu algo inadequado:** Na estilização do site, por completo.
+   A qualidade das sugestões visuais foi extremamente baixa. Tive que sempre pedir
+   alterações, usar outros sites como exemplo para que a IA se baseasse e não
+   errasse. A logo, por exemplo, teve que ser alterada mais de 3 vezes.
 
-6. **Como avaliei a confiança nas sugestões:** (i) rodava `build`/`lint`/`test`
-   após cada mudança; (ii) preferia a solução que exercitava o caminho real de
-   produção em vez de contornos só para o teste; (iii) revisava a11y (aria-*,
-   reduced-motion, contraste) e o princípio "0 JS por padrão" antes de aceitar.
+6. **Como avaliei a confiança nas sugestões:** Baseado em revisões constantes e
+   sem contexto, para diminuir a taxa de erro. No começo muita coisa tinha que
+   ser corrigida pela revisão, mas posteriormente a margem de erro diminuiu pois
+   a IA seguia a `ORGANIZATION.md`, `Instructions.md` e `CLAUDE.md` à risca.
 
-7. **Com uma semana a mais:** (a) gerar **OG image em PNG** (preview real em rede
-   social); (b) adicionar **dados reais** de membros/projetos (hoje parcialmente
-   representativos) e paginação/busca server-side mais robusta; (c) **E2E real**
-   (Playwright) para fluxo de troca de idioma/tema; (d) modo de alto contraste e
-   translações finas de microcopy.
+7. **Com uma semana a mais:** Talvez deixasse o site com melhor qualidade, mais
+   limpo, mais funções e mais otimizado, mas de qualquer forma pouca coisa seria
+   diferente do resultado atual.
 
-8. **Evidências de confiabilidade:** `npm run test` **96 testes verdes** (unit +
-   integração + build real), `npm run lint` **0 erros**, `npm run build` **18
-   páginas + sitemap/robots** estável, e CI com **quality gates** (lint+test antes
-   do deploy). A cobertura de ~97% em `src/**` exercita helpers de i18n, dados e
-   filtragem — as partes de maior risco de regressão.
+8. **Evidências de confiabilidade:** Baseado no que foi pedido nas specs e na
+   análise da aplicação resultante, tenho convicção de que está tudo correto e
+   funcional. O site atende aos requisitos estabelecidos.
 
 
 

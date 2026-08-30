@@ -1,9 +1,10 @@
 ---
-import { getLocale, useTranslations } from '../../utils/i18n';
+import { getLocale, useTranslations, localeUrl } from '../../utils/i18n';
 import FilterBar from '../common/FilterBar.astro';
 import { pick } from '../../data/types';
 import { members, memberCategories } from '../../data/members';
 import { areas } from '../../data/areas';
+import { getProject } from '../../data/projects';
 
 const locale = getLocale(Astro.currentLocale);
 const t = useTranslations(locale);
@@ -145,6 +146,26 @@ const areaTitle = (id: string) => {
                       </a>
                     </li>
                   ))}
+                </ul>
+              </div>
+            )}
+
+            {m.projects.length > 0 && (
+              <div class="mt-4">
+                <h3 class="text-xs font-semibold uppercase tracking-wide text-cogito-400">
+                  {t('members.projects')}
+                </h3>
+                <ul class="mt-1 space-y-1">
+                  {m.projects.map((pid) => {
+                    const pr = getProject(pid);
+                    return pr ? (
+                      <li>
+                        <a href={localeUrl(locale, '/#projects')} class="text-sm text-brand-700 underline hover:text-brand-900">
+                          {pick(locale, pr.title)}
+                        </a>
+                      </li>
+                    ) : null;
+                  })}
                 </ul>
               </div>
             )}

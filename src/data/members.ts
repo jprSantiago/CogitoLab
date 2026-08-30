@@ -26,6 +26,8 @@ export interface Member {
   areas: AreaId[];
   contact?: { email?: string };
   links: MemberLink[];
+  /** IDs de projetos em que o membro participa (ver `projects.ts`). */
+  projects: string[];
 }
 
 export const members: Member[] = [
@@ -48,6 +50,7 @@ export const members: Member[] = [
       { labelKey: 'members.link.scholar', url: 'https://scholar.google.com/citations?user=ana' },
       { labelKey: 'members.link.github', url: 'https://github.com/ana-silva' },
     ],
+    projects: ['cnpq-446729-2024', 'cnpq-406089-2025'],
   },
   {
     id: 'bruno-costa',
@@ -65,6 +68,7 @@ export const members: Member[] = [
       { labelKey: 'members.link.orcid', url: 'https://orcid.org/0000-0000-0000-0002' },
       { labelKey: 'members.link.linkedin', url: 'https://linkedin.com/in/bruno-costa' },
     ],
+    projects: ['fapemig-APQ-04113-25'],
   },
   {
     id: 'carla-souza',
@@ -83,6 +87,7 @@ export const members: Member[] = [
       { labelKey: 'members.link.github', url: 'https://github.com/carla-souza' },
       { labelKey: 'members.link.scholar', url: 'https://scholar.google.com/citations?user=carla' },
     ],
+    projects: ['cnpq-446729-2024', 'cnpq-406089-2025'],
   },
   {
     id: 'diego-lima',
@@ -97,6 +102,7 @@ export const members: Member[] = [
     interests: [bilingual('Débito técnico', 'Technical debt'), bilingual('Refatoração', 'Refactoring')],
     areas: ['quality'],
     links: [{ labelKey: 'members.link.github', url: 'https://github.com/diego-lima' }],
+    projects: ['fapemig-APQ-01488-24'],
   },
   {
     id: 'elena-ramos',
@@ -111,6 +117,7 @@ export const members: Member[] = [
     interests: [bilingual('Revisão de código', 'Code review')],
     areas: ['collaborative'],
     links: [],
+    projects: ['fapemig-APQ-03990-26'],
   },
   {
     id: 'felipe-martins',
@@ -125,6 +132,7 @@ export const members: Member[] = [
     interests: [bilingual('Inovação', 'Innovation')],
     areas: ['innovation'],
     links: [{ labelKey: 'members.link.linkedin', url: 'https://linkedin.com/in/felipe-martins' }],
+    projects: [],
   },
 ];
 

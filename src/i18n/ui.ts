@@ -91,6 +91,7 @@ const ptBR: Dict = {
   'members.link.github': 'GitHub',
   'members.link.linkedin': 'LinkedIn',
   'members.link.homepage': 'Site',
+  'members.projects': 'Projetos',
 
   // Projetos
   'projects.title': 'Projetos',
@@ -143,6 +144,8 @@ const ptBR: Dict = {
   'news.cat.hackathon': 'Hackathons',
   'news.cat.visit': 'Visitas',
   'news.cat.collaboration': 'Colaborações',
+  'news.relatedMembers': 'Membros',
+  'news.relatedProjects': 'Projetos',
 
   // Artefatos
   'artifacts.title': 'Software, Ferramentas e Dados',
@@ -201,6 +204,8 @@ const ptBR: Dict = {
   'about.values': 'Valores',
   'about.history': 'História',
   'about.team': 'Equipe',
+  'about.nameOrigin': 'Origem do Nome',
+  'about.nameOriginText': 'O nome "Cogito Lab" é uma referência direta à célebre expressão do filósofo francês René Descartes: "Cogito, ergo sum" — "Penso, logo existo". Essa frase, base do racionalismo moderno, reflete o compromisso do laboratório com o pensamento crítico, a investigação rigorosa e a busca pelo conhecimento como alicerces da pesquisa científica.',
 
   // Meta tags (SEO por página)
   'meta.home': 'Grupo de pesquisa em Engenharia de Software, IA, Qualidade, Testes, Mobile/IoT e Inovação.',
@@ -299,6 +304,7 @@ const en: Dict = {
   'members.link.github': 'GitHub',
   'members.link.linkedin': 'LinkedIn',
   'members.link.homepage': 'Website',
+  'members.projects': 'Projects',
 
   // Projects
   'projects.title': 'Projects',
@@ -351,6 +357,8 @@ const en: Dict = {
   'news.cat.hackathon': 'Hackathons',
   'news.cat.visit': 'Visits',
   'news.cat.collaboration': 'Collaborations',
+  'news.relatedMembers': 'Members',
+  'news.relatedProjects': 'Projects',
 
   // Artifacts
   'artifacts.title': 'Software, Tools & Data',
@@ -409,6 +417,8 @@ const en: Dict = {
   'about.values': 'Values',
   'about.history': 'History',
   'about.team': 'Team',
+  'about.nameOrigin': 'Name Origin',
+  'about.nameOriginText': 'The name "Cogito Lab" is a direct reference to the famous expression by the French philosopher René Descartes: "Cogito, ergo sum" — "I think, therefore I am". This phrase, the foundation of modern rationalism, reflects the laboratory\'s commitment to critical thinking, rigorous inquiry, and the pursuit of knowledge as the cornerstones of scientific research.',
 
   // Meta tags (SEO per page)
   'meta.home': 'Research group on Software Engineering, AI, Quality, Testing, Mobile/IoT and Innovation.',
